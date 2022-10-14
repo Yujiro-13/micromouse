@@ -1,0 +1,61 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_timer
+		.glb	_wait_ms
+		.SECTION	P,CODE
+_wait_ms:
+		.STACK	_wait_ms=12
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\misc.c",5
+		SUB #08H, R0
+		MOV.L R1, 04H[R0]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\misc.c",9
+		MOV.L #_timer, R14
+		MOV.L [R14], [R0]
+L11:	; bb3
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\misc.c",11
+		MOV.L #_timer, R14
+		MOV.L [R14], R14
+		SUB [R0].L, R14
+		CMP 04H[R0].L, R14
+		BLTU L11
+L12:	; return
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\misc.c",13
+		RTSD #08H
+		.END

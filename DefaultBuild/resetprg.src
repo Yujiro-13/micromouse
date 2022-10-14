@@ -1,0 +1,80 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_PowerON_Reset_PC
+		.glb	__INITSCT
+		.glb	_main
+		.SECTION	PResetPRG,CODE
+_PowerON_Reset_PC:
+		.STACK	_PowerON_Reset_PC=4
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",74
+		MVTC #(TOPOF SU + SIZEOF SU), USP
+		MVTC #(TOPOF SI + SIZEOF SI), ISP
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",79
+		MOV.L #TOPOF C$VECT, R14
+		MVTC R14, INTB
+L11:	; entry.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",0
+		MOV.L #00000100H, R14
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",92
+		MVTC R14, FPSW
+L12:	; entry.split1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",95
+		BSR __INITSCT
+L13:	; entry.split2
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",104
+		NOP
+L14:	; entry.split3
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",0
+		MOV.L #00010000H, R14
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",108
+		MVTC R14, PSW
+L15:	; entry.split4
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",111
+		BSR _main
+L16:	; entry.split5
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\resetprg.c",117
+		BRK
+		RTS
+		.SECTION	SI,DATA,ALIGN=4
+		.blkb	768
+		.SECTION	SU,DATA,ALIGN=4
+		.blkb	256
+		.SECTION	C$VECT,DATA
+		.END

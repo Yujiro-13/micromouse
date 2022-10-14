@@ -1,0 +1,289 @@
+品質記録情報
+2022年10月14日 21:15:17
+
+------ ビルド開始(step7_maze, DefaultBuild) ------
+C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\lbgrx.exe -isa=rxv1 -fpu -head=runtime,mathf,stdio,stdlib,string,new -output=DefaultBuild\step7_maze.lib -nologo
+Compiling start
+Mathf compiling
+Stdio compiling
+Stdlib compiling
+String compiling
+New compiling
+Runtime compiling
+Linking start
+W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
+W0561200:Backed up file "DefaultBuild\step7_maze.lib" into "DefaultBuild\step7_maze.lbk"
+Renesas Optimizing Linker Completed
+Library Generator Completed
+C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\ccrx.exe dbsct.c intprg.c HM_StarterKit.c resetprg.c sbrk.c vecttbl.c sci.c init.c spi.c interrupt.c glob_var.c run.c interface.c misc.c search.c DataFlash.c fast.c i2c.c adjust.c -isa=rxv1 -fpu -lang=c99 -include=. -output=obj -obj_path=DefaultBuild -asm_path=DefaultBuild -debug -g_line -optimize=0 -nologo
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+HM_StarterKit.c(91):W0520188:Enumerated type mixed with another type
+HM_StarterKit.c(131):W0520188:Enumerated type mixed with another type
+sci.c(135):W0520550:Variable "ptr" was set but never used
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+spi.c(138):W0520550:Variable "dummy" was set but never used
+spi.c(172):W0520550:Variable "dummy" was set but never used
+spi.c(378):W0520550:Variable "dummy" was set but never used
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+run.c(27):W0520550:Variable "r_wall_check" was set but never used
+run.c(27):W0520550:Variable "l_wall_check" was set but never used
+run.c(27):W0520177:Variable "hosei_f" was declared but never referenced
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+DataFlash.c(23):W0520550:Variable "isErr" was set but never used
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\rlink.exe -subcommand=DefaultBuild\step7_maze.clnk
+W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
+W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
+Renesas Optimizing Linker Completed
+------ ビルド終了(エラー:0個, 警告:25個)(step7_maze, DefaultBuild) ------
+
+--- CommandFile 1 ---
+DefaultBuild\step7_maze.clnk :
+-library=DefaultBuild\step7_maze.lib
+-input=DefaultBuild\dbsct.obj
+-input=DefaultBuild\intprg.obj
+-input=DefaultBuild\HM_StarterKit.obj
+-input=DefaultBuild\resetprg.obj
+-input=DefaultBuild\sbrk.obj
+-input=DefaultBuild\vecttbl.obj
+-input=DefaultBuild\sci.obj
+-input=DefaultBuild\init.obj
+-input=DefaultBuild\spi.obj
+-input=DefaultBuild\interrupt.obj
+-input=DefaultBuild\glob_var.obj
+-input=DefaultBuild\run.obj
+-input=DefaultBuild\interface.obj
+-input=DefaultBuild\misc.obj
+-input=DefaultBuild\search.obj
+-input=DefaultBuild\DataFlash.obj
+-input=DefaultBuild\fast.obj
+-input=DefaultBuild\i2c.obj
+-input=DefaultBuild\adjust.obj
+-noprelink
+-output=DefaultBuild\step7_maze.abs
+-list=DefaultBuild\step7_maze.map
+-nooptimize
+-start=B_1,R_1,B_2,R_2,B,R,SU,SI/04,PResetPRG/0FFF80000,C_1,C_2,C,C$DSEC,C$BSEC,C$INIT,C$VTBL,C$VECT,D_1,D_2,D,P,PIntPRG,W_1,W_2,W,L/0FFF80100,FIXEDVECT/0FFFFFFD0
+-rom=D=R,D_1=R_1,D_2=R_2
+-nologo
+-end
+-input=DefaultBuild\step7_maze.abs
+-output=DefaultBuild\step7_maze.mot
+-form=stype
+-exit
+
+
+--- SHA1 hash value of output files ---
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\DefaultBuild\step7_maze.abs: c290cafa32f460ed87e4ac2e5338bfb5b1456dc6
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\DefaultBuild\step7_maze.mot: 536e8b70ece52516b9574d330eae32687c00ed92
+
+
+--- システム情報 ---
+*OS バージョン
+ Microsoft Windows 11 Pro (-, 10.0.22621, WOW64)
+*言語
+ 日本語 (日本)
+*.NET Framework バージョン
+ Microsoft .NET Framework 4 [.NET 4.8 or later] (533320)
+
+--- アプリケーション情報 ---
+*製品名
+ CS+ for CC
+*パッケージ・バージョン
+ V8.08.00  [10 Jun 2022]
+*バージョン
+ V9.08.00.02 [13 May 2022]
+*アセンブリ・バージョン
+ 3.12.10.1
+*拠点情報
+ Japan
+*製品ライセンス
+ 
+*実行場所
+ C:\Program Files (x86)\Renesas Electronics\CS+\CC
+*メモリ使用量
+ *プライベート・ワーキング・セット
+  117 MB
+ *GDIオブジェクト数
+  1939
+ *USERオブジェクト数
+  690
+ *開いているファイル
+  0 editors, 0 files, 0 KB
+
+--- ビルド・ツール・プラグイン情報 ---
+RH850ビルド・ツールCC-RH用プラグイン
+ *バージョン
+  V8.02.00.00 [25 Mar 2019]
+ *アセンブリ・バージョン
+  1.1.10.12
+ *DLL ファイル名
+  BuildToolCCRH.dll
+RL78ビルド・ツールCC-RL用プラグイン
+ *バージョン
+  V8.08.00.00 [22 Apr 2022]
+ *アセンブリ・バージョン
+  1.0.0.0
+ *DLL ファイル名
+  BuildToolCCRL.dll
+RXビルド・ツールCC-RX用プラグイン
+ *バージョン
+  V8.02.00.00 [25 Mar 2019]
+ *アセンブリ・バージョン
+  3.12.10.1
+ *DLL ファイル名
+  BuildToolCCRX.dll
+RH850ビルド・ツールGHS CCRH850用プラグイン
+ *バージョン
+  V1.06.00.01 [27 May 2022]
+ *アセンブリ・バージョン
+  1.0.0.0
+ *DLL ファイル名
+  BuildToolGHSCCRH850.dll
+
+--- デバッグ・ツール・プラグイン情報 ---
+デバッガ・コレクション・プラグイン
+ *バージョン
+  V8.08.00.03 [30 May 2022]
+ *アセンブリ・バージョン
+  2.12.10.1
+ *DLL ファイル名
+  DebugToolCollection.dll
+
+--- その他のプラグイン情報 ---
+RH850用コード生成
+ *バージョン
+  V1.02.02.05 [25 May 2018]
+ *アセンブリ・バージョン
+  1.0.0.0
+ *DLL ファイル名
+  CodeGeneratorRH850.dll
+コード生成プラグイン
+ *バージョン
+  V4.08.05.01 [14 Aug 2020]
+ *アセンブリ・バージョン
+  3.0.0.0
+ *DLL ファイル名
+  CodePart.dll
+コード生成／端子図プラグイン
+ *バージョン
+  V2.10.07.02 [08 Nov 2021]
+ *アセンブリ・バージョン
+  1.0.0.0
+ *DLL ファイル名
+  CodePart2.dll
+デバッグ・コンソール・プラグイン
+ *バージョン
+  V7.00.00.01 [06 Apr 2018]
+ *アセンブリ・バージョン
+  7.0.0.0
+ *DLL ファイル名
+  DebugConsole.dll
+Quick and Effective tool solution - QE
+ *バージョン
+  V9.08.00.03 [23 May 2022]
+ *アセンブリ・バージョン
+  1.15.10.16
+ *DLL ファイル名
+  InCarTools.dll
+端子配置プラグイン
+ *バージョン
+  V1.54.01.01 [31 Jul 2014]
+ *アセンブリ・バージョン
+  1.6.10.23
+ *DLL ファイル名
+  PinConfig.dll
+プログラム解析プラグイン(!)
+ *バージョン
+  V4.12.00.01 [14 Apr 2021]
+ *アセンブリ・バージョン
+  3.12.11.9
+ *DLL ファイル名
+  ProgramAnalyzer.dll
+IronPythonコンソール・プラグイン
+ *バージョン
+  V1.44.00.03 [06 Jun 2022]
+ *アセンブリ・バージョン
+  1.6.10.23
+ *DLL ファイル名
+  PythonConsole.dll
+エディタ・パネル
+ *バージョン
+  V1.18.00.01 [22 Apr 2022]
+ *アセンブリ・バージョン
+  1.1.0.0
+ *DLL ファイル名
+  SEditor.dll
+スタック見積もりツール
+ *バージョン
+  V1.05.00.02 [30 Jul 2014]
+ *アセンブリ・バージョン
+  1.30.11.15
+ *DLL ファイル名
+  Stk.dll
+アップデート・マネージャ・プラグイン
+ *バージョン
+  V2.03.00.02 [29 Oct 2018]
+ *アセンブリ・バージョン
+  1.13.6.20
+ *DLL ファイル名
+  Update.dll
+
+デバッグ・ツール共通インタフェース
+ *バージョン
+  V8.08.00.03 [30 May 2022]
+ *アセンブリ・バージョン
+  3.12.10.1
+ *DLL ファイル名
+  CommonDebuggerInterface.dll
+デバイス情報共通インタフェース
+ *バージョン
+  V9.08.00.01 [22 Apr 2022]
+ *アセンブリ・バージョン
+  3.0.0.0
+ *DLL ファイル名
+  DeviceInformation.dll
+
+--- メイン・プロジェクト情報 ---
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\step7_maze.mtpj
+マイクロコントローラ情報
+ *R5F5631MDxFL
+  *ファイル名: バージョン
+   RX_Productlist.xml: V3.100001
+   R5F5631MDxFL_common.xml: V3.10.00
+   -: -
+   -: -
+   RX63N.ddi: 1.80A
+  
+
+ビルド・ツール情報
+ *CC-RX
+   * プラグイン(*.dll)のバージョン
+     V8.08.00.02 [03 Jun 2022]
+   * コンパイラ・パッケージのバージョン
+     V3.04.00
+  
+
+デバッグ・ツール情報
+ *RX シミュレータ
+  Debugger Library V8.08.00.03 [30 May 2022]
+  
+
+その他のツール情報
+ *なし
+
+ *なし
+
+ *なし
+
+ *なし
+
+ *なし
+
+

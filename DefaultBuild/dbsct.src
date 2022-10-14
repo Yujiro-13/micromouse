@@ -1,0 +1,96 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	__DTBL
+		.glb	__BTBL
+		.glb	__CTBL
+		.SECTION	C,ROMDATA,ALIGN=4
+__CTBL:
+		.lword	TOPOF C_1
+		.lword	TOPOF C_2
+		.lword	TOPOF C
+		.lword	TOPOF W_1
+		.lword	TOPOF W_2
+		.lword	TOPOF W
+		.lword	TOPOF L
+		.lword	TOPOF SU
+		.lword	TOPOF C$DSEC
+		.lword	TOPOF C$BSEC
+		.lword	TOPOF C$INIT
+		.lword	TOPOF C$VTBL
+		.lword	TOPOF C$VECT
+		.SECTION	C$DSEC,ROMDATA,ALIGN=4
+__DTBL:
+		.lword	TOPOF D
+		.lword	TOPOF D+SIZEOF D
+		.lword	TOPOF R
+		.lword	TOPOF D_2
+		.lword	TOPOF D_2+SIZEOF D_2
+		.lword	TOPOF R_2
+		.lword	TOPOF D_1
+		.lword	TOPOF D_1+SIZEOF D_1
+		.lword	TOPOF R_1
+		.SECTION	C$BSEC,ROMDATA,ALIGN=4
+__BTBL:
+		.lword	TOPOF B
+		.lword	TOPOF B+SIZEOF B
+		.lword	TOPOF B_2
+		.lword	TOPOF B_2+SIZEOF B_2
+		.lword	TOPOF B_1
+		.lword	TOPOF B_1+SIZEOF B_1
+		.SECTION	B,DATA
+		.SECTION	B_1,DATA
+		.SECTION	B_2,DATA
+		.SECTION	C$INIT,DATA
+		.SECTION	C$VECT,DATA
+		.SECTION	C$VTBL,DATA
+		.SECTION	C_1,DATA
+		.SECTION	C_2,DATA
+		.SECTION	D,DATA
+		.SECTION	D_1,DATA
+		.SECTION	D_2,DATA
+		.SECTION	L,DATA
+		.SECTION	R,DATA
+		.SECTION	R_1,DATA
+		.SECTION	R_2,DATA
+		.SECTION	SU,DATA
+		.SECTION	W,DATA
+		.SECTION	W_1,DATA
+		.SECTION	W_2,DATA
+		.END

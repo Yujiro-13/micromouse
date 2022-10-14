@@ -1,0 +1,81 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_sbrk
+		.SECTION	P,CODE
+_sbrk:
+		.STACK	_sbrk=16
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",45
+		SUB #0CH, R0
+		MOV.L R1, 08H[R0]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",49
+		MOV.L #__$brk, R14
+		ADD [R14].L, R1
+		MOV.L #__$heap_area, R14
+		ADD #0400H, R14
+		CMP R14, R1
+		BLEU L12
+L11:	; if_then_bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",50
+		MOV.L #0FFFFFFFFH, [R0]
+		BRA L14
+L12:	; if_else_bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",53
+		MOV.L #__$brk, R14
+		MOV.L [R14], [R0]
+L13:	; if_else_bb.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",54
+		MOV.L #__$brk, R14
+		MOV.L [R14], R15
+		ADD 08H[R0].L, R15
+		MOV.L R15, [R14]
+L14:	; if_break_bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",56
+		MOV.L [R0], R1
+		MOV.L R1, 04H[R0]
+L15:	; if_break_bb.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\sbrk.c",57
+		RTSD #0CH
+		.SECTION	D,ROMDATA,ALIGN=4
+__$brk:
+		.lword	__$heap_area
+		.SECTION	B,DATA,ALIGN=4
+__$heap_area:
+		.blkl	256
+		.END

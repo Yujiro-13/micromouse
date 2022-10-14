@@ -1,0 +1,97 @@
+Renesas Optimizing Linker (W3.04.00 )             14-Oct-2022 21:15:16
+
+*** Options ***
+
+-subcommand=DefaultBuild\step7_maze.clnk
+-library=DefaultBuild\step7_maze.lib
+-input=DefaultBuild\dbsct.obj
+-input=DefaultBuild\intprg.obj
+-input=DefaultBuild\HM_StarterKit.obj
+-input=DefaultBuild\resetprg.obj
+-input=DefaultBuild\sbrk.obj
+-input=DefaultBuild\vecttbl.obj
+-input=DefaultBuild\sci.obj
+-input=DefaultBuild\init.obj
+-input=DefaultBuild\spi.obj
+-input=DefaultBuild\interrupt.obj
+-input=DefaultBuild\glob_var.obj
+-input=DefaultBuild\run.obj
+-input=DefaultBuild\interface.obj
+-input=DefaultBuild\misc.obj
+-input=DefaultBuild\search.obj
+-input=DefaultBuild\DataFlash.obj
+-input=DefaultBuild\fast.obj
+-input=DefaultBuild\i2c.obj
+-input=DefaultBuild\adjust.obj
+-noprelink
+-output=DefaultBuild\step7_maze.abs
+-list=DefaultBuild\step7_maze.map
+-nooptimize
+-start=B_1,R_1,B_2,R_2,B,R,SU,SI/04,PResetPRG/0FFF80000,C_1,C_2,C,C$DSEC,C$BSEC,C$INIT,C$VTBL,C$VECT,D_1,D_2,D,P,PIntPRG,W_1,W_2,W,L/0FFF80100,FIXEDVECT/0FFFFFFD0
+-rom=D=R,D_1=R_1,D_2=R_2
+-nologo
+-end
+
+*** Error information ***
+
+*** Mapping List ***
+
+SECTION                            START      END         SIZE   ALIGN
+B_1
+                                  00000004  00000095        92   1
+R_1
+                                  00000096  00000096         0   1
+B_2
+                                  00000096  000000a3         e   2
+R_2
+                                  000000a4  000000a4         0   1
+B
+                                  000000a4  0000c1cf      c12c   4
+R
+                                  0000c1d0  0000c1ff        30   4
+SU
+                                  0000c200  0000c2ff       100   4
+SI
+                                  0000c300  0000c5ff       300   4
+PResetPRG
+                                  fff80000  fff80030        31   1
+C_1
+                                  fff80100  fff80100         0   1
+C_2
+                                  fff80100  fff80100         0   1
+C
+                                  fff80100  fff80133        34   4
+C$DSEC
+                                  fff80134  fff80157        24   4
+C$BSEC
+                                  fff80158  fff8016f        18   4
+C$INIT
+                                  fff80170  fff80170         0   1
+C$VTBL
+                                  fff80170  fff80170         0   1
+C$VECT
+                                  fff80170  fff8056f       400   4
+D_1
+                                  fff80570  fff80570         0   1
+D_2
+                                  fff80570  fff80570         0   1
+D
+                                  fff80570  fff8059f        30   4
+P
+                                  fff805a0  fff85a20      5481   1
+PIntPRG
+                                  fff85a21  fff85c5a       23a   1
+W_1
+                                  fff85c5b  fff85c5b         0   1
+W_2
+                                  fff85c5c  fff85c79        1e   2
+W
+                                  fff85c7c  fff85c7c         0   4
+L
+                                  fff85c7c  fff85f3f       2c4   4
+$ADDR_C_FFFFFF80
+                                  ffffff80  ffffff83         4   1
+$ADDR_C_FFFFFFA0
+                                  ffffffa0  ffffffaf        10   1
+FIXEDVECT
+                                  ffffffd0  ffffffff        30   4

@@ -1,0 +1,74 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_Fixed_Vectors
+		.glb	_id_code
+		.glb	_MDEreg
+		.glb	_Excep_SuperVisorInst
+		.glb	_Excep_AccessInst
+		.glb	_Dummy
+		.glb	_Excep_UndefinedInst
+		.glb	_Excep_FloatingPoint
+		.glb	_NonMaskableInterrupt
+		.glb	_PowerON_Reset_PC
+		.SECTION	FIXEDVECT,ROMDATA,ALIGN=4
+_Fixed_Vectors:
+		.lword	_Excep_SuperVisorInst
+		.lword	_Excep_AccessInst
+		.lword	_Dummy
+		.lword	_Excep_UndefinedInst
+		.lword	_Dummy
+		.lword	_Excep_FloatingPoint
+		.lword	_Dummy
+		.lword	_Dummy
+		.lword	_Dummy
+		.lword	_Dummy
+		.lword	_NonMaskableInterrupt
+		.lword	_PowerON_Reset_PC
+		.SECTION	$ADDR_C_FFFFFF80,ROMDATA
+
+		.ORG		0FFFFFF80H
+_MDEreg:
+		.lword	0FFFFFFFFH
+		.SECTION	$ADDR_C_FFFFFFA0,ROMDATA
+
+		.ORG		0FFFFFFA0H
+_id_code:
+		.lword	0FFFFFFFFH,0FFFFFFFFH,0FFFFFFFFH,0FFFFFFFFH
+		.END

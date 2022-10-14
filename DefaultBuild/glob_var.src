@@ -1,0 +1,225 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;dbsct.c
+;intprg.c
+;HM_StarterKit.c
+;resetprg.c
+;sbrk.c
+;vecttbl.c
+;sci.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;misc.c
+;search.c
+;DataFlash.c
+;fast.c
+;i2c.c
+;adjust.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_sen_r
+		.glb	_sen_l
+		.glb	_sen_fr
+		.glb	_sen_fl
+		.glb	_con_wall
+		.glb	_con_fwall
+		.glb	_mypos
+		.glb	_wall
+		.glb	_map
+		.glb	_run_mode
+		.glb	_fast_speed
+		.glb	_tar_ang_vel
+		.glb	_tar_degree
+		.glb	_max_degree
+		.glb	_start_degree
+		.glb	_ang_vel
+		.glb	_p_ang_vel
+		.glb	_max_ang_vel
+		.glb	_ang_acc
+		.glb	_accel
+		.glb	_max_speed
+		.glb	_speed_r
+		.glb	_speed_l
+		.glb	_speed_old_r
+		.glb	_speed_new_r
+		.glb	_speed_old_l
+		.glb	_speed_new_l
+		.glb	_speed
+		.glb	_p_speed
+		.glb	_tar_speed
+		.glb	_end_speed
+		.glb	_V_r
+		.glb	_V_l
+		.glb	_angle
+		.glb	_locate_l
+		.glb	_locate_r
+		.glb	_before_locate_r
+		.glb	_before_locate_l
+		.glb	_diff_pulse_r
+		.glb	_diff_pulse_l
+		.glb	_timer
+		.glb	_cnt
+		.glb	_V_bat
+		.glb	_gyro_x
+		.glb	_gyro_x_new
+		.glb	_gyro_ref
+		.glb	_degree
+		.glb	_len_mouse
+		.glb	_len_target
+		.glb	_log
+		.glb	_log_timer
+		.glb	_log_flag
+		.glb	_TURN_DIR
+		.glb	_Duty_r
+		.glb	_Duty_l
+		.glb	_I_tar_speed
+		.glb	_I_speed
+		.glb	_I_tar_ang_vel
+		.glb	_I_ang_vel
+		.glb	_push_switch
+		.glb	_WAIT_TIME
+		.SECTION	B,DATA,ALIGN=4
+_sen_r:
+		.blkl	6
+_sen_l:
+		.blkl	6
+_sen_fr:
+		.blkl	6
+_sen_fl:
+		.blkl	6
+_con_wall:
+		.blkl	14
+_con_fwall:
+		.blkl	14
+_mypos:
+		.blkl	2
+_run_mode:
+		.blkl	1
+_fast_speed:
+		.blkl	1
+_tar_ang_vel:
+		.blkl	1
+_tar_degree:
+		.blkl	1
+_max_degree:
+		.blkl	1
+_start_degree:
+		.blkl	1
+_ang_vel:
+		.blkl	1
+_p_ang_vel:
+		.blkl	1
+_max_ang_vel:
+		.blkl	1
+_ang_acc:
+		.blkl	1
+_accel:
+		.blkl	1
+_max_speed:
+		.blkl	1
+_speed_r:
+		.blkl	1
+_speed_l:
+		.blkl	1
+_speed_old_r:
+		.blkl	1
+_speed_new_r:
+		.blkl	1
+_speed_old_l:
+		.blkl	1
+_speed_new_l:
+		.blkl	1
+_speed:
+		.blkl	1
+_p_speed:
+		.blkl	1
+_tar_speed:
+		.blkl	1
+_end_speed:
+		.blkl	1
+_V_r:
+		.blkl	1
+_V_l:
+		.blkl	1
+_angle:
+		.blkl	1
+_locate_l:
+		.blkl	1
+_locate_r:
+		.blkl	1
+_before_locate_r:
+		.blkl	1
+_before_locate_l:
+		.blkl	1
+_diff_pulse_r:
+		.blkl	1
+_diff_pulse_l:
+		.blkl	1
+_timer:
+		.blkl	1
+_cnt:
+		.blkl	1
+_V_bat:
+		.blkl	1
+_gyro_x:
+		.blkl	1
+_gyro_x_new:
+		.blkl	1
+_gyro_ref:
+		.blkl	1
+_degree:
+		.blkl	1
+_len_mouse:
+		.blkl	1
+_len_target:
+		.blkl	1
+_log:
+		.blkl	12000
+_log_timer:
+		.blkl	1
+_log_flag:
+		.blkl	1
+_Duty_r:
+		.blkl	1
+_Duty_l:
+		.blkl	1
+_I_tar_speed:
+		.blkl	1
+_I_speed:
+		.blkl	1
+_I_tar_ang_vel:
+		.blkl	1
+_I_ang_vel:
+		.blkl	1
+_WAIT_TIME:
+		.blkl	1
+		.SECTION	B_1,DATA
+_wall:
+		.blkb	64
+_map:
+		.blkb	64
+_TURN_DIR:
+		.blkb	1
+_push_switch:
+		.blkb	1
+		.END
