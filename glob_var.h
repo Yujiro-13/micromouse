@@ -1,101 +1,104 @@
-//ƒOƒ[ƒoƒ‹•Ï”‚ğˆê‰ÓŠ‚ÅéŒ¾‚·‚éB
-//glob_var.c‚ÅÀ‘Ì‚ğì‚è(_GLOB_VAR‚ğdefine)A‘¼‚ÌƒOƒ[ƒoƒ‹•Ï”‚ğg—p‚·‚éƒtƒ@ƒCƒ‹‚©‚ç‚Íglob_var.h‚ğinclude‚·‚éB
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ä¸€ç®‡æ‰€ã§å®£è¨€ã™ã‚‹ã€‚
+//glob_var.cã§å®Ÿä½“ã‚’ä½œã‚Š(_GLOB_VARã‚’define)ã€ä»–ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ä½¿ç”¨ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã¯glob_var.hã‚’includeã™ã‚‹ã€‚
 
 #include "mytypedef.h"
 #include "parameters.h"
 
-//global•Ï”‚ğˆêŠ‡‚ÅÀ‘Ì‚ÆexternéŒ¾‚·‚éB
-//includeŒ³‚Å_GLOB_VAR‚ª’è‹`‚³‚ê‚Ä‚¢‚ê‚ÎÀ‘ÌéŒ¾A’è‹`‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎŠO•”éŒ¾‚Æ‚È‚éB
+//globalå¤‰æ•°ã‚’ä¸€æ‹¬ã§å®Ÿä½“ã¨externå®£è¨€ã™ã‚‹ã€‚
+//includeå…ƒã§_GLOB_VARãŒå®šç¾©ã•ã‚Œã¦ã„ã‚Œã°å®Ÿä½“å®£è¨€ã€å®šç¾©ã•ã‚Œã¦ã„ãªã‘ã‚Œã°å¤–éƒ¨å®£è¨€ã¨ãªã‚‹ã€‚
 #ifdef _GLOB_VAR
 #define GLOBAL
 #else
 #define GLOBAL extern
 #endif
 
-//\‘¢‘ÌŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL t_sensor			sen_r, sen_l, sen_fr, sen_fl;		//ƒZƒ“ƒT\‘¢‘Ì
-GLOBAL t_control		con_wall;				//§Œä\‘¢‘Ì
-GLOBAL t_control		con_fwall;				//§Œä\‘¢‘Ì
-GLOBAL t_position		mypos;					//©ŒÈÀ•W
-GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//•Ç‚Ìî•ñ‚ğŠi”[‚·‚é\‘¢‘Ì”z—ñ
-GLOBAL unsigned char		map[MAZESIZE_X][MAZESIZE_Y];		//•à”ƒ}ƒbƒv
+//æ§‹é€ ä½“ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL t_sensor			sen_r, sen_l, sen_fr, sen_fl;		//ã‚»ãƒ³ã‚µæ§‹é€ ä½“
+GLOBAL t_control		con_wall;				//åˆ¶å¾¡æ§‹é€ ä½“
+GLOBAL t_control		con_fwall;				//åˆ¶å¾¡æ§‹é€ ä½“
+GLOBAL t_position		mypos;					//è‡ªå·±åº§æ¨™
+GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//å£ã®æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“é…åˆ—
+GLOBAL unsigned char		map[MAZESIZE_X][MAZESIZE_Y];		//æ­©æ•°ãƒãƒƒãƒ—
 
-//‘–sŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL int run_mode;							//^‚Á’¼‚®‚©‰ñ“]‚©‚Ì‘–sƒ‚[ƒhi§ŒäŒn‚ÌØ‚è‘Ö‚¦‚Ég—pj
+//èµ°è¡Œç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL int run_mode;							//çœŸã£ç›´ãã‹å›è»¢ã‹ã®èµ°è¡Œãƒ¢ãƒ¼ãƒ‰ï¼ˆåˆ¶å¾¡ç³»ã®åˆ‡ã‚Šæ›¿ãˆã«ä½¿ç”¨ï¼‰
 
-//Ô‘Ì‘¬“xŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL float			fast_speed;				//Å’Z‘–s‚ÌÅ‚‘¬“x	[m/s]
-GLOBAL float			tar_ang_vel;				//–Ú•WŠp‘¬“x		[rad/s]
-GLOBAL float			tar_degree;				//–Ú•WŠp“x		[deg]
-GLOBAL float			max_degree;				//ù‰ñ‚ÌÅ‘åŠp“x	[deg]
-GLOBAL float			start_degree;				//‘–si“ü‚ÌÔ‘ÌŠp“x	[deg]
-GLOBAL float			ang_vel;				//Œ»İŠp‘¬“x		[rad/s]
-GLOBAL float			p_ang_vel;				//‰ß‹Šp‘¬“x		[rad/s]
-GLOBAL float			max_ang_vel;				//Å‚Šp‘¬“x		[rad/s]
-GLOBAL float			ang_acc;				//Šp‰Á‘¬“x		[rad/ss]
-GLOBAL float			accel;					//‰Á‘¬“x		[m/ss]
-GLOBAL float			max_speed;				//Å‚‘¬“x		[m/s]
-GLOBAL float			speed_r;				//Œ»İ‚Ì‰Eƒ^ƒCƒ„‘¬“x	[m/s]
-GLOBAL float			speed_l;				//Œ»İ‚Ì¶ƒ^ƒCƒ„‘¬“x	[m/s]
-GLOBAL float			speed_old_r;				//‰Eƒ^ƒCƒ„‚Ì‰ß‹‚Ì‘¬“x	[m/s]
-GLOBAL float			speed_new_r;				//‰Eƒ^ƒCƒ„‚ÌÅV‚Ì‘¬“x	[m/s]
-GLOBAL float			speed_old_l;				//¶ƒ^ƒCƒ„‚Ì‰ß‹‚Ì‘¬“x	[m/s]
-GLOBAL float			speed_new_l;				//¶ƒ^ƒCƒ„‚ÌÅV‚Ì‘¬“x	[m/s]				
-GLOBAL float			speed;					//Œ»İÔ‘Ì‘¬“x		[m/s]
-GLOBAL float			p_speed;				//‰ß‹‚ÌÔ‘Ì‘¬“x	[m/s]
-GLOBAL float			tar_speed;				//–Ú•WÔ‘Ì‘¬“x		[m/s]
-GLOBAL float			end_speed;				//I’[Ô‘Ì‘¬“x		[m/s]
-GLOBAL float			V_r;					//‰Eƒ‚[ƒ^‚Ìo—Í“dˆ³	[V]
-GLOBAL float			
-V_l;					//¶ƒ‚[ƒ^‚Ìo—Í“dˆ³	[V]
+//è»Šä½“é€Ÿåº¦ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL float			fast_speed;				//æœ€çŸ­èµ°è¡Œæ™‚ã®æœ€é«˜é€Ÿåº¦	[m/s]
+GLOBAL float			tar_ang_vel;				//ç›®æ¨™è§’é€Ÿåº¦		[rad/s]
+GLOBAL float			tar_degree;				//ç›®æ¨™è§’åº¦		[deg]
+GLOBAL float			max_degree;				//æ—‹å›æ™‚ã®æœ€å¤§è§’åº¦	[deg]
+GLOBAL float			start_degree;				//èµ°è¡Œé€²å…¥æ™‚ã®è»Šä½“è§’åº¦	[deg]
+GLOBAL float			ang_vel;				//ç¾åœ¨è§’é€Ÿåº¦		[rad/s]
+GLOBAL float			p_ang_vel;				//éå»è§’é€Ÿåº¦		[rad/s]
+GLOBAL float			max_ang_vel;				//æœ€é«˜è§’é€Ÿåº¦		[rad/s]
+GLOBAL float			ang_acc;				//è§’åŠ é€Ÿåº¦		[rad/ss]
+GLOBAL float			accel;					//åŠ é€Ÿåº¦		[m/ss]
+GLOBAL float			max_speed;				//æœ€é«˜é€Ÿåº¦		[m/s]
+GLOBAL float			speed_r;				//ç¾åœ¨ã®å³ã‚¿ã‚¤ãƒ¤é€Ÿåº¦	[m/s]
+GLOBAL float			speed_l;				//ç¾åœ¨ã®å·¦ã‚¿ã‚¤ãƒ¤é€Ÿåº¦	[m/s]
+GLOBAL float			speed_old_r;				//å³ã‚¿ã‚¤ãƒ¤ã®éå»ã®é€Ÿåº¦	[m/s]
+GLOBAL float			speed_new_r;				//å³ã‚¿ã‚¤ãƒ¤ã®æœ€æ–°ã®é€Ÿåº¦	[m/s]
+GLOBAL float			speed_old_l;				//å·¦ã‚¿ã‚¤ãƒ¤ã®éå»ã®é€Ÿåº¦	[m/s]
+GLOBAL float			speed_new_l;				//å·¦ã‚¿ã‚¤ãƒ¤ã®æœ€æ–°ã®é€Ÿåº¦	[m/s]				
+GLOBAL float			speed;					//ç¾åœ¨è»Šä½“é€Ÿåº¦		[m/s]
+GLOBAL float			p_speed;				//éå»ã®è»Šä½“é€Ÿåº¦	[m/s]
+GLOBAL float			tar_speed;				//ç›®æ¨™è»Šä½“é€Ÿåº¦		[m/s]
+GLOBAL float			end_speed;				//çµ‚ç«¯è»Šä½“é€Ÿåº¦		[m/s]
+GLOBAL float			V_r;					//å³ãƒ¢ãƒ¼ã‚¿ã®å‡ºåŠ›é›»åœ§	[V]
+GLOBAL float			V_l;					//å·¦ãƒ¢ãƒ¼ã‚¿ã®å‡ºåŠ›é›»åœ§	[V]
 
-//ƒGƒ“ƒR[ƒ_Šp“xŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL unsigned int			angle;					//Œ»İ‚ÌÔ²Šp“x	[deg]
-GLOBAL unsigned int			locate_l;				//Œ»İ‚ÌÔ²ˆÊ’u	[–³ŸŒ³]
-GLOBAL unsigned int			locate_r;				//Œ»İ‚ÌÔ²ˆÊ’u	[–³ŸŒ³]
-GLOBAL unsigned int			before_locate_r;			//‰ß‹‚ÌÔ²ˆÊ’u	[–³ŸŒ³]
-GLOBAL unsigned int			before_locate_l;			//‰ß‹‚ÌÔ²ˆÊ’u	[–³ŸŒ³]
-GLOBAL int			diff_pulse_r;				//Ô²ˆÊ’u‚Ì”÷•ª’l(Ô²‚Ì‰ñ“]‘¬“x[pulse/ms])
-GLOBAL int			diff_pulse_l;				//Ô²ˆÊ’u‚Ì”÷•ª’l(Ô²‚Ì‰ñ“]‘¬“x[pulse/ms])
+//ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€è§’åº¦ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL unsigned int			angle;					//ç¾åœ¨ã®è»Šè»¸è§’åº¦	[deg]
+GLOBAL unsigned int			locate_l;				//ç¾åœ¨ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
+GLOBAL unsigned int			locate_r;				//ç¾åœ¨ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
+GLOBAL unsigned int			before_locate_r;			//éå»ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
+GLOBAL unsigned int			before_locate_l;			//éå»ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
+GLOBAL int			diff_pulse_r;				//è»Šè»¸ä½ç½®ã®å¾®åˆ†å€¤(è»Šè»¸ã®å›è»¢é€Ÿåº¦[pulse/ms])
+GLOBAL int			diff_pulse_l;				//è»Šè»¸ä½ç½®ã®å¾®åˆ†å€¤(è»Šè»¸ã®å›è»¢é€Ÿåº¦[pulse/ms])
 				
-//ƒ^ƒCƒ}ŒnƒOƒ[ƒoƒ‹•Ï”
-GLOBAL unsigned int		timer;					//1mS‚²‚Æ‚ÉƒJƒEƒ“ƒgƒAƒbƒv‚³‚ê‚é•Ï”.
+//ã‚¿ã‚¤ãƒç³»ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL unsigned int		timer;					//1mSã”ã¨ã«ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒƒãƒ—ã•ã‚Œã‚‹å¤‰æ•°.
 
-//“dˆ³ŠÄ‹—pƒOƒ[ƒoƒ‹•Ï”
-GLOBAL long 			cnt;					//Š„‚è‚İ’†‚ÌƒJƒEƒ“ƒg
-GLOBAL float			V_bat;					//“dŒ¹“dˆ³[V]
+//é›»åœ§ç›£è¦–ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL long 			cnt;					//å‰²ã‚Šè¾¼ã¿ä¸­ã®ã‚«ã‚¦ãƒ³ãƒˆ
+GLOBAL float			V_bat;					//é›»æºé›»åœ§[V]
 
-//ƒWƒƒƒCƒŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL float			gyro_x;					//ƒˆ[²ƒWƒƒƒCƒ‚ÌŒ»İ‚Ì’l	[–³ŸŒ³]
-GLOBAL float			gyro_x_new;				//ƒˆ[²ƒWƒƒƒCƒ‚ÌÅV‚Ì’l	[–³ŸŒ³]
-GLOBAL float			gyro_ref;				//‚æ[²ƒWƒƒƒCƒ‚ÌƒŠƒtƒ@ƒŒƒ“ƒX’l[–³ŸŒ³]
-GLOBAL float			degree;					//Œ»İ‚ÌÔ‘ÌŠp“x		[degree]
+//ã‚¸ãƒ£ã‚¤ãƒ­ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL float			gyro_x;					//ãƒ¨ãƒ¼è»¸ã‚¸ãƒ£ã‚¤ãƒ­ã®ç¾åœ¨ã®å€¤	[ç„¡æ¬¡å…ƒ]
+GLOBAL float			gyro_x_new;				//ãƒ¨ãƒ¼è»¸ã‚¸ãƒ£ã‚¤ãƒ­ã®æœ€æ–°ã®å€¤	[ç„¡æ¬¡å…ƒ]
+GLOBAL float			gyro_ref;				//ã‚ˆãƒ¼è»¸ã‚¸ãƒ£ã‚¤ãƒ­ã®ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹å€¤[ç„¡æ¬¡å…ƒ]
+GLOBAL float			degree;					//ç¾åœ¨ã®è»Šä½“è§’åº¦		[degree]
 
-//Ô‘ÌˆÚ“®‹——£Œn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL float			len_mouse;				//ƒ}ƒEƒX‚ÌˆÚ“®‹——£		[mm]
-GLOBAL float			len_target;				//ƒ}ƒEƒX‚Ì–Ú•WˆÚ“®‹——£		[mm]
+//è»Šä½“ç§»å‹•è·é›¢ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL float			len_mouse;				//ãƒã‚¦ã‚¹ã®ç§»å‹•è·é›¢		[mm]
+GLOBAL float			len_target;				//ãƒã‚¦ã‚¹ã®ç›®æ¨™ç§»å‹•è·é›¢		[mm]
+GLOBAL int              len_count;
 
-//ƒƒO—p‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL int			log[12][LOG_CNT];			//ƒƒO—p‚Ì”z—ñ
-GLOBAL long			log_timer;				//ƒƒOæ‚è‚æ‚¤‚Ìƒ^ƒCƒ}
-GLOBAL int			log_flag;				//ƒƒOæ“¾‚Ìƒ^ƒCƒ~ƒ“ƒO—p
+//ãƒ­ã‚°ç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL int			log[12][LOG_CNT];			//ãƒ­ã‚°ç”¨ã®é…åˆ—
+GLOBAL long			log_timer;				//ãƒ­ã‚°å–ã‚Šã‚ˆã†ã®ã‚¿ã‚¤ãƒ
+GLOBAL int			log_flag;				//ãƒ­ã‚°å–å¾—ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ç”¨
 
-//ƒtƒ‰ƒOŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
-GLOBAL char			TURN_DIR;				//ƒ^[ƒ“•ûŒüƒtƒ‰ƒO
+//ãƒ­ã‚°ç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°å…¶ã®äºŒ
+//GLOBAL int          log2[12][LOG_CNT];
 
-//ƒ‚[ƒ^‚Ìƒfƒ…[ƒeƒBŒˆ’è—pƒOƒ[ƒoƒ‹•Ï”
-GLOBAL float			Duty_r;					//o—Í‚Ìƒfƒ…[ƒeƒB”ä				[%]
-GLOBAL float			Duty_l;					//o—Í‚Ìƒfƒ…[ƒeƒB”ä				[%]
+//ãƒ•ãƒ©ã‚°ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL char			TURN_DIR;				//ã‚¿ãƒ¼ãƒ³æ–¹å‘ãƒ•ãƒ©ã‚°
 
-//§Œä—pƒOƒ[ƒoƒ‹•Ï”
-GLOBAL float			I_tar_speed;				//–Ú•W‘¬“x‚ÌI¬•ª
-GLOBAL float			I_speed;				//À‘¬“x‚ÌI¬•ª
-GLOBAL float			I_tar_ang_vel;				//–Ú•WŠp‘¬“x‚ÌI¬•ª
-GLOBAL float			I_ang_vel;				//ÀŠp‘¬“x‚ÌI¬•ª
+//ãƒ¢ãƒ¼ã‚¿ã®ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ±ºå®šç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL float			Duty_r;					//å‡ºåŠ›ã®ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ¯”				[%]
+GLOBAL float			Duty_l;					//å‡ºåŠ›ã®ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£æ¯”				[%]
+
+//åˆ¶å¾¡ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL float			I_tar_speed;				//ç›®æ¨™é€Ÿåº¦ã®Iæˆåˆ†
+GLOBAL float			I_speed;				//å®Ÿé€Ÿåº¦ã®Iæˆåˆ†
+GLOBAL float			I_tar_ang_vel;				//ç›®æ¨™è§’é€Ÿåº¦ã®Iæˆåˆ†
+GLOBAL float			I_ang_vel;				//å®Ÿè§’é€Ÿåº¦ã®Iæˆåˆ†
            
 
-//UI—pƒOƒ[ƒoƒ‹•Ï”
-GLOBAL unsigned char		push_switch;				//ƒXƒCƒbƒ`‚ª‰Ÿ‚³‚ê‚½‚©‚Ç‚¤‚©‚Ì•Ï”
+//UIç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+GLOBAL unsigned char		push_switch;				//ã‚¹ã‚¤ãƒƒãƒãŒæŠ¼ã•ã‚ŒãŸã‹ã©ã†ã‹ã®å¤‰æ•°
 
-//’´M’n’nù‰ñ@Šµ«ƒ‚[ƒƒ“ƒgƒpƒ‰ƒ[ƒ^
+//è¶…ä¿¡åœ°åœ°æ—‹å›ã€€æ…£æ€§ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 GLOBAL int WAIT_TIME;
