@@ -19,115 +19,150 @@
 #include "portdef.h"
 #include "interface.h"
 
+#define r_hosei 23.5
+#define l_hosei 20
+
 extern wait_ms(int wtime);
 
-#define r_hosei 31.168919
-#define l_hosei 32.006469
-void straight(float len, float acc, float max_sp, float end_sp){
-	char r_wall_check=0, l_wall_check=0, hosei_f=0;
+float r_adjust_len, l_adjust_len, fr_adjust_len, fl_adjust_len; //+
+void straight(float len, float acc, float max_sp, float end_sp)
+{
+	char r_wall_check = 0, l_wall_check = 0, hosei_f = 0;			 //+
+	r_adjust_len = l_adjust_len = fr_adjust_len = fl_adjust_len = 0; //+
 	I_tar_ang_vel = 0;
 	I_ang_vel = 0;
 	I_tar_speed = 0;
 	I_speed = 0;
-	//‘–sƒ‚[ƒh‚ğ’¼ü‚É‚·‚é
+	//èµ°è¡Œãƒ¢ãƒ¼ãƒ‰ã‚’ç›´ç·šã«ã™ã‚‹
 	run_mode = STRAIGHT_MODE;
-	//•Ç§Œä‚ğ—LŒø‚É‚·‚é
+	//å£åˆ¶å¾¡ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 	con_wall.enable = true;
-	//–Ú•W‹——£‚ğƒOƒ[ƒoƒ‹•Ï”‚É‘ã“ü‚·‚é
+	//ç›®æ¨™è·é›¢ã‚’ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã«ä»£å…¥ã™ã‚‹
 	len_target = len;
-	//–Ú•W‘¬“x‚ğİ’è
+	//ç›®æ¨™é€Ÿåº¦ã‚’è¨­å®š
 	end_speed = end_sp;
-	//‰Á‘¬“x‚ğİ’è
+	//åŠ é€Ÿåº¦ã‚’è¨­å®š
 	accel = acc;
-	//Å‚‘¬“x‚ğİ’è
+	//æœ€é«˜é€Ÿåº¦ã‚’è¨­å®š
 	max_speed = max_sp;
-	
-	//ƒ‚[ƒ^o—Í‚ğON
-	MOT_POWER_ON;
 
-	if((end_speed!=0) && (len==SECTION)){
+	//ãƒ¢ãƒ¼ã‚¿å‡ºåŠ›ã‚’ON
+	MOT_POWER_ON;
+	if ((end_speed != 0) && (len == SECTION))
+	{
 		r_wall_check = sen_r.is_wall;
 		l_wall_check = sen_l.is_wall;
 	}
-	
-   
-    /*if(sen_fl.value > FL_BORDER && sen_fr.value > FR_BORDER){
-		//BEEP();
-		accel = 0;
-		tar_speed = 0;			
-	}
-     while(speed >= 0.0);
-	if(sen_fl.value==FL_BORDER && sen_fr.value==FR_BORDER && speed != 0){
-		accel = -acc;
-		tar_speed = 0;			
-	}*/
 
-	if(end_speed == 0){	//ÅI“I‚É’â~‚·‚éê‡
-	    //BEEP();
-		//Œ¸‘¬ˆ—‚ğn‚ß‚é‚×‚«ˆÊ’u‚Ü‚Å‰Á‘¬A’è‘¬‹æŠÔ‚ğ‘±s
-		while( ((len_target -10) - len_mouse) >  1000.0*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.0*accel));
-		//Œ¸‘¬ˆ—ŠJn
-		accel = -acc*2;					//Œ¸‘¬‚·‚é‚½‚ß‚É‰Á‘¬“x‚ğ•‰‚Ì’l‚É‚·‚é	
-		while(len_mouse < len_target -5){		//’â~‚µ‚½‚¢‹——£‚Ì­‚µè‘O‚Ü‚ÅŒp‘±
-			//ˆê’è‘¬“x‚Ü‚ÅŒ¸‘¬‚µ‚½‚çÅ’á‹ì“®ƒgƒ‹ƒN‚Å‘–s
-			if(tar_speed <= MIN_SPEED){	//–Ú•W‘¬“x‚ªÅ’á‘¬“x‚É‚È‚Á‚½‚çA‰Á‘¬“x‚ğ0‚É‚·‚é
-				accel = 0;
-				tar_speed = MIN_SPEED;
+	if (end_speed == 0)
+	{ //æœ€çµ‚çš„ã«åœæ­¢ã™ã‚‹å ´åˆ
+
+		//æ¸›é€Ÿå‡¦ç†ã‚’å§‹ã‚ã‚‹ã¹ãä½ç½®ã¾ã§åŠ é€Ÿã€å®šé€ŸåŒºé–“ã‚’ç¶šè¡Œ
+		while (((len_target - 10) - len_mouse) > 1000.0 * ((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed)) / (float)(2.0 * accel))
+		{
+			/*if ((sen_r.is_wall == false) && (r_adjust_len == 0))
+			{ //å³å£ãªããªã£ãŸæ™‚
+				r_adjust_len = len_mouse;
 			}
-			
+			if ((sen_l.is_wall == false) && (l_adjust_len == 0))
+			{ //å·¦å£ãªããªã£ãŸæ™‚
+				l_adjust_len = len_mouse;
+			}
+			if ((sen_fr.is_wall == false) && (fr_adjust_len == 0) && (sen_fl.is_wall == false) && (fl_adjust_len == 0))
+			{ //å‰å£ãªããªã£ãŸæ™‚
+				fr_adjust_len = len_mouse;
+				fl_adjust_len = len_mouse;
+			}*/
+		}
+		//æ¸›é€Ÿå‡¦ç†é–‹å§‹
+		accel = -acc; //æ¸›é€Ÿã™ã‚‹ãŸã‚ã«åŠ é€Ÿåº¦ã‚’è² ã®å€¤ã«ã™ã‚‹
+		if (len_count >= 4)
+		{
+
+			while (len_mouse <= r_hosei)
+			;
+			accel = 0;
+		}
+		else
+		{
+			while (len_mouse < len_target - 1)
+			{ //åœæ­¢ã—ãŸã„è·é›¢ã®å°‘ã—æ‰‹å‰ã¾ã§ç¶™ç¶š
+				//ä¸€å®šé€Ÿåº¦ã¾ã§æ¸›é€Ÿã—ãŸã‚‰æœ€ä½é§†å‹•ãƒˆãƒ«ã‚¯ã§èµ°è¡Œ
+				if (tar_speed <= MIN_SPEED)
+				{ //ç›®æ¨™é€Ÿåº¦ãŒæœ€ä½é€Ÿåº¦ã«ãªã£ãŸã‚‰ã€åŠ é€Ÿåº¦ã‚’0ã«ã™ã‚‹
+					accel = 0;
+					tar_speed = MIN_SPEED;
+				}
+			}
 		}
 		accel = 0;
 		tar_speed = 0;
-		//‘¬“x‚ª0ˆÈ‰º‚É‚È‚é‚Ü‚Å‹t“]‚·‚é
-		while(speed >= 0.0);
-			
-	}else{
-		//Œ¸‘¬ˆ—‚ğn‚ß‚é‚×‚«ˆÊ’u‚Ü‚Å‰Á‘¬A’è‘¬‹æŠÔ‚ğ‘±s
-		while( ((len_target-10) - len_mouse) >  1000.0*((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed))/(float)(2.0*accel));
-		    //BEEP();
-		    /* if(len==SECTION){
-				if((sen_r.is_wall==false) && (r_wall_check==true) && (hosei_f==0)){
-					len_mouse = (len_mouse*0.5+r_hosei*0.5);
-					hosei_f=1;
-				}
-				if((sen_l.is_wall==false) && (l_wall_check==true) && (hosei_f==0)){
-					len_mouse = (len_mouse*0.5+l_hosei*0.5);
-					hosei_f=1;
-				}
-			 }*/
-		    
-		//Œ¸‘¬ˆ—ŠJn
-		accel = -acc*3;					//Œ¸‘¬‚·‚é‚½‚ß‚É‰Á‘¬“x‚ğ•‰‚Ì’l‚É‚·‚é	
-		while(len_mouse < len_target + 10){		//’â~‚µ‚½‚¢‹——£‚Ì­‚µè‘O‚Ü‚ÅŒp‘±
-		    //BEEP();
-		    if((sen_fr.is_wall==false) && (sen_fl.is_wall==false) && (len_mouse > len_target)) {//not frontwall
-				break;
-			}
-			if((sen_fr.value > RIGHT_90) && (sen_fl.value > LEFT_90 ) && (len_mouse > (len_target -5))) {//mokuhyou 5mm temae
-				break;
-			}
-			//ˆê’è‘¬“x‚Ü‚ÅŒ¸‘¬‚µ‚½‚çÅ’á‹ì“®ƒgƒ‹ƒN‚Å‘–s
-			if(tar_speed <= end_speed){	//–Ú•W‘¬“x‚ªÅ’á‘¬“x‚É‚È‚Á‚½‚çA‰Á‘¬“x‚ğ0‚É‚·‚é
-				accel = 0;
-				//tar_speed = end_speed;
-			}
-			if(sen_fl.value==FL_BORDER && sen_fr.value==FR_BORDER){
-					break;
-				}
-			}
-	
+		//é€Ÿåº¦ãŒ0ä»¥ä¸‹ã«ãªã‚‹ã¾ã§é€†è»¢ã™ã‚‹
+		while (speed >= 0.0)
+			;
 	}
-	
-	
-	
+	else
+	{
 
-	//‰Á‘¬“x‚ğ0‚É‚·‚é
+		//æ¸›é€Ÿå‡¦ç†ã‚’å§‹ã‚ã‚‹ã¹ãä½ç½®ã¾ã§åŠ é€Ÿã€å®šé€ŸåŒºé–“ã‚’ç¶šè¡Œ
+		while (((len_target - 10) - len_mouse) > 1000.0 * ((float)(tar_speed * tar_speed) - (float)(end_speed * end_speed)) / (float)(2.0 * accel))
+		{
+			/*if ((sen_r.is_wall == false) && (r_adjust_len == 0))
+			{ //å³å£ãªããªã£ãŸæ™‚
+				r_adjust_len = len_mouse;
+			}
+			if ((sen_l.is_wall == false) && (l_adjust_len == 0))
+			{ //å·¦å£ãªããªã£ãŸæ™‚
+				l_adjust_len = len_mouse;
+			}
+			if ((sen_fr.is_wall == false) && (fr_adjust_len == 0) && (sen_fl.is_wall == false) && (fl_adjust_len == 0))
+			{ //å‰å£ãªããªã£ãŸæ™‚
+				fr_adjust_len = len_mouse;
+				fl_adjust_len = len_mouse;
+			}*/
+			/*if (len == SECTION)
+			{
+				if ((sen_r.is_wall == false) && (r_wall_check == true) && (hosei_f == 0))
+				{
+					len_mouse = r_hosei;
+					hosei_f = 1;
+				}
+				if ((sen_l.is_wall == false) && (l_wall_check == true) && (hosei_f == 0))
+				{
+					len_mouse = l_hosei;
+					hosei_f = 1;
+
+			}*/
+			/*if (sen_r.is_wall == false && len_count >= 4 ){
+				break;
+			}
+			if (sen_l.is_wall == false && len_count >= 4 ){
+				break;
+			}*/
+		}
+
+		//æ¸›é€Ÿå‡¦ç†é–‹å§‹
+		accel = -acc; //æ¸›é€Ÿå‡¦ç†é–‹å§‹
+
+		while (len_mouse < len_target)
+		{ //åœæ­¢ã—ãŸã„è·é›¢ã®å°‘ã—æ‰‹å‰ã¾ã§ç¶™ç¶š
+			//ä¸€å®šé€Ÿåº¦ã¾ã§æ¸›é€Ÿã—ãŸã‚‰æœ€ä½é§†å‹•ãƒˆãƒ«ã‚¯ã§èµ°è¡Œ
+			if (tar_speed <= end_speed)
+			{ //ç›®æ¨™é€Ÿåº¦ãŒæœ€ä½é€Ÿåº¦ã«ãªã£ãŸã‚‰ã€åŠ é€Ÿåº¦ã‚’0ã«ã™ã‚‹
+				accel = 0;
+				// tar_speed = end_speed;
+			}
+		}
+	}
+
+	//åŠ é€Ÿåº¦ã‚’0ã«ã™ã‚‹
 	accel = 0;
-	//Œ»İ‹——£‚ğ0‚ÉƒŠƒZƒbƒg
+	//ç¾åœ¨è·é›¢ã‚’0ã«ãƒªã‚»ãƒƒãƒˆ
 	len_mouse = 0;
 }
 
-void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
+void turn(int deg, float ang_accel, float max_ang_velocity, short dir)
+{
 	wait_ms(WAIT_TIME);
 	I_tar_ang_vel = 0;
 	I_ang_vel = 0;
@@ -135,58 +170,67 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 	I_speed = 0;
 	tar_degree = 0;
 
-	float	local_degree = 0;
+	float local_degree = 0;
 	accel = 0;
 	tar_speed = 0;
 	tar_ang_vel = 0;
-	//‘–sƒ‚[ƒh‚ğƒXƒ‰ƒ[ƒ€ƒ‚[ƒh‚É‚·‚é
+	//èµ°è¡Œãƒ¢ãƒ¼ãƒ‰ã‚’ã‚¹ãƒ©ãƒ­ãƒ¼ãƒ ãƒ¢ãƒ¼ãƒ‰ã«ã™ã‚‹
 	run_mode = TURN_MODE;
 
-	//‰ñ“]•ûŒü’è‹`
-	TURN_DIR = dir;	
-	
-	//Ô‘Ì‚ÌŒ»İŠp“x‚ğæ“¾
+	//å›è»¢æ–¹å‘å®šç¾©
+	TURN_DIR = dir;
+
+	//è»Šä½“ã®ç¾åœ¨è§’åº¦ã‚’å–å¾—
 	local_degree = degree;
 	tar_degree = 0;
-	
-	//Šp‰Á‘¬“xA‰Á‘¬“xAÅ‚Šp‘¬“xİ’è
+
+	//è§’åŠ é€Ÿåº¦ã€åŠ é€Ÿåº¦ã€æœ€é«˜è§’é€Ÿåº¦è¨­å®š
 	MOT_POWER_ON;
-	if(dir == LEFT){
-		ang_acc = ang_accel;			//Šp‰Á‘¬“x‚ğİ’è
+	if (dir == LEFT)
+	{
+		ang_acc = ang_accel; //è§’åŠ é€Ÿåº¦ã‚’è¨­å®š
 		max_ang_vel = max_ang_velocity;
 		max_degree = deg;
-		while( (max_degree - (degree - local_degree))*PI/180.0 > (tar_ang_vel*tar_ang_vel/(2.0 * ang_acc)));
-		
-	}else if(dir == RIGHT){
-		ang_acc = -ang_accel;			//Šp‰Á‘¬“x‚ğİ’è
+		while ((max_degree - (degree - local_degree)) * PI / 180.0 > (tar_ang_vel * tar_ang_vel / (2.0 * ang_acc)))
+			;
+	}
+	else if (dir == RIGHT)
+	{
+		ang_acc = -ang_accel; //è§’åŠ é€Ÿåº¦ã‚’è¨­å®š
 		max_ang_vel = -max_ang_velocity;
 		max_degree = -deg;
-		while(-(float)(max_degree - (degree - local_degree))*PI/180.0 > (float)(tar_ang_vel*tar_ang_vel/(float)(2.0 * -ang_acc)));
+		while (-(float)(max_degree - (degree - local_degree)) * PI / 180.0 > (float)(tar_ang_vel * tar_ang_vel / (float)(2.0 * -ang_acc)))
+			;
 	}
-    
-	
-	//BEEP();
-	//ŠpŒ¸‘¬‹æŠÔ‚É“ü‚é‚½‚ßAŠp‰Á‘¬“xİ’è
+
+	// BEEP();
+	//è§’æ¸›é€ŸåŒºé–“ã«å…¥ã‚‹ãŸã‚ã€è§’åŠ é€Ÿåº¦è¨­å®š
 	MOT_POWER_ON;
-	if(dir == LEFT){
-		ang_acc = -ang_accel;			//Šp‰Á‘¬“x‚ğİ’è
-		//Œ¸‘¬‹æŠÔ‘–s
-		while((degree - local_degree) < max_degree){
-			if(tar_ang_vel < TURN_MIN_SPEED){
+	if (dir == LEFT)
+	{
+		ang_acc = -ang_accel; //è§’åŠ é€Ÿåº¦ã‚’è¨­å®š
+		//æ¸›é€ŸåŒºé–“èµ°è¡Œ
+		while ((degree - local_degree) < max_degree)
+		{
+			if (tar_ang_vel < TURN_MIN_SPEED)
+			{
 				ang_acc = 0;
 				tar_ang_vel = TURN_MIN_SPEED;
 			}
 		}
-		
+
 		ang_acc = 0;
 		tar_ang_vel = 0;
 		tar_degree = max_degree;
-		
-	}else if(dir == RIGHT){
-		ang_acc = +ang_accel;			//Šp‰Á‘¬“x‚ğİ’è
-		//Œ¸‘¬‹æŠÔ‘–s
-		while((degree - local_degree) > max_degree){
-			if(-tar_ang_vel < TURN_MIN_SPEED){
+	}
+	else if (dir == RIGHT)
+	{
+		ang_acc = +ang_accel; //è§’åŠ é€Ÿåº¦ã‚’è¨­å®š
+		//æ¸›é€ŸåŒºé–“èµ°è¡Œ
+		while ((degree - local_degree) > max_degree)
+		{
+			if (-tar_ang_vel < TURN_MIN_SPEED)
+			{
 				ang_acc = 0;
 				tar_ang_vel = -TURN_MIN_SPEED;
 			}
@@ -194,51 +238,22 @@ void turn(int deg, float ang_accel, float max_ang_velocity, short dir){
 		ang_acc = 0;
 		tar_ang_vel = 0;
 		tar_degree = max_degree;
-
-
 	}
-	
-	while(ang_vel >= 0.05 || ang_vel <= -0.05 );
-	
+
+	while (ang_vel >= 0.05 || ang_vel <= -0.05)
+		;
+
 	tar_ang_vel = 0;
 	ang_acc = 0;
-	//Œ»İ‹——£‚ğ0‚ÉƒŠƒZƒbƒg
+	//?????????0????Z?b?g
 	len_mouse = 0;
 	wait_ms(WAIT_TIME);
 }
 
-float r_adjust_len, l_adjust_len;
-void check_straight(float end_sp)
+void get_adjust_len(float *r_len, float *l_len, float *fr_len, float *fl_len)
 {
-	I_tar_ang_vel = 0;
-	I_ang_vel = 0;
-	I_tar_speed = 0;
-	I_speed = 0;
-	//‘–sƒ‚[ƒh‚ğ’¼ü‚É‚·‚é
-	run_mode = STRAIGHT_MODE;
-	//•Ç§Œä‚ğ—LŒø‚É‚·‚é
-	con_wall.enable = false;
-	//–Ú•W‘¬“x‚ğİ’è
-	end_speed = end_sp;
-	//Å‚‘¬“x‚ğİ’è
-	max_speed = end_sp;
-	//access = 0;
-	
-	//ƒ‚[ƒ^o—Í‚ğON
-	MOT_POWER_ON;	
-	r_adjust_len = l_adjust_len = 0;
-	while(len_mouse < 90.0){
-		if((sen_r.is_wall==false) && (r_adjust_len==0)){
-			r_adjust_len =  len_mouse;
-		}
-		if((sen_l.is_wall==false) && (l_adjust_len==0)){
-			l_adjust_len = len_mouse;
-		}
-	}
-	len_mouse = 0;
-}
-
-void get_adjust_len(float * r_len, float * l_len){
 	*r_len = r_adjust_len;
 	*l_len = l_adjust_len;
+	*fr_len = fr_adjust_len;
+	*fl_len = fl_adjust_len;
 }
