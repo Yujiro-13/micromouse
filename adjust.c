@@ -33,7 +33,7 @@ void adjust(void)
 	int flash_time = 0;
 	char flash;
 	short ad_mode = 1;
-	float r_len, l_len;
+	float r_len, l_len, fr_len, fl_len;
 	while(1){
 		switch(ad_mode){
 
@@ -47,10 +47,10 @@ void adjust(void)
 				*					*
 				*****************************************/
 				
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-					//•Ç§Œä‚ğ—LŒø‚É‚·‚é
+					//å£åˆ¶å¾¡ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 					con_wall.enable = true;
 					while(1){
 						//A/D sensor
@@ -78,11 +78,11 @@ void adjust(void)
 						SCI_printf("switchU: %d\n\r",SW_U);
 						SCI_printf("switchD: %d\n\r",SW_D);
 						wait_ms(100);
-						//‰æ–ÊƒNƒŠƒAƒV[ƒPƒ“ƒX
-						SCI_printf("\x1b[2J");				//ƒNƒŠƒAƒXƒNƒŠ[ƒ“[CLS]
-						SCI_printf("\x1b[0;0H");			//ƒJ[ƒ\ƒ‹‚ğ0,0‚ÉˆÚ“®
+						//ç”»é¢ã‚¯ãƒªã‚¢ã‚·ãƒ¼ã‚±ãƒ³ã‚¹
+						SCI_printf("\x1b[2J");				//ã‚¯ãƒªã‚¢ã‚¹ã‚¯ãƒªãƒ¼ãƒ³[CLS]
+						SCI_printf("\x1b[0;0H");			//ã‚«ãƒ¼ã‚½ãƒ«ã‚’0,0ã«ç§»å‹•
 						
-						//ƒvƒbƒVƒ…ƒXƒCƒbƒ`—pˆ—
+						//ãƒ—ãƒƒã‚·ãƒ¥ã‚¹ã‚¤ãƒƒãƒç”¨å‡¦ç†
 						push_switch = IOex_SWITCH();
 			
 						if(SW_C == 1){
@@ -103,7 +103,7 @@ void adjust(void)
 				*					*
 				*****************************************/	
 			
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					gyro_get_ref();
@@ -111,9 +111,8 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					len_mouse = 0;
-					straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ƒ^[ƒ“
-				    straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					straight(SECTION*3,SEARCH_ACCEL,SEARCH_SPEED,0);
+					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ã‚¿ãƒ¼ãƒ³
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -130,8 +129,8 @@ void adjust(void)
 				*	O	O	X	X	*
 				*					*
 				*****************************************/
-				//ƒ}ƒbƒv‚Ì•\¦
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ãƒãƒƒãƒ—ã®è¡¨ç¤º
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					gyro_get_ref();
@@ -139,6 +138,26 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					WAIT_TIME = 0;
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
 					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
 					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
 					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
@@ -167,13 +186,13 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
 					wait_ms(500);
 					straight(HALF_SECTION, SEARCH_ACCEL, SEARCH_SPEED, SEARCH_SPEED);
-					check_straight(SEARCH_SPEED);
+					//check_straight(SEARCH_SPEED);
 					straight(HALF_SECTION, SEARCH_ACCEL, SEARCH_SPEED, 0);
 
 				}
@@ -189,13 +208,13 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
 					wait_ms(500);
-                    get_adjust_len(& r_len,& l_len);
-					SCI_printf("r adjust len=%f , l adjust len=%f\n\n",r_len, l_len);
+                    get_adjust_len(& r_len, & l_len, & fr_len, & fl_len);
+					SCI_printf("r adjust len=%f , l adjust len=%f , fr adjust len=%f , fl adjust len=%f\n\r",r_len, l_len, fr_len, fl_len);
 				}
 				
 				break;
@@ -208,8 +227,8 @@ void adjust(void)
 				*	X	O	O	X	*
 				*					*
 				*****************************************/
-				//ƒ}ƒbƒv•\¦
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ãƒãƒƒãƒ—è¡¨ç¤º
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					BEEP();
 					map_copy();
@@ -227,11 +246,13 @@ void adjust(void)
 				*	O	O	O	X	*
 				*					*
 				*****************************************/
-				//ƒƒOo—Í
-				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
+				//ãƒ­ã‚°å‡ºåŠ›
+				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-					SCI_printf("time[msec],len_mouse[mm],tar_speed[mm/s],speed[mm/s],Duty_R[%],Duty_L[%],V_battery[mV],tar_degree[deg*10],degree[deg*10],tar_ang_vel[1000*rad/s],ang_vel[1000*rad/s],I_tar_ang_vel[rad],I_ang_vel[rad],ang_acc[1000*rad/ss]\n\r");
+					get_adjust_len(&r_len, &l_len, &fr_len, &fl_len);
+					SCI_printf("r adjust len=%f , l adjust len=%f , fr adjust len=%f , fl adjust len=%f\n\r", r_len, l_len, fr_len, fl_len);
+					SCI_printf("time[msec],sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,1000*V_bat,len_mouse,ang_vel*1000,locate_r,locate_l\n\r");
 					for(i = 0; i < LOG_CNT; i++){
 						
 						SCI_printf("%d,",i);//time[msec]
@@ -251,13 +272,13 @@ void adjust(void)
 					wait_ms(500);	
 				}				
 				break;
-			//mode0~7ˆÈŠO‚Ìê‡B‰½‚à‚µ‚È‚¢B
+			//mode0~7ä»¥å¤–ã®å ´åˆã€‚ä½•ã‚‚ã—ãªã„ã€‚
 			default:
 				break;
 			
 		}
 		
-		//ƒ‚[ƒhØ‚è‘Ö‚¦—pˆ—
+		//ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç”¨å‡¦ç†
 		if(speed > 0.1){
 			if(ad_mode == 7){
 				ad_mode = 1;
@@ -289,7 +310,7 @@ void adjust(void)
 		flash_time++;
 		LED(ad_mode | flash);
 		
-		//ƒvƒbƒVƒ…ƒXƒCƒbƒ`—pˆ—
+		//ãƒ—ãƒƒã‚·ãƒ¥ã‚¹ã‚¤ãƒƒãƒç”¨å‡¦ç†
 		push_switch = IOex_SWITCH();
 		MOT_POWER_OFF;
 		
