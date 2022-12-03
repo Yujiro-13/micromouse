@@ -48,13 +48,13 @@ void main(void)
 	
 
 	
-	//ãƒ–ã‚¶ãƒ¼
+	//ƒuƒU[
 	//BEEP();
-	//æœ€åˆã¯0ã—ã¦ãŠã
+	//Å‰‚Í0‚µ‚Ä‚¨‚­
 	speed_r=0;
 	speed_l=0;
 	
-	//èµ·å‹•æ™‚ã®ãƒ­ã‚°ã¯ã¨ã‚‰ãªã„
+	//‹N“®Žž‚ÌƒƒO‚Í‚Æ‚ç‚È‚¢
 	log_flag = 0;
 	short mode = 1;
 	while(1){
@@ -74,7 +74,7 @@ void main(void)
 				*					*
 				*****************************************/
 				
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					BEEP();
 					degree = 0;
@@ -82,21 +82,21 @@ void main(void)
 					log_timer = 0;
 					gyro_get_ref();
 					BEEP();
-					mypos.x = mypos.y = 0;			//åº§æ¨™ã‚’åˆæœŸåŒ–
-					mypos.dir = north;			//æ–¹è§’ã‚’åˆæœŸåŒ–
+					mypos.x = mypos.y = 0;			//À•W‚ð‰Šú‰»
+					mypos.dir = north;			//•ûŠp‚ð‰Šú‰»
 					log_flag = 1;
 					log_timer = 0;
-					search_adachi(GOAL_X,GOAL_Y);		//ã‚´ãƒ¼ãƒ«ã¾ã§è¶³ç«‹æ³•
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ã‚´ãƒ¼ãƒ«ã—ãŸã‚‰180åº¦å›žè»¢ã™ã‚‹
-					mypos.dir = (mypos.dir+6) % 4;		//æ–¹è§’ã‚’æ›´æ–°
+					search_adachi(GOAL_X,GOAL_Y);		//ƒS[ƒ‹‚Ü‚Å‘«—§–@
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ƒS[ƒ‹‚µ‚½‚ç180“x‰ñ“]‚·‚é
+					mypos.dir = (mypos.dir+6) % 4;		//•ûŠp‚ðXV
 					map_write();
 					BEEP();
 					wait_ms(100);
-					BEEP();//ã‚´ãƒ¼ãƒ«ã—ãŸã“ã¨ã‚’ã‚¢ãƒ”ãƒ¼ãƒ«
+					BEEP();//ƒS[ƒ‹‚µ‚½‚±‚Æ‚ðƒAƒs[ƒ‹
 					wait_ms(100);
-					BEEP();//ã‚´ãƒ¼ãƒ«ã—ãŸã“ã¨ã‚’ã‚¢ãƒ”ãƒ¼ãƒ«
-					search_adachi(0,0);			//ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¾ã§è¶³ç«‹æ³•ã§å¸°ã£ã¦ãã‚‹
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//å¸°ã£ã¦ããŸã‚‰180åº¦å›žè»¢	
+					BEEP();//ƒS[ƒ‹‚µ‚½‚±‚Æ‚ðƒAƒs[ƒ‹
+					search_adachi(0,0);			//ƒXƒ^[ƒg’n“_‚Ü‚Å‘«—§–@‚Å‹A‚Á‚Ä‚­‚é
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//‹A‚Á‚Ä‚«‚½‚ç180“x‰ñ“]	
 					MOT_POWER_OFF;
 					map_write();
 					log_flag = 0;
@@ -114,7 +114,7 @@ void main(void)
 				*					*
 				*****************************************/	
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					map_copy();
@@ -122,21 +122,21 @@ void main(void)
 					timer = 0;
 					gyro_get_ref();
 					BEEP();
-					mypos.x = mypos.y = 0;			//åº§æ¨™ã‚’åˆæœŸåŒ–
-					mypos.dir = north;			//æ–¹è§’ã‚’åˆæœŸåŒ–
+					mypos.x = mypos.y = 0;			//À•W‚ð‰Šú‰»
+					mypos.dir = north;			//•ûŠp‚ð‰Šú‰»
 					log_flag = 1;
 					log_timer = 0;
-					fast_run(GOAL_X,GOAL_Y);		//ã‚´ãƒ¼ãƒ«ã¾ã§è¶³ç«‹æ³•
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ã‚´ãƒ¼ãƒ«ã—ãŸã‚‰180åº¦å›žè»¢ã™ã‚‹
-					mypos.dir = (mypos.dir+6) % 4;		//æ–¹è§’ã‚’æ›´æ–°
+					fast_run(GOAL_X,GOAL_Y);		//ƒS[ƒ‹‚Ü‚Å‘«—§–@
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ƒS[ƒ‹‚µ‚½‚ç180“x‰ñ“]‚·‚é
+					mypos.dir = (mypos.dir+6) % 4;		//•ûŠp‚ðXV
 					map_write();
 					BEEP();
 					wait_ms(100);
-					BEEP();//ã‚´ãƒ¼ãƒ«ã—ãŸã“ã¨ã‚’ã‚¢ãƒ”ãƒ¼ãƒ«
+					BEEP();//ƒS[ƒ‹‚µ‚½‚±‚Æ‚ðƒAƒs[ƒ‹
 					wait_ms(100);
-					BEEP();//ã‚´ãƒ¼ãƒ«ã—ãŸã“ã¨ã‚’ã‚¢ãƒ”ãƒ¼ãƒ«
-					search_adachi(0,0);			//ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¾ã§è¶³ç«‹æ³•ã§å¸°ã£ã¦ãã‚‹
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//å¸°ã£ã¦ããŸã‚‰180åº¦å›žè»¢	
+					BEEP();//ƒS[ƒ‹‚µ‚½‚±‚Æ‚ðƒAƒs[ƒ‹
+					search_adachi(0,0);			//ƒXƒ^[ƒg’n“_‚Ü‚Å‘«—§–@‚Å‹A‚Á‚Ä‚­‚é
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//‹A‚Á‚Ä‚«‚½‚ç180“x‰ñ“]	
 					MOT_POWER_OFF;
 					map_write();
 					log_flag = 0;
@@ -154,7 +154,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					BEEP();
 					SCI_printf("sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,V_bat*1000,con_wall.omega,ang_vel*1000,locate_r,locate_l\n\r");
@@ -188,7 +188,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					BEEP();
@@ -215,7 +215,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 	                BEEP();
@@ -225,7 +225,7 @@ void main(void)
 					log_timer = 0;
 					len_mouse = 0;
 					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ã‚¿ãƒ¼ãƒ³
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ƒ^[ƒ“
 				    straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
 					log_flag = 0;
 					MOT_POWER_OFF;
@@ -244,7 +244,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -262,7 +262,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -280,7 +280,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					
@@ -298,7 +298,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -316,7 +316,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -334,7 +334,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -352,7 +352,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -371,7 +371,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -389,7 +389,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
@@ -407,7 +407,7 @@ void main(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚ÉŽè‚ð‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					while(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4);
@@ -419,13 +419,13 @@ void main(void)
 				
 				break;
 				
-			//mode0~15ä»¥å¤–ã®å ´åˆã€‚ä½•ã‚‚ã—ãªã„ã€‚
+			//mode0~15ˆÈŠO‚Ìê‡B‰½‚à‚µ‚È‚¢B
 			default:
 				break;
 			
 		}
 		
-		//ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç”¨å‡¦ç†
+		//ƒ‚[ƒhØ‚è‘Ö‚¦—pˆ—
 		if(speed > 0.1){
 			if(mode == 15){
 				mode = 1;
@@ -447,7 +447,7 @@ void main(void)
 		}
 		LED(mode);
 		
-		//ãƒ—ãƒƒã‚·ãƒ¥ã‚¹ã‚¤ãƒƒãƒç”¨å‡¦ç†
+		//ƒvƒbƒVƒ…ƒXƒCƒbƒ`—pˆ—
 		push_switch = IOex_SWITCH();
 		MOT_POWER_OFF;
 	
