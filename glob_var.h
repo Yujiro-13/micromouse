@@ -46,8 +46,10 @@ GLOBAL float			p_speed;				//過去の車体速度	[m/s]
 GLOBAL float			tar_speed;				//目標車体速度		[m/s]
 GLOBAL float			end_speed;				//終端車体速度		[m/s]
 GLOBAL float			V_r;					//右モータの出力電圧	[V]
-GLOBAL float			
-V_l;					//左モータの出力電圧	[V]
+GLOBAL float			V_l;					//左モータの出力電圧	[V]
+GLOBAL float            error;                  //偏差
+GLOBAL float            p_error;                //過去の偏差
+GLOBAL float            I_error;                //偏差のI成分
 
 //エンコーダ角度系のグローバル変数
 GLOBAL unsigned int			angle;					//現在の車軸角度	[deg]
@@ -70,10 +72,18 @@ GLOBAL float			gyro_x;					//ヨー軸ジャイロの現在の値	[無次元]
 GLOBAL float			gyro_x_new;				//ヨー軸ジャイロの最新の値	[無次元]
 GLOBAL float			gyro_ref;				//よー軸ジャイロのリファレンス値[無次元]
 GLOBAL float			degree;					//現在の車体角度		[degree]
+          
+
 
 //車体移動距離系のグローバル変数
 GLOBAL float			len_mouse;				//マウスの移動距離		[mm]
 GLOBAL float			len_target;				//マウスの目標移動距離		[mm]
+GLOBAL float            len_count;
+GLOBAL float            TH_R_len_mouse;
+GLOBAL float            TH_L_len_mouse;
+GLOBAL float            sum_len_mouse;
+GLOBAL int              sum;
+GLOBAL int              count;
 
 //ログ用のグローバル変数
 GLOBAL int			log[12][LOG_CNT];			//ログ用の配列
@@ -92,10 +102,8 @@ GLOBAL float			I_tar_speed;				//目標速度のI成分
 GLOBAL float			I_speed;				//実速度のI成分
 GLOBAL float			I_tar_ang_vel;				//目標角速度のI成分
 GLOBAL float			I_ang_vel;				//実角速度のI成分
-           
+GLOBAL float            I_start_degree;             //目標角度のI成分
+GLOBAL float            I_degree;               //実角度のI成分
 
 //UI用グローバル変数
 GLOBAL unsigned char		push_switch;				//スイッチが押されたかどうかの変数
-
-//超信地地旋回　慣性モーメントパラメータ
-GLOBAL int WAIT_TIME;
