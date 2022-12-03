@@ -18,33 +18,32 @@
 extern wait_ms(int wtime);
 
 /*****************************************************************************************
-繧ｯ繝ｭ繝?繧ｯ險ｭ螳?
-
+クロック設定
 *****************************************************************************************/
 void clock_init(void){
 
-	SYSTEM.PRCR.WORD = 0xa50b;		//繧ｯ繝ｭ繝?繧ｯ繧ｽ繝ｼ繧ｹ驕ｸ謚槭?ｮ菫晁ｭｷ縺ｮ隗｣髯､
+	SYSTEM.PRCR.WORD = 0xa50b;		//クロックソース選択の保護の解除
 
-	SYSTEM.PLLCR.WORD = 0x0F00;		/* PLL 騾灘催?16 蜈･蜉?1蛻?蜻ｨ (12.000MHz * 16 = 192MHz)*/
+	SYSTEM.PLLCR.WORD = 0x0F00;		/* PLL 逓倍×16 入力1分周 (12.000MHz * 16 = 192MHz)*/
 	SYSTEM.PLLCR2.BYTE = 0x00;		/* PLL ENABLE */
 	
 	SYSTEM.PLLWTCR.BYTE     = 0x0F;		/* 4194304cycle(Default) */
 	
 	
-	// ICK   : 192/2 = 96MHz 		// 繧ｷ繧ｹ繝?繝?繧ｯ繝ｭ繝?繧ｯ CPU DMAC DTC ROM RAM
-	// PCLKA : 192/2 = 96MHz 		// 蜻ｨ霎ｺ繝｢繧ｸ繝･繝ｼ繝ｫ繧ｯ繝ｭ繝?繧ｯA ETHERC縲・DMAC縲．EU
-	// PCLKB : 192/4 = 48MHz 		// 蜻ｨ霎ｺ繝｢繧ｸ繝･繝ｼ繝ｫ繧ｯ繝ｭ繝?繧ｯB 荳願ｨ倅ｻ･螟? PCLKB=PCLK
+	// ICK   : 192/2 = 96MHz 		// システムクロック CPU DMAC DTC ROM RAM
+	// PCLKA : 192/2 = 96MHz 		// 周辺モジュールクロックA ETHERC、EDMAC、DEU
+	// PCLKB : 192/4 = 48MHz 		// 周辺モジュールクロックB 上記以外 PCLKB=PCLK
 /*	
 	SYSTEM.SCKCR.BIT.FCK=0x02;		//FCLK MAX 50MHz  192/4
 	SYSTEM.SCKCR.BIT.ICK=0x01;		//ICLK MAX 100MHz 192/2
-	SYSTEM.SCKCR.BIT.PSTOP1=0x01;		//BCLK 蜃ｺ蜉帛●豁｢
-	SYSTEM.SCKCR.BIT.PSTOP0=0x01;		//SDCLK 蜃ｺ蜉帛●豁｢
-	SYSTEM.SCKCR.BIT.BCK=0x02;		//BCLK MAX 100MHz ICLK莉･荳九↓縺吶ｋ蠢?隕√′縺ゅｋ192/4
+	SYSTEM.SCKCR.BIT.PSTOP1=0x01;		//BCLK 出力停止
+	SYSTEM.SCKCR.BIT.PSTOP0=0x01;		//SDCLK 出力停止
+	SYSTEM.SCKCR.BIT.BCK=0x02;		//BCLK MAX 100MHz ICLK以下にする必要がある192/4
 	SYSTEM.SCKCR.BIT.PCKA=0x01;		//PCLKA MAX 100MHz 192/2
 	SYSTEM.SCKCR.BIT.PCKB=0x02;		//PCLKB MAX 50MHz 192/4
-	//荳願ｨ倥?ｮ險ｭ螳壹〒縺ｯ豁｣縺励￥clock險ｭ螳壹′縺ｧ縺阪↑縺?縺溘ａ荳玖ｨ倥?ｮ繧医≧縺ｫ荳諡ｬ縺ｧ險ｭ螳壹☆繧九％縺ｨ
+	//上記の設定では正しくclock設定ができないため下記のように一括で設定すること
 */
-	SYSTEM.SCKCR.LONG = 0x21C21211;		//FCK1/4 ICK1/2 BCLK蛛懈ｭ｢ SDCLK蛛懈ｭ｢ BCK1/4 PCLKA1/2 PCLKB1/4
+	SYSTEM.SCKCR.LONG = 0x21C21211;		//FCK1/4 ICK1/2 BCLK停止 SDCLK停止 BCK1/4 PCLKA1/2 PCLKB1/4
 /*
 	SYSTEM.SCKCR2.BIT.UCK=0x03;		//UCLK MAX 48MHz 192/4
 	SYSTEM.SCKCR2.BIT.IEBCK=0x02;		//IECLK MAX 50MHz 192/4
@@ -52,12 +51,12 @@ void clock_init(void){
 	SYSTEM.SCKCR2.WORD = 0x0032;		/* UCLK1/4 IEBCK1/4 */
 	SYSTEM.BCKCR.BYTE = 0x01;		/* BCLK = 1/2 */
 	
-	SYSTEM.SCKCR3.WORD = 0x0400;		//PLL蝗櫁ｷｯ驕ｸ謚?
+	SYSTEM.SCKCR3.WORD = 0x0400;		//PLL回路選択
 	
 }
 
 /*****************************************************************************************
-CMT縺ｮ險ｭ螳?
+CMTの設定
 		
 *****************************************************************************************/
 void init_cmt(void)
@@ -68,138 +67,138 @@ void init_cmt(void)
 	MSTP(CMT2) = 0;
     	SYSTEM.PRCR.WORD = 0xA500;	
 	
-	//CMT0縺ｯ蛻ｶ蠕｡蜑ｲ繧願ｾｼ縺ｿ逕ｨ繧ｿ繧､繝槭→縺励※菴ｿ逕ｨ
+	//CMT0は制御割り込み用タイマとして使用
 	CMT0.CMCR.BIT.CKS=1;	// PCLK/32 1.5MHz
-	CMT0.CMCR.BIT.CMIE=1;	//蜑ｲ繧願ｾｼ縺ｿ繧定ｨｱ蜿ｯ
-	CMT0.CMCNT=0;		//繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ縺ｮ繧ｯ繝ｪ繧｢
+	CMT0.CMCR.BIT.CMIE=1;	//割り込みを許可
+	CMT0.CMCNT=0;		//カウンターのクリア
 	CMT0.CMCOR=1500-1;	//1kHz
 
-	IEN(CMT0,CMI0) = 1;	//蜑ｲ繧願ｾｼ縺ｿ隕∵ｱゅｒ險ｱ蜿ｯ 
-	IPR(CMT0,CMI0) = 15;	//蜑ｲ繧願ｾｼ縺ｿ蜆ｪ蜈亥ｺｦ 15縺梧怙鬮?
-	IR(CMT0,CMI0)=0;	//蜑ｲ繧願ｾｼ縺ｿ繧ｹ繝?繝ｼ繧ｿ繝輔Λ繧ｰ繧偵け繝ｪ繧｢
+	IEN(CMT0,CMI0) = 1;	//割り込み要求を許可 
+	IPR(CMT0,CMI0) = 15;	//割り込み優先度 15が最高
+	IR(CMT0,CMI0)=0;	//割り込みステータフラグをクリア
 	
-	//CMT1縺ｯ繧ｻ繝ｳ繧ｵ繝ｼ蛻ｶ蠕｡逕ｨ繧ｿ繧､繝槭→縺励※菴ｿ逕ｨ
+	//CMT1はセンサー制御用タイマとして使用
 	CMT1.CMCR.BIT.CKS=1;	// PCLK/32 1.5MHz
-	CMT1.CMCR.BIT.CMIE=1;	//蜑ｲ繧願ｾｼ縺ｿ繧定ｨｱ蜿ｯ
-	CMT1.CMCNT=0;		//繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ縺ｮ繧ｯ繝ｪ繧｢
+	CMT1.CMCR.BIT.CMIE=1;	//割り込みを許可
+	CMT1.CMCNT=0;		//カウンターのクリア
 	CMT1.CMCOR=(1500/4)-1;	//4kHz
 
-	IEN(CMT1,CMI1) = 1;	//蜑ｲ繧願ｾｼ縺ｿ隕∵ｱゅｒ險ｱ蜿ｯ 
-	IPR(CMT1,CMI1) = 14;	//蜑ｲ繧願ｾｼ縺ｿ蜆ｪ蜈亥ｺｦ繧呈ｬ｡轤ｹ縺ｫ險ｭ螳?
-	IR(CMT1,CMI1)=0;	//蜑ｲ繧願ｾｼ縺ｿ繧ｹ繝?繝ｼ繧ｿ繝輔Λ繧ｰ繧偵け繝ｪ繧｢
+	IEN(CMT1,CMI1) = 1;	//割り込み要求を許可 
+	IPR(CMT1,CMI1) = 14;	//割り込み優先度を次点に設定
+	IR(CMT1,CMI1)=0;	//割り込みステータフラグをクリア
 
-	//CMT2縺ｯ繧ｻ繝ｳ繧ｵ繝ｼ蛻ｶ蠕｡逕ｨ繧ｿ繧､繝槭→縺励※菴ｿ逕ｨ
+	//CMT2はセンサー制御用タイマとして使用
 	CMT2.CMCR.BIT.CKS=1;	// PCLK/32 1.5MHz
-	CMT2.CMCR.BIT.CMIE=1;	//蜑ｲ繧願ｾｼ縺ｿ繧定ｨｱ蜿ｯ
-	CMT2.CMCNT=0;		//繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ縺ｮ繧ｯ繝ｪ繧｢
+	CMT2.CMCR.BIT.CMIE=1;	//割り込みを許可
+	CMT2.CMCNT=0;		//カウンターのクリア
 	CMT2.CMCOR=(1500/2)-1;	//2kHz
 
-	IEN(CMT2,CMI2) = 1;	//蜑ｲ繧願ｾｼ縺ｿ隕∵ｱゅｒ險ｱ蜿ｯ 
-	IPR(CMT2,CMI2) = 13;	//蜑ｲ繧願ｾｼ縺ｿ蜆ｪ蜈亥ｺｦ繧呈ｬ｡轤ｹ縺ｫ險ｭ螳?
-	IR(CMT2,CMI2)=0;	//蜑ｲ繧願ｾｼ縺ｿ繧ｹ繝?繝ｼ繧ｿ繝輔Λ繧ｰ繧偵け繝ｪ繧｢
+	IEN(CMT2,CMI2) = 1;	//割り込み要求を許可 
+	IPR(CMT2,CMI2) = 13;	//割り込み優先度を次点に設定
+	IR(CMT2,CMI2)=0;	//割り込みステータフラグをクリア
 	
-	CMT.CMSTR0.BIT.STR0=1;	//繧ｫ繧ｦ繝ｳ繝医せ繧ｿ繝ｼ繝?
-	CMT.CMSTR0.BIT.STR1=1;	//繧ｫ繧ｦ繝ｳ繝医せ繧ｿ繝ｼ繝?
-	CMT.CMSTR1.BIT.STR2=1;	//繧ｫ繧ｦ繝ｳ繝医せ繧ｿ繝ｼ繝?
+	CMT.CMSTR0.BIT.STR0=1;	//カウントスタート
+	CMT.CMSTR0.BIT.STR1=1;	//カウントスタート
+	CMT.CMSTR1.BIT.STR2=1;	//カウントスタート
 	
 }
 
 /*****************************************************************************************
-I/O險ｭ螳?
-	LED縺ｮ險ｭ螳?	
+I/O設定
+	LEDの設定	
 *****************************************************************************************/
 void io_init(void){
 	
-	//繝悶じ繝ｼ髢｢騾｣
+	//ブザー関連
 	PORTB.PDR.BIT.B5 = 1;
 		
 	
-	//襍､螟豊ED縺ｮ繝斐Φ險ｭ螳?
-	PORTA.PDR.BIT.B3 = 1;	//PA3繧貞?ｺ蜉帷畑縺ｫ險ｭ螳?
-	PORT1.PDR.BIT.B5 = 1;	//P15繧貞?ｺ蜉帷畑縺ｫ險ｭ螳?
-	PORT1.PDR.BIT.B4 = 1;	//P14繧貞?ｺ蜉帷畑縺ｫ險ｭ螳?
-	PORT3.PDR.BIT.B1 = 1;	//P31繧貞?ｺ蜉帷畑縺ｫ險ｭ螳?
+	//赤外LEDのピン設定
+	PORTA.PDR.BIT.B3 = 1;	//PA3を出力用に設定
+	PORT1.PDR.BIT.B5 = 1;	//P15を出力用に設定
+	PORT1.PDR.BIT.B4 = 1;	//P14を出力用に設定
+	PORT3.PDR.BIT.B1 = 1;	//P31を出力用に設定
 }
 
 
 /*****************************************************************************************
-A/DC縺ｮ險ｭ螳?
-	蜈峨そ繝ｳ繧ｵ縺ｨ繝舌ャ繝?繝ｪ髮ｻ蝨ｧ
+A/DCの設定
+	光センサとバッテリ電圧
 *****************************************************************************************/
 void sensor_init(void){
 
-	//A/D螟画鋤逕ｨ縺ｮ繝斐Φ險ｭ螳?
+	//A/D変換用のピン設定
 	SYSTEM.PRCR.WORD = 0xA502;
 	MSTP_S12AD = 0;
 	SYSTEM.PRCR.WORD = 0xA500;
 	
-	//A/D繝昴?ｼ繝医?ｮPMR險ｭ螳?
-	PORT4.PMR.BIT.B6=1;	//P46繧貞捉霎ｺ讖溷勣縺ｨ縺励※菴ｿ逕ｨ
-	PORT4.PMR.BIT.B2=1;	//P42繧貞捉霎ｺ讖溷勣縺ｨ縺励※菴ｿ逕ｨ
-	PORT4.PMR.BIT.B1=1;	//P41繧貞捉霎ｺ讖溷勣縺ｨ縺励※菴ｿ逕ｨ
-	PORT4.PMR.BIT.B0=1;	//P40繧貞捉霎ｺ讖溷勣縺ｨ縺励※菴ｿ逕ｨ
-	PORTE.PMR.BIT.B7=1;	//PE7繧貞捉霎ｺ讖溷勣縺ｨ縺励※菴ｿ逕ｨ
-	//A/D繝昴?ｼ繝医?ｮPFS險ｭ螳?
-	MPC.PWPR.BYTE=0x00;	//繝励Ο繝?繧ｯ繝郁ｧ｣髯､
-	MPC.PWPR.BYTE=0x40;	//繝励Ο繝?繧ｯ繝郁ｧ｣髯､
-	MPC.P46PFS.BIT.ASEL=1;	//A/D SEN_FR	AN006繧剃ｽｿ逕ｨ
-	MPC.P42PFS.BIT.ASEL=1;	//A/D SEN_R 	AN002繧剃ｽｿ逕ｨ
-	MPC.P41PFS.BIT.ASEL=1;	//A/D SEN_FR	AN001繧剃ｽｿ逕ｨ
-	MPC.P40PFS.BIT.ASEL=1;	//A/D SEN_R 	AN000繧剃ｽｿ逕ｨ
-	MPC.PWPR.BYTE=0x80;	//繝励Ο繝?繧ｯ繝井ｽ懷虚
+	//A/DポートのPMR設定
+	PORT4.PMR.BIT.B6=1;	//P46を周辺機器として使用
+	PORT4.PMR.BIT.B2=1;	//P42を周辺機器として使用
+	PORT4.PMR.BIT.B1=1;	//P41を周辺機器として使用
+	PORT4.PMR.BIT.B0=1;	//P40を周辺機器として使用
+	PORTE.PMR.BIT.B7=1;	//PE7を周辺機器として使用
+	//A/DポートのPFS設定
+	MPC.PWPR.BYTE=0x00;	//プロテクト解除
+	MPC.PWPR.BYTE=0x40;	//プロテクト解除
+	MPC.P46PFS.BIT.ASEL=1;	//A/D SEN_FR	AN006を使用
+	MPC.P42PFS.BIT.ASEL=1;	//A/D SEN_R 	AN002を使用
+	MPC.P41PFS.BIT.ASEL=1;	//A/D SEN_FR	AN001を使用
+	MPC.P40PFS.BIT.ASEL=1;	//A/D SEN_R 	AN000を使用
+	MPC.PWPR.BYTE=0x80;	//プロテクト作動
 	
-	//A/D螟画鋤(繝?繝輔か繝ｫ繝医〒繧ｷ繝ｳ繧ｰ繝ｫ繝｢繝ｼ繝?)
-	//S12AD.ADCSR.BYTE = 0x0c;	//A/D螟画鋤繧ｯ繝ｭ繝?繧ｯ縺ｯPCLKB(48M[ha])
-	S12AD.ADCSR.BIT.CKS = 3;	//A/D螟画鋤縺ｮ繧ｯ繝ｭ繝?繧ｯ繧単CLK縺ｮ1蛻?蜻ｨ(48M[Hz])縺ｫ險ｭ螳?
-	S12AD.ADANS0.WORD = 0x0047;	//A/D螟画鋤繧但N006縺ｮ縺ｿ險ｱ蜿ｯ縺吶ｋ
-	S12AD.ADCSR.BIT.ADCS = 0;	//繧ｷ繝ｳ繧ｰ繝ｫ繧ｹ繧ｭ繝｣繝ｳ繝｢繝ｼ繝峨↓險ｭ螳?
+	//A/D変換(デフォルトでシングルモード)
+	//S12AD.ADCSR.BYTE = 0x0c;	//A/D変換クロックはPCLKB(48M[ha])
+	S12AD.ADCSR.BIT.CKS = 3;	//A/D変換のクロックをPCLKの1分周(48M[Hz])に設定
+	S12AD.ADANS0.WORD = 0x0047;	//A/D変換をAN006のみ許可する
+	S12AD.ADCSR.BIT.ADCS = 0;	//シングルスキャンモードに設定
 }
 
 /*****************************************************************************************
-繝｢繝ｼ繧ｿ縺ｮ險ｭ螳?
-	蟾ｦ蜿ｳ繝｢繝ｼ繧ｿ
+モータの設定
+	左右モータ
 *****************************************************************************************/
 void motor_init(void){
 	
-	//繝｢繝ｼ繧ｿ邉ｻ繝斐Φ險ｭ螳?
+	//モータ系ピン設定
 	//MOT_POWER
 	PORTC.PDR.BIT.B6 = IO_OUT;//motor SLEEP (STBY)
 	//MOT_CWCCW
-	PORTC.PDR.BIT.B5 = IO_OUT;//Rmotor PH (螳滄圀縺ｯ蟾ｦ)
-	PORTB.PDR.BIT.B3 = IO_OUT;//Rmotor EN (螳滄圀縺ｯ蟾ｦ)
-	PORTC.PDR.BIT.B4 = IO_OUT;//Lmotor PH (螳滄圀縺ｯ蜿ｳ)
-	PORTB.PDR.BIT.B1 = IO_OUT;//Lmotor EN (螳滄圀縺ｯ蜿ｳ)
+	PORTC.PDR.BIT.B5 = IO_OUT;//Rmotor PH (実際は左)
+	PORTB.PDR.BIT.B3 = IO_OUT;//Rmotor EN (実際は左)
+	PORTC.PDR.BIT.B4 = IO_OUT;//Lmotor PH (実際は右)
+	PORTB.PDR.BIT.B1 = IO_OUT;//Lmotor EN (実際は右)
 	
-	//讖溯?ｽ繝斐Φ險ｭ螳?	
+	//機能ピン設定	
 	MPC.PWPR.BIT.B0WI=0;
 	MPC.PWPR.BIT.PFSWE=1;
 	MPC.PB1PFS.BIT.PSEL=1;	//PWM R MTIOC0C
 	MPC.PB3PFS.BIT.PSEL=1;	//PWM L MTIOC0A
 	MPC.PWPR.BYTE=0x80;
 	
-	//MTU縺ｮ繧､繝九す繝｣繝ｩ繧､繧ｺ
+	//MTUのイニシャライズ
 	SYSTEM.PRCR.WORD = 0xA502;
-	MSTP(MTU) = 0;//MTU繝｢繧ｸ繝･繝ｼ繝ｫON
+	MSTP(MTU) = 0;//MTUモジュールON
 	SYSTEM.PRCR.WORD = 0xA500;	
 	
-	//繝斐Φ繧?讖溯?ｽ險ｭ螳壽凾縺ｫ縺ｯ繧ｿ繧､繝槭せ繝医ャ繝?
-	MTU.TSTR.BYTE=0;	//繧ｿ繧､繝槫虚菴懊せ繝医ャ繝?
+	//ピンや機能設定時にはタイマストップ
+	MTU.TSTR.BYTE=0;	//タイマ動作ストップ
 	
-	//蟾ｦ蜿ｳ繝｢繝ｼ繧ｿ逕ｨMTU0 PWM2 譎ょｮ壽焚ﾏ?=L/R=17uH/(1.07+0.5+0.3)=110kHz
+	//左右モータ用MTU0 PWM2 時定数τ=L/R=17uH/(1.07+0.5+0.3)=110kHz
 	MTU0.TCR.BIT.TPSC=0;	//PCLK/1 48MHz
-	MTU0.TCR.BIT.CCLR=6;	//PWM TGRD縺ｮ繧ｳ繝ｳ繝壹い繝槭ャ繝√〒TCNT繧ｯ繝ｪ繧｢
-	MTU0.TIORH.BIT.IOA=5;	//蛻晄悄蜃ｺ蜉?0繧ｳ繝ｳ繝壹い繝槭ャ繝?0蜃ｺ蜉?
-	MTU0.TIORL.BIT.IOC=5;	//蛻晄悄蜃ｺ蜉?0繧ｳ繝ｳ繝壹い繝槭ャ繝?0蜃ｺ蜉?
-	MTU0.TIORL.BIT.IOD=2;	//蛻晄悄蜃ｺ蜉?0繧ｳ繝ｳ繝壹い繝槭ャ繝?1蜃ｺ蜉?
-	MTU0.TGRA = 0;		//4莉･荳九?ｯ蜍穂ｽ懊＠縺ｪ縺?
+	MTU0.TCR.BIT.CCLR=6;	//PWM TGRDのコンペアマッチでTCNTクリア
+	MTU0.TIORH.BIT.IOA=5;	//初期出力0コンペアマッチ0出力
+	MTU0.TIORL.BIT.IOC=5;	//初期出力0コンペアマッチ0出力
+	MTU0.TIORL.BIT.IOD=2;	//初期出力0コンペアマッチ1出力
+	MTU0.TGRA = 0;		//4以下は動作しない
 	MTU0.TGRC = 0;
-	MTU0.TGRD = 240;	//蜻ｨ譛? 200kHz
+	MTU0.TGRD = 240;	//周期 200kHz
 	MTU0.TMDR.BIT.MD=3;	//PWM2
 	
-	PORTB.PMR.BIT.B3=1;	//蜿ｳPWM
-	PORTB.PMR.BIT.B1=1;	//蟾ｦPWM
-	MTU0.TGRA = 0;		//蟾ｦ
-	MTU0.TGRC = 0;		//蜿ｳ
+	PORTB.PMR.BIT.B3=1;	//右PWM
+	PORTB.PMR.BIT.B1=1;	//左PWM
+	MTU0.TGRA = 0;		//左
+	MTU0.TGRC = 0;		//右
 	MTU.TSTR.BIT.CST0 =1; 
 	
 	MOT_POWER_OFF;
@@ -208,34 +207,31 @@ void motor_init(void){
 }
 
 /*****************************************************************************************
-蜈峨そ繝ｳ繧ｵ繝ｼ邉ｻ縺ｮ繝代Λ繝｡繝ｼ繧ｿ蛻晄悄蛹?
-	繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ縺ｨ縺句｣√?ｮ髢ｾ蛟､縺ｨ縺?
+光センサー系のパラメータ初期化
+	リファレンスとか壁の閾値とか
 *****************************************************************************************/
 void init_parameters(void)
 {
 			
-	sen_r.ref = REF_SEN_R;				//蜿ｳ繧ｻ繝ｳ繧ｵ縺ｮ繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ蛟､繧貞?晄悄蛹?
-	sen_l.ref = REF_SEN_L;				//蟾ｦ繧ｻ繝ｳ繧ｵ縺ｮ繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ蛟､繧貞?晄悄蛹?
+	sen_r.ref = REF_SEN_R;				//右センサのリファレンス値を初期化
+	sen_l.ref = REF_SEN_L;				//左センサのリファレンス値を初期化
 	
-	sen_r.th_wall = TH_SEN_R;			//蜿ｳ繧ｻ繝ｳ繧ｵ縺ｮ螢∵怏辟｡蛻､譁ｭ縺ｮ髢ｾ蛟､繧貞?晄悄蛹?
-	sen_l.th_wall = TH_SEN_L;			//蟾ｦ繧ｻ繝ｳ繧ｵ縺ｮ螢∵怏辟｡蛻､譁ｭ縺ｮ髢ｾ蛟､繧貞?晄悄蛹?
+	sen_r.th_wall = TH_SEN_R;			//右センサの壁有無判断の閾値を初期化
+	sen_l.th_wall = TH_SEN_L;			//左センサの壁有無判断の閾値を初期化
 	
-	sen_fr.th_wall = TH_SEN_FR;			//蜿ｳ蜑阪そ繝ｳ繧ｵ縺ｮ螢∵怏辟｡蛻､譁ｭ縺ｮ髢ｾ蛟､繧貞?晄悄蛹?
-	sen_fl.th_wall = TH_SEN_FL;			//蟾ｦ蜑阪そ繝ｳ繧ｵ縺ｮ螢∵怏辟｡蛻､譁ｭ縺ｮ髢ｾ蛟､繧貞?晄悄蛹?
+	sen_fr.th_wall = TH_SEN_FR;			//右前センサの壁有無判断の閾値を初期化
+	sen_fl.th_wall = TH_SEN_FL;			//左前センサの壁有無判断の閾値を初期化
 	
-	sen_r.th_control = CONTH_SEN_R;			//蜿ｳ繧ｻ繝ｳ繧ｵ縺ｮ螢∝宛蠕｡縺九￠繧九°蜷ｦ縺九?ｮ髢ｾ蛟､繧貞?晄悄蛹?
-	sen_l.th_control = CONTH_SEN_L;			//蟾ｦ繧ｻ繝ｳ繧ｵ縺ｮ螢∝宛蠕｡縺九￠繧九°蜷ｦ縺九?ｮ髢ｾ蛟､繧貞?晄悄蛹?
+	sen_r.th_control = CONTH_SEN_R;			//右センサの壁制御かけるか否かの閾値を初期化
+	sen_l.th_control = CONTH_SEN_L;			//左センサの壁制御かけるか否かの閾値を初期化
 	
-	con_wall.kp = CON_WALL_KP/10000.0;			//螢∵ｯ比ｾ句宛蠕｡縺ｮ豈比ｾ句ｮ壽焚繧貞?晄悄蛹?
-
-    WAIT_TIME = 500;
+	con_wall.kp = CON_WALL_KP/10000.0;			//壁比例制御の比例定数を初期化
 }
 
 /*****************************************************************************************
-霑ｷ霍ｯ諠?蝣ｱ縺ｮ蛻晄悄蛹?
-
+迷路情報の初期化
 *****************************************************************************************/
-void init_maze(void)	//霑ｷ霍ｯ諠?蝣ｱ縺ｮ蛻晄悄蛹?
+void init_maze(void)	//迷路情報の初期化
 {
 	int i,j;
 	
@@ -243,36 +239,35 @@ void init_maze(void)	//霑ｷ霍ｯ諠?蝣ｱ縺ｮ蛻晄悄蛹?
 	{
 		for(j = 0; j < MAZESIZE_Y; j++)
 		{
-			wall[i][j].north = wall[i][j].east = wall[i][j].south = wall[i][j].west = UNKNOWN;	//霑ｷ霍ｯ縺ｮ蜈ｨ菴薙′繧上°繧峨↑縺?莠九ｒ險ｭ螳壹☆繧?
+			wall[i][j].north = wall[i][j].east = wall[i][j].south = wall[i][j].west = UNKNOWN;	//迷路の全体がわからない事を設定する
 		}
 	}
 	
 	for(i = 0; i < MAZESIZE_X; i++)
 	{
-		wall[i][0].south = WALL;		//蝗帶婿縺ｮ螢√ｒ霑ｽ蜉?縺吶ｋ(蜊?)
-		wall[i][MAZESIZE_Y-1].north = WALL;	//蝗帶婿縺ｮ螢√ｒ霑ｽ蜉?縺吶ｋ(蛹?)
+		wall[i][0].south = WALL;		//四方の壁を追加する(南)
+		wall[i][MAZESIZE_Y-1].north = WALL;	//四方の壁を追加する(北)
 	}
 	
 	for(j = 0; j < MAZESIZE_Y; j++)
 	{
-		wall[0][j].west = WALL;			//蝗帶婿縺ｮ螢√ｒ霑ｽ蜉?縺吶ｋ(隘ｿ)
-		wall[MAZESIZE_X-1][j].east = WALL;	//蝗帶婿縺ｮ螢√ｒ霑ｽ蜉?縺吶ｋ(譚ｱ)
+		wall[0][j].west = WALL;			//四方の壁を追加する(西)
+		wall[MAZESIZE_X-1][j].east = WALL;	//四方の壁を追加する(東)
 	}
 	
-	wall[0][0].east = wall[1][0].west = WALL;	//繧ｹ繧ｿ繝ｼ繝亥慍轤ｹ縺ｮ蜿ｳ縺ｮ螢√ｒ霑ｽ蜉?縺吶ｋ
+	wall[0][0].east = wall[1][0].west = WALL;	//スタート地点の右の壁を追加する
 	
 }
 
 
 /*****************************************************************************************
-繧ｸ繝｣繧､繝ｭ縺ｮ繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ蜿門ｾ?
-
+ジャイロのリファレンス取得
 *****************************************************************************************/
 void gyro_get_ref(void){
 	long i = 0;
 	float gyro_ref_temp = 0;
 	gyro_ref = 0;
-	//繧ｸ繝｣繧､繝ｭ縺ｮ繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ蜿門ｾ?
+	//ジャイロのリファレンス取得
 	for(i = 0; i < 2500; i++){
 		gyro_ref_temp += (float)gyro_x_new;
 		wait_ms(1);
@@ -283,7 +278,7 @@ void gyro_get_ref(void){
 }
 
 /*****************************************************************************************
-蜈ｨ縺ｦ縺ｮ讖溯?ｽ縺ｮ繧､繝九す繝｣繝ｩ繧､繧ｺ
+全ての機能のイニシャライズ
 	
 *****************************************************************************************/
 void init_all(void){
@@ -302,40 +297,40 @@ void init_all(void){
 	MOT_POWER_OFF;
 	init_parameters();
 	init_maze();
-	//Encoder縺ｮ蛻晄悄蛹?
+	//Encoderの初期化
 	/*
-	RSPI0.SPCMD0.BIT.SSLA = 	0x00;	//SSL菫｡蜿ｷ繧｢繧ｵ繝ｼ繝郁ｨｭ螳?(SSL0繧剃ｽｿ縺?)
+	RSPI0.SPCMD0.BIT.SSLA = 	0x00;	//SSL信号アサート設定(SSL0を使う)
 	preprocess_spi_enc(0x7E40);
 	for(i = 0; i < 100*1000*10; i++);
 	preprocess_spi_enc(0x5040);
 	for(i = 0; i < 100*1000*10; i++);
-	RSPI0.SPCMD0.BIT.SSLA = 	0x02;	//SSL菫｡蜿ｷ繧｢繧ｵ繝ｼ繝郁ｨｭ螳?(SSL2繧剃ｽｿ縺?)	preprocess_spi_enc(0x7E40);
+	RSPI0.SPCMD0.BIT.SSLA = 	0x02;	//SSL信号アサート設定(SSL2を使う)	preprocess_spi_enc(0x7E40);
 	for(i = 0; i < 100*1000*10; i++);
 	preprocess_spi_enc(0x5040);
 	for(i = 0; i < 100*1000*10; i++);
 	*/
-	//Gyro蛻晄悄險ｭ螳?
-	preprocess_spi_gyro_2byte(0x0681);		//繧ｸ繝｣繧､繝ｭ繝ｪ繧ｻ繝?繝?
+	//Gyro初期設定
+	preprocess_spi_gyro_2byte(0x0681);		//ジャイロリセット
 	for(i = 0; i < 100*1000*10; i++);
 	preprocess_spi_gyro_2byte(0x0601);		//Low Power Mode OFF
 	for(i = 0; i < 100*1000*10; i++);
 
-	//繧ｸ繝｣繧､繝ｭ縺ｮ險ｭ螳?
-	preprocess_spi_gyro_2byte(0x7F20);		//User Bank2縺ｫ螟画峩
+	//ジャイロの設定
+	preprocess_spi_gyro_2byte(0x7F20);		//User Bank2に変更
 	for(i = 0; i < 100*1000*10; i++);
-	preprocess_spi_gyro_2byte(0x0107);		//Range 繧呈怙螟ｧ2000dps縺ｸ螟画峩
+	preprocess_spi_gyro_2byte(0x0107);		//Range を最大2000dpsへ変更
 	for(i = 0; i < 100*1000*10; i++);
-	preprocess_spi_gyro_2byte(0x7F00);		//User Bank0縺ｫ螟画峩
+	preprocess_spi_gyro_2byte(0x7F00);		//User Bank0に変更
 	for(i = 0; i < 100*1000*10; i++);
 
-	preprocess_spi_gyro_2byte(0x0621);		//繧ｸ繝｣繧､繝ｭ繧ｹ繧ｿ繝ｼ繝?
-	//螟画焚蛻晄悄蛹?
+	preprocess_spi_gyro_2byte(0x0621);		//ジャイロスタート
+	//変数初期化
 	timer = 0;
 	
-	//繧ｳ繝ｳ繝壹い繝槭ャ繝√ち繧､繝樣幕蟋?
+	//コンペアマッチタイマ開始
 	init_cmt();	
 
-	//E2繝輔Λ繝?繧ｷ繝･縺ｮ蛻晄悄蛹?
+	//E2フラッシュの初期化
 	hw_dflash_init();
 
 	

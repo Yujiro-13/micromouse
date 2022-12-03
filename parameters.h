@@ -46,7 +46,7 @@
 #define OMEGA_KI	(0.2)				//Iゲイン
 #define OMEGA_KD	(0.2)				//Dゲイン
 //角度に関するフィードバックゲイン
-#define DEGREE_KP   (0.0) //40,1
+#define DEGREE_KP   (80.0) //40,1
 #define DEGREE_KI   (0.0)
 
 //走行パラメータ
