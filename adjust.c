@@ -33,7 +33,6 @@ void adjust(void)
 	int flash_time = 0;
 	char flash;
 	short ad_mode = 1;
-	float r_len, l_len, fr_len, fl_len;
 	while(1){
 		switch(ad_mode){
 
@@ -47,10 +46,10 @@ void adjust(void)
 				*					*
 				*****************************************/
 				
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-					//å£åˆ¶å¾¡ã‚’æœ‰åŠ¹ã«ã™ã‚‹
+					//•Ç§Œä‚ğ—LŒø‚É‚·‚é
 					con_wall.enable = true;
 					while(1){
 						//A/D sensor
@@ -78,11 +77,11 @@ void adjust(void)
 						SCI_printf("switchU: %d\n\r",SW_U);
 						SCI_printf("switchD: %d\n\r",SW_D);
 						wait_ms(100);
-						//ç”»é¢ã‚¯ãƒªã‚¢ã‚·ãƒ¼ã‚±ãƒ³ã‚¹
-						SCI_printf("\x1b[2J");				//ã‚¯ãƒªã‚¢ã‚¹ã‚¯ãƒªãƒ¼ãƒ³[CLS]
-						SCI_printf("\x1b[0;0H");			//ã‚«ãƒ¼ã‚½ãƒ«ã‚’0,0ã«ç§»å‹•
+						//‰æ–ÊƒNƒŠƒAƒV[ƒPƒ“ƒX
+						SCI_printf("\x1b[2J");				//ƒNƒŠƒAƒXƒNƒŠ[ƒ“[CLS]
+						SCI_printf("\x1b[0;0H");			//ƒJ[ƒ\ƒ‹‚ğ0,0‚ÉˆÚ“®
 						
-						//ãƒ—ãƒƒã‚·ãƒ¥ã‚¹ã‚¤ãƒƒãƒç”¨å‡¦ç†
+						//ƒvƒbƒVƒ…ƒXƒCƒbƒ`—pˆ—
 						push_switch = IOex_SWITCH();
 			
 						if(SW_C == 1){
@@ -103,7 +102,7 @@ void adjust(void)
 				*					*
 				*****************************************/	
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					gyro_get_ref();
@@ -111,8 +110,8 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					len_mouse = 0;
-					straight(SECTION*3,SEARCH_ACCEL,SEARCH_SPEED,0);
-					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ã‚¿ãƒ¼ãƒ³
+					straight(SECTION,SEARCH_ACCEL,0,0);
+					
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -129,48 +128,17 @@ void adjust(void)
 				*	O	O	X	X	*
 				*					*
 				*****************************************/
-				//ãƒãƒƒãƒ—ã®è¡¨ç¤º
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒ}ƒbƒv‚Ì•\¦
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 					gyro_get_ref();
 					//BEEP();
 					log_flag = 1;
 					log_timer = 0;
-					WAIT_TIME = 0;
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
-					turn(360,TURN_ACCEL,TURN_SPEED,RIGHT);
-					turn(360,TURN_ACCEL,TURN_SPEED,LEFT);
+					turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
 					log_flag = 0;
 					MOT_POWER_OFF;
-					WAIT_TIME = 500;
 					//BEEP();
 					wait_ms(500);
 				}
@@ -186,15 +154,19 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-
+					gyro_get_ref();
+					//BEEP();
+					log_flag = 1;
+					log_timer = 0;
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					MOT_POWER_OFF;
+					log_flag = 0;
+					MOT_POWER_OFF;
+					//BEEP();
 					wait_ms(500);
-					straight(HALF_SECTION, SEARCH_ACCEL, SEARCH_SPEED, SEARCH_SPEED);
-					//check_straight(SEARCH_SPEED);
-					straight(HALF_SECTION, SEARCH_ACCEL, SEARCH_SPEED, 0);
-
 				}
 				
 				break;
@@ -208,13 +180,22 @@ void adjust(void)
 				*					*
 				*****************************************/
 			
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
+					BEEP();
 					//BEEP();
-
-					wait_ms(500);
-                    get_adjust_len(& r_len, & l_len, & fr_len, & fl_len);
-					SCI_printf("r adjust len=%f , l adjust len=%f , fr adjust len=%f , fl adjust len=%f\n\r",r_len, l_len, fr_len, fl_len);
+					gyro_get_ref();
+					//BEEP();
+					log_flag = 1;
+					log_timer = 0;
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					MOT_POWER_OFF;
+					log_flag = 0;
+					MOT_POWER_OFF;
+					//BEEP();
+					wait_ms(500);		
 				}
 				
 				break;
@@ -227,8 +208,8 @@ void adjust(void)
 				*	X	O	O	X	*
 				*					*
 				*****************************************/
-				//ãƒãƒƒãƒ—è¡¨ç¤º
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒ}ƒbƒv•\¦
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					BEEP();
 					map_copy();
@@ -246,12 +227,10 @@ void adjust(void)
 				*	O	O	O	X	*
 				*					*
 				*****************************************/
-				//ãƒ­ã‚°å‡ºåŠ›
-				//ã‚»ãƒ³ã‚µãƒ¼ã®å‰ã«æ‰‹ã‚’ã‹ã–ã—ã¦ã‚¹ã‚¿ãƒ¼ãƒˆ
+				//ƒƒOo—Í
+				//ƒZƒ“ƒT[‚Ì‘O‚Éè‚ğ‚©‚´‚µ‚ÄƒXƒ^[ƒg
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-					get_adjust_len(&r_len, &l_len, &fr_len, &fl_len);
-					SCI_printf("r adjust len=%f , l adjust len=%f , fr adjust len=%f , fl adjust len=%f\n\r", r_len, l_len, fr_len, fl_len);
+					BEEP();
 					SCI_printf("time[msec],sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,1000*V_bat,len_mouse,ang_vel*1000,locate_r,locate_l\n\r");
 					for(i = 0; i < LOG_CNT; i++){
 						
@@ -272,13 +251,13 @@ void adjust(void)
 					wait_ms(500);	
 				}				
 				break;
-			//mode0~7ä»¥å¤–ã®å ´åˆã€‚ä½•ã‚‚ã—ãªã„ã€‚
+			//mode0~7ˆÈŠO‚Ìê‡B‰½‚à‚µ‚È‚¢B
 			default:
 				break;
 			
 		}
 		
-		//ãƒ¢ãƒ¼ãƒ‰åˆ‡ã‚Šæ›¿ãˆç”¨å‡¦ç†
+		//ƒ‚[ƒhØ‚è‘Ö‚¦—pˆ—
 		if(speed > 0.1){
 			if(ad_mode == 7){
 				ad_mode = 1;
@@ -310,14 +289,13 @@ void adjust(void)
 		flash_time++;
 		LED(ad_mode | flash);
 		
-		//ãƒ—ãƒƒã‚·ãƒ¥ã‚¹ã‚¤ãƒƒãƒç”¨å‡¦ç†
+		//ƒvƒbƒVƒ…ƒXƒCƒbƒ`—pˆ—
 		push_switch = IOex_SWITCH();
 		MOT_POWER_OFF;
 		
 		if(SW_C == 1){
-			//BEEP();
+			BEEP();
 			break;	
 		}
 	}
 }
-

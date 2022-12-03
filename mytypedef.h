@@ -39,6 +39,8 @@ typedef struct
 	float kp;		//”ä—á§Œä’è”
 	float kd;		//”÷•ª§Œä’è”
 	float ki;		//Ï•ª§Œä’è”
+	int   r_flag;     //flag r
+	int   l_flag;     //flag l
 	t_bool enable;		//§Œä‚Ìon/off
 }t_control;			//§Œä\‘¢‘Ì
 
