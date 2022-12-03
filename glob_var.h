@@ -1,27 +1,27 @@
-//ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ä¸€ç®?æ‰€ã§å®£è¨€ã™ã‚‹ã€?
-//glob_var.cã§å®Ÿä½“ã‚’ä½œã‚Š(_GLOB_VARã‚’define)ã€ä»–ã?®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ä½¿ç”¨ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã¯glob_var.hã‚’includeã™ã‚‹ã€?
+//ƒOƒ[ƒoƒ‹•Ï”‚ðˆê‰ÓŠ‚ÅéŒ¾‚·‚éB
+//glob_var.c‚ÅŽÀ‘Ì‚ðì‚è(_GLOB_VAR‚ðdefine)A‘¼‚ÌƒOƒ[ƒoƒ‹•Ï”‚ðŽg—p‚·‚éƒtƒ@ƒCƒ‹‚©‚ç‚Íglob_var.h‚ðinclude‚·‚éB
 
 #include "mytypedef.h"
 #include "parameters.h"
 
-//globalå¤‰æ•°ã‚’ä¸€æ‹¬ã§å®Ÿä½“ã¨externå®£è¨€ã™ã‚‹ã€?
-//includeå…?ã§_GLOB_VARãŒå®šç¾©ã•ã‚Œã¦ã?ã‚Œã?°å®Ÿä½“å®£è¨€ã€å®šç¾©ã•ã‚Œã¦ã?ãªã‘ã‚Œã°å¤–éƒ¨å®£è¨€ã¨ãªã‚‹ã€?
+//global•Ï”‚ðˆêŠ‡‚ÅŽÀ‘Ì‚ÆexternéŒ¾‚·‚éB
+//includeŒ³‚Å_GLOB_VAR‚ª’è‹`‚³‚ê‚Ä‚¢‚ê‚ÎŽÀ‘ÌéŒ¾A’è‹`‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎŠO•”éŒ¾‚Æ‚È‚éB
 #ifdef _GLOB_VAR
 #define GLOBAL
 #else
 #define GLOBAL extern
 #endif
 
-//æ§‹é€?ä½“ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL t_sensor			sen_r, sen_l, sen_fr, sen_fl;		//ã‚»ãƒ³ã‚µæ§‹é€?ä½?
-GLOBAL t_control		con_wall;				//åˆ¶å¾¡æ§‹é€?ä½?
-GLOBAL t_control		con_fwall;				//åˆ¶å¾¡æ§‹é€?ä½?
-GLOBAL t_position		mypos;					//è‡ªå·±åº§æ¨?
-GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//å£ã?®æƒ?å ±ã‚’æ?¼ç´ã™ã‚‹æ§‹é€?ä½“é?å??
-GLOBAL unsigned char		map[MAZESIZE_X][MAZESIZE_Y];		//æ­©æ•°ãƒžãƒƒãƒ?
+//\‘¢‘ÌŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
+GLOBAL t_sensor			sen_r, sen_l, sen_fr, sen_fl;		//ƒZƒ“ƒT\‘¢‘Ì
+GLOBAL t_control		con_wall;				//§Œä\‘¢‘Ì
+GLOBAL t_control		con_fwall;				//§Œä\‘¢‘Ì
+GLOBAL t_position		mypos;					//Ž©ŒÈÀ•W
+GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//•Ç‚Ìî•ñ‚ðŠi”[‚·‚é\‘¢‘Ì”z—ñ
+GLOBAL unsigned char		map[MAZESIZE_X][MAZESIZE_Y];		//•à”ƒ}ƒbƒv
 
-//èµ°è¡Œç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL int run_mode;							//çœŸã£ç›´ãã‹å›žè»¢ã‹ã?®èµ°è¡Œãƒ¢ãƒ¼ãƒ‰ï¼ˆåˆ¶å¾¡ç³»ã®åˆ?ã‚Šæ›¿ãˆã«ä½¿ç”¨?¼?
+//‘–sŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
+GLOBAL int run_mode;							//^‚Á’¼‚®‚©‰ñ“]‚©‚Ì‘–sƒ‚[ƒhi§ŒäŒn‚ÌØ‚è‘Ö‚¦‚ÉŽg—pj
 
 //ŽÔ‘Ì‘¬“xŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
 GLOBAL float			fast_speed;				//Å’Z‘–sŽž‚ÌÅ‚‘¬“x	[m/s]
@@ -51,21 +51,21 @@ GLOBAL float            error;                  //•Î·
 GLOBAL float            p_error;                //‰ß‹Ž‚Ì•Î·
 GLOBAL float            I_error;                //•Î·‚ÌI¬•ª
 
-//ã‚¨ãƒ³ã‚³ãƒ¼ãƒ€è§’åº¦ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL unsigned int			angle;					//ç¾åœ¨ã®è»Šè»¸è§’åº¦	[deg]
-GLOBAL unsigned int			locate_l;				//ç¾åœ¨ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
-GLOBAL unsigned int			locate_r;				//ç¾åœ¨ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
-GLOBAL unsigned int			before_locate_r;			//éŽåŽ»ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
-GLOBAL unsigned int			before_locate_l;			//éŽåŽ»ã®è»Šè»¸ä½ç½®	[ç„¡æ¬¡å…ƒ]
-GLOBAL int			diff_pulse_r;				//è»Šè»¸ä½ç½®ã®å¾®åˆ?å€¤(è»Šè»¸ã®å›žè»¢é€Ÿåº¦[pulse/ms])
-GLOBAL int			diff_pulse_l;				//è»Šè»¸ä½ç½®ã®å¾®åˆ?å€¤(è»Šè»¸ã®å›žè»¢é€Ÿåº¦[pulse/ms])
+//ƒGƒ“ƒR[ƒ_Šp“xŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
+GLOBAL unsigned int			angle;					//Œ»Ý‚ÌŽÔŽ²Šp“x	[deg]
+GLOBAL unsigned int			locate_l;				//Œ»Ý‚ÌŽÔŽ²ˆÊ’u	[–³ŽŸŒ³]
+GLOBAL unsigned int			locate_r;				//Œ»Ý‚ÌŽÔŽ²ˆÊ’u	[–³ŽŸŒ³]
+GLOBAL unsigned int			before_locate_r;			//‰ß‹Ž‚ÌŽÔŽ²ˆÊ’u	[–³ŽŸŒ³]
+GLOBAL unsigned int			before_locate_l;			//‰ß‹Ž‚ÌŽÔŽ²ˆÊ’u	[–³ŽŸŒ³]
+GLOBAL int			diff_pulse_r;				//ŽÔŽ²ˆÊ’u‚Ì”÷•ª’l(ŽÔŽ²‚Ì‰ñ“]‘¬“x[pulse/ms])
+GLOBAL int			diff_pulse_l;				//ŽÔŽ²ˆÊ’u‚Ì”÷•ª’l(ŽÔŽ²‚Ì‰ñ“]‘¬“x[pulse/ms])
 				
-//ã‚¿ã‚¤ãƒžç³»ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL unsigned int		timer;					//1mSã”ã¨ã«ã‚«ã‚¦ãƒ³ãƒˆã‚¢ãƒ?ãƒ—ã•ã‚Œã‚‹å¤‰æ•°.
+//ƒ^ƒCƒ}ŒnƒOƒ[ƒoƒ‹•Ï”
+GLOBAL unsigned int		timer;					//1mS‚²‚Æ‚ÉƒJƒEƒ“ƒgƒAƒbƒv‚³‚ê‚é•Ï”.
 
-//é›»åœ§ç›£è¦–ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL long 			cnt;					//å‰²ã‚Šè¾¼ã¿ä¸­ã®ã‚«ã‚¦ãƒ³ãƒ?
-GLOBAL float			V_bat;					//é›»æºé›»åœ§[V]
+//“dˆ³ŠÄŽ‹—pƒOƒ[ƒoƒ‹•Ï”
+GLOBAL long 			cnt;					//Š„‚èž‚Ý’†‚ÌƒJƒEƒ“ƒg
+GLOBAL float			V_bat;					//“dŒ¹“dˆ³[V]
 
 //ƒWƒƒƒCƒŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
 GLOBAL float			gyro_x;					//ƒˆ[Ž²ƒWƒƒƒCƒ‚ÌŒ»Ý‚Ì’l	[–³ŽŸŒ³]
@@ -85,16 +85,17 @@ GLOBAL float            sum_len_mouse;
 GLOBAL int              sum;
 GLOBAL int              count;
 
-//ãƒ­ã‚°ç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL int			log[12][LOG_CNT];			//ãƒ­ã‚°ç”¨ã®é…å??
-GLOBAL long			log_timer;				//ãƒ­ã‚°å–ã‚Šã‚ˆã†ã®ã‚¿ã‚¤ãƒ?
-GLOBAL int			log_flag;				//ãƒ­ã‚°å–å¾—ã?®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ç”¨
+//ƒƒO—p‚ÌƒOƒ[ƒoƒ‹•Ï”
+GLOBAL int			log[12][LOG_CNT];			//ƒƒO—p‚Ì”z—ñ
+GLOBAL long			log_timer;				//ƒƒOŽæ‚è‚æ‚¤‚Ìƒ^ƒCƒ}
+GLOBAL int			log_flag;				//ƒƒOŽæ“¾‚Ìƒ^ƒCƒ~ƒ“ƒO—p
 
-//ãƒ­ã‚°ç”¨ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°å…¶ã®äº?
-//GLOBAL int          log2[12][LOG_CNT];
+//ƒtƒ‰ƒOŒn‚ÌƒOƒ[ƒoƒ‹•Ï”
+GLOBAL char			TURN_DIR;				//ƒ^[ƒ“•ûŒüƒtƒ‰ƒO
 
-//ãƒ•ãƒ©ã‚°ç³»ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
-GLOBAL char			TURN_DIR;				//ã‚¿ãƒ¼ãƒ³æ–¹å‘ãƒ•ãƒ©ã‚°
+//ƒ‚[ƒ^‚Ìƒfƒ…[ƒeƒBŒˆ’è—pƒOƒ[ƒoƒ‹•Ï”
+GLOBAL float			Duty_r;					//o—Í‚Ìƒfƒ…[ƒeƒB”ä				[%]
+GLOBAL float			Duty_l;					//o—Í‚Ìƒfƒ…[ƒeƒB”ä				[%]
 
 //§Œä—pƒOƒ[ƒoƒ‹•Ï”
 GLOBAL float			I_tar_speed;				//–Ú•W‘¬“x‚ÌI¬•ª
