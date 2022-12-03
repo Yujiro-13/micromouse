@@ -47,7 +47,7 @@
 #define OMEGA_KD	(0.2)				//Dゲイン
 //角度に関するフィードバックゲイン
 #define DEGREE_KP   (80.0) //40,1
-#define DEGREE_KI   (0.0)
+#define DEGREE_KI   (1.0)
 
 //走行パラメータ
 #define SEARCH_SPEED	(0.3)				//探索走行の速度	[m/s]
