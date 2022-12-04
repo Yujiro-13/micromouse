@@ -63,8 +63,8 @@
 #define WAIT_TIME	500				//各動作後の待機時間	[ms]
 
 //迷路関連パラメータ
-#define GOAL_X	9		//ゴール座標(x)
-#define GOAL_Y	9		//ゴール座標(y)
+#define GOAL_X	8		//ゴール座標(x)
+#define GOAL_Y	8		//ゴール座標(y)
 
 //決定用センサパラメータ
 #define	SEN_DECISION	2000	//メニュー決定用の光センサ閾値

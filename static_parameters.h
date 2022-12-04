@@ -34,8 +34,8 @@
 #define HALF_SECTION	(45)			//”¼‹æ‰æ‚Ì‹——£
 #define SECTION			(90)		//ˆê‹æ‰æ‚Ì‹——£
 
-#define MAZESIZE_X		(16)		//–À˜H‚Ì‘å‚«‚³(MAZESIZE_X * MAZESIZE_Y)–À˜H
-#define MAZESIZE_Y		(16)		//–À˜H‚Ì‘å‚«‚³(MAZESIZE_X * MAZESIZE_Y)–À˜H
+#define MAZESIZE_X		(9)		//–À˜H‚Ì‘å‚«‚³(MAZESIZE_X * MAZESIZE_Y)–À˜H
+#define MAZESIZE_Y		(9)		//–À˜H‚Ì‘å‚«‚³(MAZESIZE_X * MAZESIZE_Y)–À˜H
 
 #define UNKNOWN	2				//•Ç‚ª‚ ‚é‚©‚È‚¢‚©”»‚ç‚È‚¢ó‘Ô‚Ìê‡‚Ì’l
 #define NOWALL	0				//•Ç‚ª‚È‚¢‚Î‚ ‚¢‚Ì’l
