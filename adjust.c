@@ -211,7 +211,7 @@ void adjust(void)
 				//マップ表示
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					BEEP();
+					//BEEP();
 					map_copy();
 					map_view();
 					wait_ms(500);	
