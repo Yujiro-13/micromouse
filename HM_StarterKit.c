@@ -156,7 +156,7 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					BEEP();
+					//BEEP();
 					SCI_printf("sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,V_bat*1000,con_wall.omega,ang_vel*1000,locate_r,locate_l\n\r");
 					for(i = 0; i < LOG_CNT; i++){
 						
