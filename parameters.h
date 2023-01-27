@@ -17,17 +17,17 @@
 //センサ関連パラメータ
 #define WAITLOOP_SLED	180				//LEDを光らせてからAD変換を開始するまでの時間稼ぎ用定数
 
-#define REF_SEN_R	1136				//マウスを迷路中央に置いた時のセンサの値
-#define REF_SEN_L	1435				//マウスを迷路中央に置いた時のセンサの値
+#define REF_SEN_R	1230				//マウスを迷路中央に置いた時のセンサの値
+#define REF_SEN_L	1320				//マウスを迷路中央に置いた時のセンサの値
 
-#define TH_SEN_R	    35				//壁があるか否かの閾値	車体を区画の左へ寄せた時のセンサ値(壁あり)
+#define TH_SEN_R	    55				//壁があるか否かの閾値	車体を区画の左へ寄せた時のセンサ値(壁あり)
 #define TH_SEN_L	    71				//壁があるか否かの閾値	車体を区画の右へ寄せた時のセンサ値(壁あり)
 #define TH_SEN_FR	    50				//壁があるか否かの閾値	
-#define TH_SEN_FL	    50				//壁があるか否かの閾値
-#define TH_SEN_R_POLE   200             //柱があるか否かの閾値・右
-#define TH_SEN_L_POLE   300             //柱があるか否かの閾値・左
+#define TH_SEN_FL	    40				//壁があるか否かの閾値
+#define TH_SEN_R_POLE   500             //柱があるか否かの閾値・右
+#define TH_SEN_L_POLE   600             //柱があるか否かの閾値・左
 #define TH_SEN_R_BE_T   2021            //壁当て直前の閾値。右
-#define TH_SEN_L_BE_T   2076
+#define TH_SEN_L_BE_T   2276            //壁当て直前の閾値。左
 
 #define CONTH_SEN_R	TH_SEN_R			//制御をかけるか否かの閾値
 #define CONTH_SEN_L	TH_SEN_L			//制御をかけるか否かの閾値
@@ -42,23 +42,30 @@
 #define SPEED_KI	(1.0)				//Iゲイン
 #define SPEED_KD	(0.0)				//Dゲイン　
 //車体中心における回転方向速度に関するフィードバックゲイン
-#define OMEGA_KP	(40.0)				//Pゲイン
-#define OMEGA_KI	(0.2)				//Iゲイン
-#define OMEGA_KD	(0.2)				//Dゲイン
+#define OMEGA_KP	(70.0)				//Pゲイン
+#define OMEGA_KI	(4.0)				//Iゲイン
+#define OMEGA_KD	(0.0000000)			//Dゲイン
 //角度に関するフィードバックゲイン
-#define DEGREE_KP   (80.0) //40,1
+#define DEGREE_KP   (80.0) 
 #define DEGREE_KI   (1.0)
 
 //走行パラメータ
-#define SEARCH_SPEED	(0.3)				//探索走行の速度	[m/s]
+#define SEARCH_SPEED	(0.2)				//探索走行の速度	[m/s]
 #define SEARCH_ACCEL	(1.0)				//探索走行の加速度	[m/s^2]
 #define FAST_SPEED	(1.0)				//最短走行の速度	[m/s]
 #define FAST_ACCEL	(2.0)				//最短走行の加速度	[m/s^2]
 #define MIN_SPEED	(0.1)				//最低速度	[m/s]
+#define S_SEARCH_SPEED (0.3)                //スラローム走行の速度   [m/s]
+#define S_SEARCH_ACCEL (2.0)                //スラローム走行の加速度 [m/s/s]
+#define S_FAST_SPEED	(0.3)				//最短走行の速度	[m/s]
+#define S_FAST_ACCEL	(2.0)				//最短走行の加速度	[m/s^2]
+#define S_MIN_SPEED	(0.1)				//最低速度	[m/s]
 
-#define TURN_ACCEL	(PI*4)				//超信地旋回の加速度	[rad/s^2]
-#define	TURN_SPEED	(PI*2)				//超信地旋回の最高速度	[rad/s]
+#define TURN_ACCEL	(PI*12)				//超信地旋回の加速度	[rad/s^2]
+#define	TURN_SPEED	(PI*4)				//超信地旋回の最高速度	[rad/s] (PI[rad/s]->180deg/s)
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
+#define SLALOM_ACCEL  (122.17)            
+#define SLALOM_SPEED  (12.22)
 
 #define WAIT_TIME	500				//各動作後の待機時間	[ms]
 
