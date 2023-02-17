@@ -22,12 +22,18 @@ void int_cmt0(void)
 	if(run_mode == STRAIGHT_MODE){
 		tar_speed += accel/1000.0;	//目標速度を設定加速度で更新
 		//最高速度制限
-		if(tar_speed > max_speed){
-			tar_speed = max_speed;	//目標速度を設定最高速度に設定
+		if(max_speed > 0){  //前進時
+		  if(tar_speed > max_speed){
+			 tar_speed = max_speed;	//目標速度を設定最高速度に設定
+		  }
+		}else{  //後進時
+          if(tar_speed < max_speed){
+			 tar_speed = max_speed;	//目標速度を設定最高速度に設定
+		  }
 		}
 				
 	
-	}else if(run_mode == TURN_MODE){
+	}else if(run_mode == TURN_MODE || run_mode == SLA_MODE){
 		
 		//車体中心速度更新
 		tar_speed += accel/1000;
@@ -81,13 +87,24 @@ void int_cmt0(void)
 			
 			
 			//左右のセンサが、それぞれ使える状態であるかどうかチェックして、姿勢制御の偏差を計算
-			if( ( sen_r.is_control == true ) && ( sen_l.is_control == true ) )
+			if( con_wall.r_flag == 1 && con_wall.l_flag == 1 )
 			{									//両方とも有効だった場合の偏差を計算
 				con_wall.error = sen_r.error - sen_l.error;
+				
 			}
-			else								//片方もしくは両方のセンサが無効だった場合の偏差を計算
+			else if ( con_wall.r_flag == 1 && con_wall.l_flag == 0 )
+			{                                   //右壁のみ
+				con_wall.error =  sen_r.error;
+			}
+			else if (con_wall.r_flag == 0 && con_wall.l_flag == 1)
+			{                                   //左壁のみ
+				con_wall.error =  (-sen_l.error);
+			
+			}
+			
+			else 								
 			{
-				con_wall.error = 2.0 * (sen_r.error - sen_l.error);	//片方しか使用しないので2倍する
+                nop();
 			}
 			
 			
@@ -110,41 +127,7 @@ void int_cmt0(void)
 		}else{
 			tar_ang_vel = 0;
 		}
-		
-		/*if(con_wall.enable == false && (sen_fr.value + sen_fl.value <= (TH_SEN_FR+TH_SEN_FL)*5) )
-		{
 
-          if(con_wall.enable == false && sen_r.is_wall == false && sen_r.value < TH_SEN_R_POLE){
-			  sen_r.is_control = false;
-			  sen_r.error = 0;
-		  }else if(con_wall.enable == false && sen_l.is_wall == false && sen_l.value < TH_SEN_L_POLE){
-			  sen_l.is_control = false;
-			  sen_l.error = 0;
-		  }
-			con_wall.p_error = con_wall.error;	//過去の偏差を保存
-			
-			con_wall.error = 2.0 * (sen_r.error - sen_l.error);	//片方しか使用しないので2倍する
-			
-			
-			//DI制御計算
-			con_wall.diff = con_wall.error - con_wall.p_error;	//偏差の微分値を計算
-			con_wall.sum += con_wall.error;				//偏差の積分値を計算
-			
-			if(con_wall.sum > con_wall.sum_max)			//偏差の積分値の最大値を制限
-			{
-				con_wall.sum = con_wall.sum_max;
-			}
-			else if(con_wall.sum < (-con_wall.sum_max))		//偏差の積分値の最低値を制限
-			{
-				con_wall.sum = -con_wall.sum_max;
-			}
-
-			con_wall.p_omega = con_wall.omega;
-			con_wall.omega = con_wall.kp * con_wall.error * 0.5 + con_wall.p_omega * 0.5;	//現在の目標角速度[rad/s]を計算
-			tar_ang_vel = con_wall.omega;
-		}else{
-			tar_ang_vel = 0;
-		}*/
 		
 
 
@@ -185,20 +168,25 @@ void int_cmt0(void)
 	*****************************************************************************************/
 	//フィードバック制御
 	V_r = V_l = 0.0;
-	if(run_mode == STRAIGHT_MODE || run_mode == TURN_MODE){
+	if(run_mode == STRAIGHT_MODE || run_mode == TURN_MODE || run_mode == SLA_MODE){
 	//直進時のフィードバック制御
+
 		//左右モータのフィードバック
 		//速度に対するP制御
+
 		V_r += 1 * (tar_speed - speed) *SPEED_KP/1.0; //15目標値付近で発振
 		V_l += 1 * (tar_speed - speed) *SPEED_KP/1.0;
 		//速度に対するI制御
+
 		V_r += 1 * (I_tar_speed - I_speed) *SPEED_KI/1.0; //(0.4-0.3)*0.1 -> 0.01 
 		V_l += 1 * (I_tar_speed - I_speed) *SPEED_KI/1.0;
 		//速度に対するD制御
+
 		V_r -= 1 * (p_speed - speed) *SPEED_KD/1.0; //(0.4-0.3)*0.1 -> 0.01 
 		V_l -= 1 * (p_speed - speed) *SPEED_KD/1.0;
 
 		//角速度に対するP制御
+
 		V_r += 1 * (tar_ang_vel - ang_vel) *(OMEGA_KP/100.0);
 		V_l -= 1 * (tar_ang_vel - ang_vel) *(OMEGA_KP/100.0);
 		//角速度に対するI制御
@@ -210,7 +198,7 @@ void int_cmt0(void)
 		V_r += 1 * (p_ang_vel - ang_vel) *(OMEGA_KD/100.0); //(0.4-0.3)*0.1 -> 0.01 
 		V_l -= 1 * (p_ang_vel - ang_vel) *(OMEGA_KD/100.0);
 
-        if(run_mode == STRAIGHT_MODE && con_wall.enable == false){
+        if(run_mode == STRAIGHT_MODE && con_wall.enable == false ){ //IMU制御（両側とも壁が無ければ有効）
 		
 		V_r += 1 * (start_degree - degree) *(DEGREE_KP/1000);
 		V_l -= 1 * (start_degree - degree) *(DEGREE_KP/1000);
@@ -472,7 +460,7 @@ void int_cmt1(void)		//センサ読み込み用り込み
 	S12AD.ADCSR.BIT.ADST=1;				//AD変換開始
 	while(S12AD.ADCSR.BIT.ADST);			//AD変換終了まで待つ
 	V_bat = (2.0*3.3*(float)(S12AD.ADDR9/4095.0) );
-	if(V_bat < 3.5){
+	if(V_bat < 3.3){
 		
 		//モータ止める
 		Duty_r = 0;
@@ -502,7 +490,7 @@ void int_cmt1(void)		//センサ読み込み用り込み
 			log[7][log_timer/4] = (int)(1000*V_bat);
 			log[8][log_timer/4] = (int)(len_mouse);
 			log[9][log_timer/4] = (int)(ang_vel*1000);
-			log[10][log_timer/4] = locate_r;
+			log[10][log_timer/4] = (int)(ang_acc*1000);
 			log[11][log_timer/4] = locate_l;
 		}
 	}	
@@ -589,6 +577,9 @@ void int_cmt2(void)
 		len_mouse += (speed_new_r + speed_new_l)/2.0;
 		//距離の計算其の二
 		sum_len_mouse += (speed_new_r + speed_new_l)/2.0;
+		//左右のタイヤの移動距離
+		r_len_mouse += speed_new_r;
+		l_len_mouse += speed_new_l;
 		//左右のセンサの値が閾値以下になってからの移動距離
 		if(sen_r.value < TH_SEN_R){
 			TH_R_len_mouse += (speed_new_r + speed_new_l)/2.0;
@@ -642,3 +633,4 @@ void int_cmt2(void)
 	}	
 	
 }
+

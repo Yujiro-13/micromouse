@@ -62,18 +62,40 @@ void init_map(int x, int y)
 
 	int i,j;
 	
-	for(i = 0; i < MAZESIZE_X; i++)		//迷路の大きさ分ループ(x座標)
+	for(i = 0; i < MAZESIZE_X; i++)		//迷路の大きさ分ループ(x座標)　
 	{
 		for(j = 0; j < MAZESIZE_Y; j++)	//迷路の大きさ分ループ(y座標)
 		{
-			map[i][j] = 255;	//すべて255で埋める
+			map[i][j] = 255;	//すべて255で埋める  ex)map[1][1] = 255,map[1][2] = 255, ...map[1][9] = 255,map[2][1] = 255...
 		}
 	}
 	
-	map[x][y] = 0;				//ゴール座標の歩数を０に設定
+	map[x][y] = 0;				//ゴール座標の歩数を０に設定 
 	
 }
 
+
+void init_map_2(int x, int y)
+{
+//迷路の歩数Mapを初期化する。全体を0xff、引数の座標x,yは0で初期化する
+
+	int i,j;
+	
+	for(i = 0; i < MAZESIZE_X; i++)		//迷路の大きさ分ループ(x座標)　
+	{
+		for(j = 0; j < MAZESIZE_Y; j++)	//迷路の大きさ分ループ(y座標)
+		{
+			if(is_unknown(i,j) == true){  //そのマスにおいて、東西南北いずれかの方角に未発見の壁があればゴールに設定
+				map[i][j] = 0;
+			}
+			else
+			{
+				map[i][j] = 255;
+			}
+		}
+	}
+	
+}
 
 void make_map(int x, int y, int mask)	//歩数マップを作成する
 {
@@ -378,6 +400,7 @@ int get_nextdir(int x, int y, int mask, t_direction *dir)
 
 
 
+
 void search_adachi(int gx, int gy)
 {
 //引数gx,gyに向かって足立法で迷路を探索する
@@ -530,7 +553,7 @@ void search_adachi(int gx, int gy)
                    straight(18,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
                 }
                 else{
-                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
                     }
 				straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);		
 				break;
@@ -567,5 +590,156 @@ void search_adachi(int gx, int gy)
 	}
 	set_wall(mypos.x,mypos.y);		//壁をセット
 	straight(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);	
+
+}
+void slalom_search_adachi(int gx, int gy)
+{
+//引数gx,gyに向かって足立法で迷路を探索する
+	t_direction glob_nextdir;					//次に向かう方向を記録する変数
+
+	accel=SEARCH_ACCEL;
+    len_count = 0;
+	slalom_count = 0;
+
+	if(gx != 0 && gy != 0){
+		straight(20,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+	}
+
+	switch(get_nextdir(gx,gy,MASK_SEARCH,&glob_nextdir))		//次に行く方向を戻り値とする関数を呼ぶ
+	{
+		case front:
+			
+			straight(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		//半区画進む
+			break;
+		
+		case right:
+		    
+			turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);				//右に曲がって
+			straight(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		//半区画進む
+			break;
+		
+		case left:
+		    
+			turn(90,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
+			straight(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		//半区画進む
+			break;
+		
+		case rear:
+		    
+			turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ターン
+			straight(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		//半区画進む
+			break;
+	}
+		accel=S_SEARCH_ACCEL;				//加速度を設定
+		//con_wall.enable = true;					//壁制御を有効にする
+		//MOT_CWCCW_R = MOT_CWCCW_L = MOT_FORWARD;		//前方に進む
+		len_mouse = 0;					//進んだ距離カウント用変数をリセット
+		MTU.TSTR.BIT.CST3 = MTU.TSTR.BIT.CST4 = 1;		//カウントスタート
+	
+		mypos.dir = glob_nextdir;				//方向を更新
+
+
+	//向いた方向によって自分の座標を更新する
+	switch(mypos.dir)
+	{
+		case north:
+			mypos.y++;	//北を向いた時はY座標を増やす
+			break;
+			
+		case east:
+			mypos.x++;	//東を向いた時はX座標を増やす
+			break;
+			
+		case south:
+			mypos.y--;	//南を向いた時はY座標を減らす
+			break;
+		
+		case west:
+			mypos.x--;	//西を向いたときはX座標を減らす
+			break;
+
+	}
+
+	
+	while((mypos.x != gx) || (mypos.y != gy)){				//ゴールするまで繰り返す
+
+		set_wall(mypos.x,mypos.y);					//壁をセット
+
+		
+	
+
+		switch(get_nextdir(gx,gy,MASK_SEARCH,&glob_nextdir))		//次に行く方向を戻り値とする関数を呼ぶ
+		{
+			case front:
+
+				slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		//半区画進む
+				slalom_count = 0;
+				break;
+			
+			case right:
+                slalom(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+				slalom_count++;
+				break;
+			
+			case left:
+                slalom(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,LEFT);
+				slalom_count++;
+				slalom_count++;
+				break;
+			
+			case rear:
+			    
+				slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);		//半区画進む
+				if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(23,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(27,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                }
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(27,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }
+				slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);		
+				break;
+		}
+
+        
+		//con_wall.enable = true;						//壁制御を有効にする
+		len_mouse = 0;						//進んだ距離をカウントする変数をリセット
+		MTU.TSTR.BIT.CST3 = MTU.TSTR.BIT.CST4 = 1;			//カウントスタート
+	
+		mypos.dir = glob_nextdir;					//方向を更新
+		
+		//向いた方向によって自分の座標を更新する
+		switch(mypos.dir)
+		{
+			case north:
+				mypos.y++;	//北を向いた時はY座標を増やす
+				break;
+				
+			case east:
+				mypos.x++;	//東を向いた時はX座標を増やす
+				break;
+				
+			case south:
+				mypos.y--;	//南を向いた時はY座標を減らす
+				break;
+			
+			case west:
+				mypos.x--;	//西を向いたときはX座標を減らす
+				break;
+
+		}
+		
+	}
+	set_wall(mypos.x,mypos.y);		//壁をセット
+	straight(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);	
 
 }

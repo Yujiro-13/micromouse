@@ -111,7 +111,6 @@ void adjust(void)
 					log_timer = 0;
 					len_mouse = 0;
 					straight(SECTION,SEARCH_ACCEL,0,0);
-					
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -156,12 +155,15 @@ void adjust(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
+					BEEP();
 					//BEEP();
 					gyro_get_ref();
 					//BEEP();
 					log_flag = 1;
 					log_timer = 0;
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					slalom_straight_2(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					
+					slalom_straight_2(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
 					MOT_POWER_OFF;
 					log_flag = 0;
 					MOT_POWER_OFF;
@@ -188,9 +190,9 @@ void adjust(void)
 					//BEEP();
 					log_flag = 1;
 					log_timer = 0;
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					
+					back_straight(-20,-S_SEARCH_ACCEL,-S_SEARCH_SPEED,0);
+					straight(20,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					MOT_POWER_OFF;
 					log_flag = 0;
 					MOT_POWER_OFF;

@@ -15,10 +15,13 @@
 //構造体系のグローバル変数
 GLOBAL t_sensor			sen_r, sen_l, sen_fr, sen_fl;		//センサ構造体
 GLOBAL t_control		con_wall;				//制御構造体
+GLOBAL t_control        con_r_wall;              //制御構造体
+GLOBAL t_control        con_l_wall;              //制御構造体
 GLOBAL t_control		con_fwall;				//制御構造体
 GLOBAL t_position		mypos;					//自己座標
 GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//壁の情報を格納する構造体配列
-GLOBAL unsigned char		map[MAZESIZE_X][MAZESIZE_Y];		//歩数マップ
+GLOBAL unsigned char	map[MAZESIZE_X][MAZESIZE_Y];		//歩数マップ
+GLOBAL t_mapFlag        mapFlag[MAZESIZE_X][MAZESIZE_Y];    //全てのマスの属性を保持する配列
 
 //走行系のグローバル変数
 GLOBAL int run_mode;							//真っ直ぐか回転かの走行モード（制御系の切り替えに使用）
@@ -59,9 +62,11 @@ GLOBAL unsigned int			before_locate_r;			//過去の車軸位置	[無次元]
 GLOBAL unsigned int			before_locate_l;			//過去の車軸位置	[無次元]
 GLOBAL int			diff_pulse_r;				//車軸位置の微分値(車軸の回転速度[pulse/ms])
 GLOBAL int			diff_pulse_l;				//車軸位置の微分値(車軸の回転速度[pulse/ms])
+GLOBAL int          bef_diff_pulse_r;           //過去の車軸位置の微分値
+GLOBAL int          bef_diff_pulse_l;           //過去の車軸位置の微分値
 				
 //タイマ系グローバル変数
-GLOBAL unsigned int		timer;					//1mSごとにカウントアップされる変数.
+GLOBAL unsigned int		timer;					//1mS(0.001s)ごとにカウントアップされる変数.
 
 //電圧監視用グローバル変数
 GLOBAL long 			cnt;					//割り込み中のカウント
@@ -78,12 +83,15 @@ GLOBAL float			degree;					//現在の車体角度		[degree]
 //車体移動距離系のグローバル変数
 GLOBAL float			len_mouse;				//マウスの移動距離		[mm]
 GLOBAL float			len_target;				//マウスの目標移動距離		[mm]
-GLOBAL float            len_count;
+GLOBAL float            r_len_mouse;             //右タイヤの移動距離
+GLOBAL float            l_len_mouse;             //左タイヤの移動距離
+GLOBAL float            len_count;               //直進を繰り返した回数のカウント turnまたはslalomの度にreset
 GLOBAL float            TH_R_len_mouse;
 GLOBAL float            TH_L_len_mouse;
 GLOBAL float            sum_len_mouse;
 GLOBAL int              sum;
 GLOBAL int              count;
+GLOBAL int              slalom_count;
 
 //ログ用のグローバル変数
 GLOBAL int			log[12][LOG_CNT];			//ログ用の配列

@@ -18,14 +18,14 @@
 #define WAITLOOP_SLED	180				//LEDを光らせてからAD変換を開始するまでの時間稼ぎ用定数
 
 #define REF_SEN_R	1230				//マウスを迷路中央に置いた時のセンサの値
-#define REF_SEN_L	1320				//マウスを迷路中央に置いた時のセンサの値
+#define REF_SEN_L	1420				//マウスを迷路中央に置いた時のセンサの値
 
-#define TH_SEN_R	    55				//壁があるか否かの閾値	車体を区画の左へ寄せた時のセンサ値(壁あり)
-#define TH_SEN_L	    71				//壁があるか否かの閾値	車体を区画の右へ寄せた時のセンサ値(壁あり)
-#define TH_SEN_FR	    50				//壁があるか否かの閾値	
-#define TH_SEN_FL	    40				//壁があるか否かの閾値
-#define TH_SEN_R_POLE   500             //柱があるか否かの閾値・右
-#define TH_SEN_L_POLE   600             //柱があるか否かの閾値・左
+#define TH_SEN_R	    145				//壁があるか否かの閾値	車体を区画の左へ寄せた時のセンサ値(壁あり)
+#define TH_SEN_L	    151				//壁があるか否かの閾値	車体を区画の右へ寄せた時のセンサ値(壁あり)
+#define TH_SEN_FR	    60				//壁があるか否かの閾値	
+#define TH_SEN_FL	    50				//壁があるか否かの閾値
+#define TH_SEN_R_POLE   700             //柱があるか否かの閾値・右
+#define TH_SEN_L_POLE   800             //柱があるか否かの閾値・左
 #define TH_SEN_R_BE_T   2021            //壁当て直前の閾値。右
 #define TH_SEN_L_BE_T   2276            //壁当て直前の閾値。左
 
@@ -38,13 +38,13 @@
 //Iゲイン　最後に調整する	積分値が合うようにする程度。
 //Dゲイン　二番目に調整する。	P制御によって発生した振動を抑えられる程度に調整
 //車体中心における並進方向速度に関するフィードバックゲイン
-#define SPEED_KP	(70.0)				//Pゲイン
+#define SPEED_KP	(75.0)				//Pゲイン
 #define SPEED_KI	(1.0)				//Iゲイン
-#define SPEED_KD	(0.0)				//Dゲイン　
+#define SPEED_KD	(0.01)				//Dゲイン　
 //車体中心における回転方向速度に関するフィードバックゲイン
-#define OMEGA_KP	(70.0)				//Pゲイン
+#define OMEGA_KP	(75.0)				//Pゲイン
 #define OMEGA_KI	(4.0)				//Iゲイン
-#define OMEGA_KD	(0.0000000)			//Dゲイン
+#define OMEGA_KD	(7.0)			//Dゲイン
 //角度に関するフィードバックゲイン
 #define DEGREE_KP   (80.0) 
 #define DEGREE_KI   (1.0)
@@ -64,14 +64,19 @@
 #define TURN_ACCEL	(PI*12)				//超信地旋回の加速度	[rad/s^2]
 #define	TURN_SPEED	(PI*4)				//超信地旋回の最高速度	[rad/s] (PI[rad/s]->180deg/s)
 #define TURN_MIN_SPEED	(PI/10.0)			//超信地旋回の最低速度	[rad/s]
-#define SLALOM_ACCEL  (122.17)            
-#define SLALOM_SPEED  (12.22)
+#define SLALOM_ACCEL  (153.24)        //143.82  150.45  153.24
+#define SLALOM_SPEED  (10.26)          //10.05    10.23  10.26
+#define SLA_MIN_SPEED (0.16)
+#define SLALOM_ACCEL_2  (164.06)        
+#define SLALOM_SPEED_2  (10.66)          
+#define SLA_MIN_SPEED_2 (0.16)
+
 
 #define WAIT_TIME	500				//各動作後の待機時間	[ms]
 
 //迷路関連パラメータ
-#define GOAL_X	8		//ゴール座標(x)
-#define GOAL_Y	8		//ゴール座標(y)
+#define GOAL_X	16		//ゴール座標(x)
+#define GOAL_Y	16		//ゴール座標(y)
 
 //決定用センサパラメータ
 #define	SEN_DECISION	2000	//メニュー決定用の光センサ閾値
