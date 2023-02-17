@@ -492,9 +492,7 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 	accel = 0;
 	// Œ»İ‹——£‚ğ0‚ÉƒŠƒZƒbƒg
 	len_mouse = 0;
-	r_len_mouse = 0;
-	l_len_mouse = 0;
-
+	
 	
 
 	tar_speed = S_SEARCH_SPEED;
