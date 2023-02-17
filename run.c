@@ -464,10 +464,6 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 	local_degree = degree;
 	tar_degree = 0;
 
-	if(slalom_count == 0){
-		start_degree = degree;
-	}
-
 
 	// Šp‰Á‘¬“xA‰Á‘¬“xAÅ‚Šp‘¬“xÝ’è
 	MOT_POWER_ON;
@@ -505,9 +501,7 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 
 	if (dir == LEFT)
 	{
-        /*if(slalom_count == 3){
-			max_degree = 90 + (90 - start_degree);
-		}*/
+       
 		max_ang_vel = max_ang_velocity;
 		max_degree = deg;
 		ang_acc = ang_accel; // Šp‰Á‘¬“x‚ðÝ’è
@@ -516,8 +510,6 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 			{
 				max_ang_vel = SLALOM_SPEED_2;
 		        max_degree = deg;
-
-
 		        ang_acc = SLALOM_ACCEL_2; // Šp‰Á‘¬“x‚ðÝ’è
 			}
 		}
@@ -583,24 +575,7 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 	 //while(ang_vel >= 0.05 || ang_vel <= -0.05 );
     
 
-	I_tar_ang_vel = 0;
-	I_ang_vel = 0;
-	I_tar_speed = 0;
-	I_speed = 0;
-	I_start_degree = 0;
-	I_degree = 0;
-	degree = 0;
-	len_count = 0;
-
 	
-	accel = 0;
-	tar_speed = 0;
-	tar_ang_vel = 0;
-	ang_vel = 0;
-	start_degree = 0;
-	p_ang_vel = 0;
-	max_ang_vel = 0;
-	max_degree = 0;
 
 	
 	len_target = OFFSET_FOL;
@@ -639,10 +614,6 @@ void slalom(int deg, float ang_accel, float max_ang_velocity, short dir)
 	len_mouse = 0;
 	degree = 0;
 
-	if(slalom_count >= 2){
-		slalom_count = 0;
-		start_degree = 0;
-	}
 	tar_speed = S_SEARCH_SPEED;
 }
 
