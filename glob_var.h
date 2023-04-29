@@ -21,7 +21,6 @@ GLOBAL t_control		con_fwall;				//制御構造体
 GLOBAL t_position		mypos;					//自己座標
 GLOBAL t_wall			wall[MAZESIZE_X][MAZESIZE_Y];		//壁の情報を格納する構造体配列
 GLOBAL unsigned char	map[MAZESIZE_X][MAZESIZE_Y];		//歩数マップ
-GLOBAL t_mapFlag        mapFlag[MAZESIZE_X][MAZESIZE_Y];    //全てのマスの属性を保持する配列
 
 //走行系のグローバル変数
 GLOBAL int run_mode;							//真っ直ぐか回転かの走行モード（制御系の切り替えに使用）
@@ -66,7 +65,7 @@ GLOBAL int          bef_diff_pulse_r;           //過去の車軸位置の微分値
 GLOBAL int          bef_diff_pulse_l;           //過去の車軸位置の微分値
 				
 //タイマ系グローバル変数
-GLOBAL unsigned int		timer;					//1mS(0.001s)ごとにカウントアップされる変数.
+GLOBAL unsigned long		timer;					//1mS(0.001s)ごとにカウントアップされる変数.
 
 //電圧監視用グローバル変数
 GLOBAL long 			cnt;					//割り込み中のカウント
@@ -77,6 +76,8 @@ GLOBAL float			gyro_x;					//ヨー軸ジャイロの現在の値	[無次元]
 GLOBAL float			gyro_x_new;				//ヨー軸ジャイロの最新の値	[無次元]
 GLOBAL float			gyro_ref;				//よー軸ジャイロのリファレンス値[無次元]
 GLOBAL float			degree;					//現在の車体角度		[degree]
+GLOBAL float            last_degree;
+GLOBAL float            radian;                  //[rad]
           
 
 
@@ -92,9 +93,17 @@ GLOBAL float            sum_len_mouse;
 GLOBAL int              sum;
 GLOBAL int              count;
 GLOBAL int              slalom_count;
+     
+//オドメトリのグローバル変数
+GLOBAL float           x_position;             //x座標
+GLOBAL float           y_position;             //y座標
+GLOBAL float           last_x_pos;             //過去のx座標(1制御周期前の値を保存)
+GLOBAL float           last_y_pos;             //過去のy座標(1制御周期前の値を保存)
+GLOBAL unsigned int    now_dir;                //現在向いている方角
+GLOBAL unsigned int    n_d;
 
 //ログ用のグローバル変数
-GLOBAL int			log[12][LOG_CNT];			//ログ用の配列
+GLOBAL int			logs[12][LOG_CNT];			//ログ用の配列
 GLOBAL long			log_timer;				//ログ取りようのタイマ
 GLOBAL int			log_flag;				//ログ取得のタイミング用
 
@@ -113,5 +122,25 @@ GLOBAL float			I_ang_vel;				//実角速度のI成分
 GLOBAL float            I_start_degree;             //目標角度のI成分
 GLOBAL float            I_degree;               //実角度のI成分
 
+//軌道追従用グローバル変数
+GLOBAL float            x_e;
+GLOBAL float            y_e;
+GLOBAL float            theta_e;
+GLOBAL float            th_e;
+GLOBAL float            tar_x;
+GLOBAL float            tar_y;
+GLOBAL float            tar_th;
+GLOBAL float            tar_d_th;
+GLOBAL float            tar_speed_s;
+GLOBAL float            tar_ang_vel_s;
+GLOBAL float            K_x;
+GLOBAL float            K_y;
+GLOBAL float            K_th;
+
 //UI用グローバル変数
 GLOBAL unsigned char		push_switch;				//スイッチが押されたかどうかの変数
+
+GLOBAL long long a;
+GLOBAL long long b;
+GLOBAL long long th;
+

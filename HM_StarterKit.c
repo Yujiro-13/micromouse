@@ -23,6 +23,8 @@
 #include "portdef.h"
 #include "fast.h"
 #include "search.h"
+#include "math.h"
+
 
 #ifdef __cplusplus
 //#include <ios>                        // Remove the comment when you use ios
@@ -45,6 +47,10 @@ void main(void)
 
 	init_all();
 	unsigned long i = 0;
+	//int i = 0;
+	int flash_time = 0;
+	char flash;
+	short ad_mode = 1;
 	
 
 	
@@ -87,7 +93,22 @@ void main(void)
 					log_flag = 1;
 					log_timer = 0;
 					search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ゴールしたら180度回転する
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                    }
+                    else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                         turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                         back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				         straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                    }     
+                    else{
+                        turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                        }			                    	//ゴールしたら180度回転する
 					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
 					map_write();
 					BEEP();
@@ -95,8 +116,8 @@ void main(void)
 					BEEP();//ゴールしたことをアピール
 					wait_ms(100);
 					BEEP();//ゴールしたことをアピール
-					search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//帰ってきたら180度回転	
+					search_adachi(0,0);			//スタート地点まで足立法で帰ってくる	
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
 					MOT_POWER_OFF;
 					map_write();
 					log_flag = 0;
@@ -116,18 +137,33 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-					map_copy();
+					BEEP();
 					degree = 0;
 					timer = 0;
+					log_timer = 0;
 					gyro_get_ref();
 					BEEP();
 					mypos.x = mypos.y = 0;			//座標を初期化
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					fast_run(GOAL_X,GOAL_Y);		//ゴールまで足立法
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ゴールしたら180度回転する
+					slalom_search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }		                  			//ゴールしたら180度回転する
 					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
 					map_write();
 					BEEP();
@@ -135,12 +171,13 @@ void main(void)
 					BEEP();//ゴールしたことをアピール
 					wait_ms(100);
 					BEEP();//ゴールしたことをアピール
-					search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//帰ってきたら180度回転	
+					slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
 					MOT_POWER_OFF;
 					map_write();
 					log_flag = 0;
 					BEEP();
+					wait_ms(500);
 				}
 				
 				break;
@@ -156,24 +193,46 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-					SCI_printf("sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,V_bat*1000,con_wall.omega,ang_vel*1000,locate_r,locate_l\n\r");
-					for(i = 0; i < LOG_CNT; i++){
-						
-						SCI_printf("%d,",i);//time[msec]						
-						SCI_printf("%d,",log[12][i]);
-						SCI_printf("%d,",log[13][i]);
-						SCI_printf("%d,",log[14][i]);
-						SCI_printf("%d,",log[15][i]);
-						SCI_printf("%d,",log[16][i]);
-						SCI_printf("%d,",log[17][i]);
-						SCI_printf("%d,",log[18][i]);
-						SCI_printf("%d,",log[19][i]);
-						SCI_printf("%d,",log[20][i]);
-						SCI_printf("%d,",log[21][i]);
-						SCI_printf("%d,",log[22][i]);
-						SCI_printf("%d\n\r",log[23][i]);	
-					}	
+					BEEP();
+					degree = 0;
+					timer = 0;
+					log_timer = 0;
+					gyro_get_ref();
+					BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					mypos.dir = north;			//方角を初期化
+					log_flag = 1;
+					log_timer = 0;
+					slalom_search_adachi_2(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,SEARCH_ACCEL,SEARCH_SPEED,0);
+                }
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(18,SEARCH_ACCEL,SEARCH_SPEED,0);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }		                  			//ゴールしたら180度回転する
+					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
+					map_write();
+					BEEP();
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					slalom_search_adachi_2(0,0);			//スタート地点まで足立法で帰ってくる
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
+					MOT_POWER_OFF;
+					map_write();
+					log_flag = 0;
+					BEEP();
 					wait_ms(500);
 				}
 				
@@ -190,17 +249,31 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
 					BEEP();
+					map_copy();
+					degree = 0;
+					timer = 0;
 					gyro_get_ref();
-					//BEEP();
+					BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					len_mouse = 0;
-					straight(SECTION*3,SEARCH_ACCEL,SEARCH_SPEED,0);
-					log_flag = 0;
+					fast_slalom_run(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ゴールしたら180度回転する
+					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
+					map_write();
+					BEEP();
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					//search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//帰ってきたら180度回転	
 					MOT_POWER_OFF;
-					//BEEP();
+					//map_write();
+					log_flag = 0;
+					BEEP();
 					wait_ms(500);
 				}
 				
@@ -217,19 +290,47 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-	                BEEP();
+					BEEP();
+					degree = 0;
+					timer = 0;
+					log_timer = 0;
 					gyro_get_ref();
-					//BEEP();
+					BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					len_mouse = 0;
-					straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
-					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);					//180ターン
-				    straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
-					log_flag = 0;
+					slalom_search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }		                  			//ゴールしたら180度回転する
+					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
+					map_write();
+					BEEP();
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					wait_ms(100);
+					BEEP();//ゴールしたことをアピール
+					//slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
 					MOT_POWER_OFF;
-					//BEEP();
+					map_write();
+					log_flag = 0;
+					BEEP();
 					wait_ms(500);		
 				}
 				
@@ -247,8 +348,45 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-
-					wait_ms(500);
+					degree = 0;
+					timer = 0;
+					log_timer = 0;
+					gyro_get_ref();
+					//BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					mypos.dir = north;			//方角を初期化
+					log_flag = 1;
+					log_timer = 0;
+					slalom_search_adachi_2(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }			                  			//ゴールしたら180度回転する
+					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
+					map_write();
+					//BEEP();
+					wait_ms(100);
+					//BEEP();//ゴールしたことをアピール
+					wait_ms(100);
+					//BEEP();//ゴールしたことをアピール
+					//all_slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
+					MOT_POWER_OFF;
+					map_write();
+					log_flag = 0;
+					//BEEP();
 				}
 				
 				break;
@@ -265,13 +403,51 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-
-					wait_ms(500);	
+					degree = 0;
+					timer = 0;
+					log_timer = 0;
+					gyro_get_ref();
+					//BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					x_position = y_position = 0;
+					mypos.dir = north;			//方角を初期化
+					log_flag = 1;
+					log_timer = 0;
+					slalom_search_adachi_t(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+                }
+                else{
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    }			                  			//ゴールしたら180度回転する
+					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
+					map_write();
+					//BEEP();
+					wait_ms(100);
+					//BEEP();//ゴールしたことをアピール
+					wait_ms(100);
+					//BEEP();//ゴールしたことをアピール
+					//all_slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
+					MOT_POWER_OFF;
+					map_write();
+					log_flag = 0;
+					//BEEP();
 				}
 				
 				break;
 				
-			case 8:
+			case 8:  //loop
 				/****************************************
 				*MODE LED STATE				*
 				*					*
@@ -283,7 +459,40 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-					
+					BEEP();
+					gyro_get_ref();
+					BEEP();
+					len_count = 0;
+				
+					log_flag = 1;
+					log_timer = 0;
+					len_mouse = 0;
+                    x_position = y_position = 0;
+
+					straight(20,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					log_flag = 0;
 					wait_ms(500);
 				}
 				
@@ -300,8 +509,48 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
+					BEEP();
+					gyro_get_ref();
+					BEEP();
 
+					len_count = 0;
+					
+					len_mouse = 0;
+					x_position = y_position = 0;
+
+                    now_dir = north;
+
+					straight(20,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                    orb_follow_sla(RIGHT);
+					now_dir = east;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					orb_follow_sla(RIGHT);
+					now_dir = south;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+                    orb_follow_sla(RIGHT);
+					now_dir = west;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					log_flag = 1;
+					log_timer = 0;
+                    orb_follow_sla(RIGHT);
+					now_dir = north;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					log_flag = 0;
+					
 					wait_ms(500);		
 				}
 				
@@ -319,6 +568,41 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
+					gyro_get_ref();
+					//BEEP();
+					wait_ms(100);
+					degree = 0;
+					len_mouse = 0;
+					x_position = y_position = 0;
+                    now_dir = north;
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+					now_dir = south;
+					
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					
+                    orb_follow_sla(LEFT);
+					now_dir = east;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+					
+					log_flag = 1;
+					log_timer = 0;
+					now_dir = west;
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					orb_follow_sla(LEFT);
+					
+					now_dir = south;
+					orb_follow_sla(LEFT);
+                    
+					now_dir = east;
+					
+					orb_follow_sla(RIGHT);
+					log_flag = 0;
+					now_dir = south;
+                    orb_follow_sla(LEFT);
+                    //log_flag = 0;
+					
+					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 
 					wait_ms(500);		
 				}
@@ -337,7 +621,36 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
+                    //BEEP();
+					gyro_get_ref();
+					//BEEP();
+					len_mouse = 0;
+					x_position = 0;
+					y_position = 0;
+					len_count = 0;
+					
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+					now_dir = south;
+					
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					
+					log_flag = 1;
+					log_timer = 0;
+					
+                    orb_follow_sla(LEFT);
+					now_dir = west;
+					orb_follow_sla(LEFT);
+					now_dir = north;
+					orb_follow_sla(LEFT);
+					now_dir = east;
+					orb_follow_sla(LEFT);
+					now_dir = south;
 
+					log_flag = 0;
+					
+					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					
+					
 					wait_ms(500);			
 				}
 				
@@ -356,6 +669,42 @@ void main(void)
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
 
+					gyro_get_ref();
+                    degree = 0;
+					len_mouse = 0;
+					timer = 0;
+					cnt = 0;
+					x_position = 0;
+					y_position = 0;
+					while(1){
+					
+						//gyro
+						SCI_printf("degree: %d\n\r",(int)degree*10);
+						SCI_printf("radian: %d\n\r",(int)degree);			
+						SCI_printf("gyro: %d\n\r", (int)(ang_vel*1000) );	
+
+						//len_mouse
+						SCI_printf("len_mouse: %d\n\r",(int)(len_mouse));
+					
+                        //x,y position
+						SCI_printf("x_position: %d\n\r",(long)(x_position));
+						SCI_printf("y_position: %d\n\r",(long)(y_position));
+						SCI_printf("timer: %d\n\r", timer);
+						SCI_printf("cnt: %d\n\r", cnt);
+
+						wait_ms(100);
+						//画面クリアシーケンス
+						SCI_printf("\x1b[2J");				//クリアスクリーン[CLS]
+						SCI_printf("\x1b[0;0H");			//カーソルを0,0に移動
+						
+						//プッシュスイッチ用処理
+						push_switch = IOex_SWITCH();
+			
+						if(SW_C == 1){
+							BEEP();
+							break;	
+						}
+					}
 					wait_ms(500);		
 				}
 				
@@ -374,7 +723,37 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
+                    //BEEP();
+                    //BEEP();
+					gyro_get_ref();
+					//BEEP();
+					len_mouse = 0;
+					x_position = 0;
+					y_position = 0;
+					len_count = 0;
+					
+                    
+                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+					now_dir = south;
+					
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					
+					log_flag = 1;
+					log_timer = 0;
+					
+                    orb_follow_sla(RIGHT);
+					now_dir = east;
+					orb_follow_sla(RIGHT);
+					now_dir = north;
+					orb_follow_sla(RIGHT);
+					now_dir = west;
+					orb_follow_sla(RIGHT);
+					now_dir = south;
 
+					log_flag = 0;
+					
+					//slalom_straight(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					wait_ms(500);		
 				}
 				
@@ -392,7 +771,23 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-
+                    SCI_printf("time[msec],x_e,y_e,theta_e,now_dir,tar_x,tar_y,tar_th,degree*10,tar_ang_vel*1000,tar_speed*1000,x_postion,y_position\n\r");
+					for(i = 0; i < LOG_CNT; i++){
+						
+						SCI_printf("%d,",i);//time[msec]
+						SCI_printf("%d,",logs[0][i]);
+						SCI_printf("%d,",logs[1][i]);
+						SCI_printf("%d,",logs[2][i]);
+						SCI_printf("%d,",logs[3][i]);
+						SCI_printf("%d,",logs[4][i]);
+						SCI_printf("%d,",logs[5][i]);
+						SCI_printf("%d,",logs[6][i]);
+						SCI_printf("%d,",logs[7][i]);
+						SCI_printf("%d,",logs[8][i]);
+						SCI_printf("%d,",logs[9][i]);
+						SCI_printf("%d,",logs[10][i]);
+						SCI_printf("%d\n\r",logs[11][i]);		
+					}
 					wait_ms(500);		
 				}
 				
@@ -445,7 +840,18 @@ void main(void)
 			for(i = 0; i < 100*1000*10; i++);
 			//BEEP(); 
 		}
-		LED(mode);
+		if(flash_time > 0x00FF){
+			flash_time = 0;
+			if(flash == 0x08){
+				flash = 0x00;
+			}else{
+				flash = 0x08;
+			}
+		}
+			
+		flash_time++;
+		LED(mode | flash);
+		//LED(mode);
 		
 		//プッシュスイッチ用処理
 		push_switch = IOex_SWITCH();
