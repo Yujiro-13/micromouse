@@ -39,17 +39,18 @@ void int_cmt0(void)
 			}
 		}
 	}
-	else if (run_mode == TURN_MODE || run_mode == SLA_MODE)
+	else if (run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == ORBIT_FOLLOWING_MODE)
 	{
 
 		// 車体中心速度更新
-		tar_speed += accel / 1000;
+		tar_speed += accel / 1000.0;
 		// 最高速度制限
 		if (tar_speed > max_speed)
 		{
 			tar_speed = max_speed; // 目標速度を設定最高速度に設定
 		}
 
+        
 		// 角加速度更新
 		tar_ang_vel += ang_acc / 1000.0; // 目標角速度を設定加速度で更新
 		tar_degree += (tar_ang_vel * 180.0 / PI) / 1000.0;
@@ -80,6 +81,7 @@ void int_cmt0(void)
 				tar_degree = max_degree;
 			}
 		}
+		
 	}
 	else if (run_mode == NON_CON_MODE)
 	{
@@ -193,7 +195,7 @@ void int_cmt0(void)
 	*****************************************************************************************/
 	// フィードバック制御
 	V_r = V_l = 0.0;
-	if (run_mode == STRAIGHT_MODE || run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == BACK_STRAIGHT_MODE)
+	if (run_mode == STRAIGHT_MODE || run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == BACK_STRAIGHT_MODE || run_mode == ORBIT_FOLLOWING_MODE)
 	{
 		// 直進時のフィードバック制御
 
@@ -210,7 +212,7 @@ void int_cmt0(void)
 
 		V_r -= 1 * (p_speed - speed) * SPEED_KD / 1.0; //(0.4-0.3)*0.1 -> 0.01
 		V_l -= 1 * (p_speed - speed) * SPEED_KD / 1.0;
-
+        
 		// 角速度に対するP制御
 
 		V_r += 1 * (tar_ang_vel - ang_vel) * (OMEGA_KP / 100.0);
@@ -318,6 +320,7 @@ void int_cmt0(void)
 	*****************************************************************************************/
 	timer++;
 	cnt++;
+
 }
 
 void int_cmt1(void) // センサ読み込み用り込み
@@ -529,18 +532,18 @@ void int_cmt1(void) // センサ読み込み用り込み
 		if (log_timer < (LOG_CNT * 4))
 		{
 
-			logs[0][log_timer / 4] = sen_r.value;
-			logs[1][log_timer / 4] = sen_l.value;
-			logs[2][log_timer / 4] = sen_fr.value;
-			logs[3][log_timer / 4] = sen_fl.value;
-			logs[4][log_timer / 4] = (int)(speed_r * 100);
-			logs[5][log_timer / 4] = (int)(speed_l * 100);
-			logs[6][log_timer / 4] = (int)(degree * 10);
-			logs[7][log_timer / 4] = (int)(1000 * V_bat);
-			logs[8][log_timer / 4] = (int)(len_mouse);
-			logs[9][log_timer / 4] = (int)(ang_vel * 1000);
-			logs[10][log_timer / 4] = (int)(ang_acc * 1000);
-			logs[11][log_timer / 4] = locate_l;
+			logs[0][log_timer / 4] = (int)(x_e);
+			logs[1][log_timer / 4] = (int)(y_e);
+			logs[2][log_timer / 4] = (int)(theta_e);
+			logs[3][log_timer / 4] = (int)(now_dir);
+			logs[4][log_timer / 4] = (int)(tar_x);
+			logs[5][log_timer / 4] = (int)(tar_y);
+			logs[6][log_timer / 4] = (int)(tar_th);
+			logs[7][log_timer / 4] = (int)(degree * 10);
+			logs[8][log_timer / 4] = (int)(tar_ang_vel*1000);
+			logs[9][log_timer / 4] = (int)(tar_speed*1000);
+			logs[10][log_timer / 4] = (long)(x_position);
+			logs[11][log_timer / 4] = (long)(y_position);
 		}
 	}
 
@@ -631,6 +634,7 @@ void int_cmt2(void)
 
 		// 距離の計算
 		len_mouse += (speed_new_r + speed_new_l) / 2.0;
+		
 
 		if (a < 0)
 		{   
@@ -640,10 +644,10 @@ void int_cmt2(void)
 			}
 			else
 			{
-				th = -(a % 360);
+				th = -(a % 360); 
 			}
-			x_position = len_mouse * ((float)cos_table[th] /10000.0);
-			y_position = len_mouse * ((float)-sin_table[th] /10000.0);
+			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] /10000.0);
+			y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)-sin_table[th] /10000.0);
 		}
 		else
 		{
@@ -655,17 +659,17 @@ void int_cmt2(void)
 			{
 				th = (a % 360);
 			}
-			x_position = len_mouse * ((float)cos_table[th] /10000.0);
-		    y_position = len_mouse * ((float)sin_table[th] /10000.0);
+			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] /10000.0);
+		    y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)sin_table[th] /10000.0);
 		}
 
 		
-
+        
 		// 距離の計算其の二
 		sum_len_mouse += (speed_new_r + speed_new_l) / 2.0;
 		// 左右のタイヤの移動距離
-		r_len_mouse += speed_new_r;
-		l_len_mouse += speed_new_l;
+		//r_len_mouse += speed_new_r;
+		//l_len_mouse += speed_new_l;
 		// 左右のセンサの値が閾値以下になってからの移動距離
 		/*if (sen_r.value < TH_SEN_R)
 		{
@@ -723,6 +727,7 @@ void int_cmt2(void)
 			I_degree = -1 * 10000000000;
 		}
 
+		
 		a = (int)degree;
 	}
 }

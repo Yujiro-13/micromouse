@@ -82,6 +82,15 @@ typedef struct
 	unsigned char west:2;	//西の壁情報
 }t_wall;			//壁情報を格納する構造体(ビットフィールド)
 
+typedef struct 
+{
+	float x_pos;
+	float y_pos;
+	float deg;
+	float d_theta;
+}t_odom;
+
+
 
 #define _MYTYPEDEF
 

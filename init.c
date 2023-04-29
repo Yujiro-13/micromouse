@@ -268,11 +268,11 @@ void gyro_get_ref(void){
 	float gyro_ref_temp = 0;
 	gyro_ref = 0;
 	//ジャイロのリファレンス取得
-	for(i = 0; i < 2500; i++){
+	for(i = 0; i < 5000; i++){
 		gyro_ref_temp += (float)gyro_x_new;
 		wait_ms(1);
 	}
-	gyro_ref = (gyro_ref_temp/2500.0);
+	gyro_ref = (gyro_ref_temp/5000.0);
 	degree = 0;
 	wait_ms(100);
 }
