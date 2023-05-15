@@ -51,6 +51,7 @@ void adjust(void)
 					//BEEP();
 					//壁制御を有効にする
 					con_wall.enable = true;
+					degree = 0;
 					while(1){
 						//A/D sensor
 						SCI_printf("sen_r.value: %d\n\r",sen_r.value);
@@ -65,8 +66,10 @@ void adjust(void)
 						SCI_printf("con_wall.omega: %d\n\r",(int)(con_wall.omega*1000));
 						SCI_printf("speed_r: %d\n\r", (int)(speed_r*100));
 						SCI_printf("speed_l: %d\n\r", (int)(speed_l*100));
+						SCI_printf("len_mouse: %d\n\r", (int)(len_mouse));
 						//gyro
-						SCI_printf("degree: %d\n\r",(int)degree*10);;			
+						SCI_printf("degree: %d\n\r",(int)degree*10);
+						SCI_printf("radian: %d\n\r",a);			
 						SCI_printf("gyro: %d\n\r", (int)(ang_vel*1000) );
 						//encoder
 						SCI_printf("locate_r: %d\n\r",locate_r);
@@ -76,6 +79,11 @@ void adjust(void)
 						SCI_printf("switchC: %d\n\r",SW_C);
 						SCI_printf("switchU: %d\n\r",SW_U);
 						SCI_printf("switchD: %d\n\r",SW_D);
+
+                        //x,y position
+						SCI_printf("x_position: %d\n\r",(int)x_position);
+						SCI_printf("y_position: %d\n\r",(int)y_position);
+
 						wait_ms(100);
 						//画面クリアシーケンス
 						SCI_printf("\x1b[2J");				//クリアスクリーン[CLS]
@@ -110,7 +118,7 @@ void adjust(void)
 					log_flag = 1;
 					log_timer = 0;
 					len_mouse = 0;
-					straight(SECTION,SEARCH_ACCEL,0,0);
+					check_straight(90,0,0,0);
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -135,7 +143,7 @@ void adjust(void)
 					//BEEP();
 					log_flag = 1;
 					log_timer = 0;
-					turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+					turn(90,0,0,RIGHT);
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -155,19 +163,30 @@ void adjust(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					BEEP();
-					//BEEP();
 					gyro_get_ref();
 					//BEEP();
+					len_mouse = 0;
+					x_position = 0;
+					y_position = 0;
+					len_count = 0;
+					
+                    
+                    turn(180,TURN_ACCEL,TURN_SPEED,LEFT);
+					now_dir = south;
+					
+					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					
 					log_flag = 1;
 					log_timer = 0;
-					slalom_straight_2(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 					
-					slalom_straight_2(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
-					MOT_POWER_OFF;
+                    orb_follow_sla(LEFT);
+					now_dir = east;
+					orb_follow_sla(RIGHT);
+
 					log_flag = 0;
-					MOT_POWER_OFF;
-					//BEEP();
+					
+					//slalom_straight(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
+					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					wait_ms(500);
 				}
 				
@@ -237,18 +256,18 @@ void adjust(void)
 					for(i = 0; i < LOG_CNT; i++){
 						
 						SCI_printf("%d,",i);//time[msec]
-						SCI_printf("%d,",log[0][i]);
-						SCI_printf("%d,",log[1][i]);
-						SCI_printf("%d,",log[2][i]);
-						SCI_printf("%d,",log[3][i]);
-						SCI_printf("%d,",log[4][i]);
-						SCI_printf("%d,",log[5][i]);
-						SCI_printf("%d,",log[6][i]);
-						SCI_printf("%d,",log[7][i]);
-						SCI_printf("%d,",log[8][i]);
-						SCI_printf("%d,",log[9][i]);
-						SCI_printf("%d,",log[10][i]);
-						SCI_printf("%d\n\r",log[11][i]);		
+						SCI_printf("%d,",logs[0][i]);
+						SCI_printf("%d,",logs[1][i]);
+						SCI_printf("%d,",logs[2][i]);
+						SCI_printf("%d,",logs[3][i]);
+						SCI_printf("%d,",logs[4][i]);
+						SCI_printf("%d,",logs[5][i]);
+						SCI_printf("%d,",logs[6][i]);
+						SCI_printf("%d,",logs[7][i]);
+						SCI_printf("%d,",logs[8][i]);
+						SCI_printf("%d,",logs[9][i]);
+						SCI_printf("%d,",logs[10][i]);
+						SCI_printf("%d\n\r",logs[11][i]);		
 					}
 					wait_ms(500);	
 				}				
