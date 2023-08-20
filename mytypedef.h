@@ -90,6 +90,23 @@ typedef struct
 	float d_theta;
 }t_odom;
 
+/* マスの位置情報 */
+typedef struct pos
+{
+    int x;   /* マスのi座標 */
+    int y;   /* マスのj座標 */
+    int b_x; /* １つ前に辿ったマスのi座標 */
+    int b_y; /* １つ前に辿ったマスのj座標 */
+} POS_T;
+
+/* スタック構造体 */
+typedef struct STACK
+{
+    /* データの最後尾 */
+    int tail;
+    /* スタックされているデータ */
+    POS_T data[81];
+} STACK_T;
 
 
 #define _MYTYPEDEF

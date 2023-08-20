@@ -143,7 +143,7 @@ void adjust(void)
 					//BEEP();
 					log_flag = 1;
 					log_timer = 0;
-					turn(90,0,0,RIGHT);
+					turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
 					log_flag = 0;
 					MOT_POWER_OFF;
 					//BEEP();
@@ -163,30 +163,21 @@ void adjust(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					gyro_get_ref();
+					//gyro_get_ref();
 					//BEEP();
 					len_mouse = 0;
 					x_position = 0;
 					y_position = 0;
 					len_count = 0;
-					
-                    
-                    turn(180,TURN_ACCEL,TURN_SPEED,LEFT);
-					now_dir = south;
-					
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					
+					wait_ms(1000);
+					timer = 0;
 					log_flag = 1;
 					log_timer = 0;
 					
-                    orb_follow_sla(LEFT);
-					now_dir = east;
-					orb_follow_sla(RIGHT);
-
+				    //run_test(1.0, 1.0, 2000);
+					//run_test_2(500, 600, 700, 800, 900, 1000);
+					check_FF_run(200,400,600);
 					log_flag = 0;
-					
-					//slalom_straight(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					wait_ms(500);
 				}
 				
@@ -203,15 +194,25 @@ void adjust(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					BEEP();
+					//BEEP();
 					//BEEP();
 					gyro_get_ref();
 					//BEEP();
+					x_position = y_position = 0;
+					len_mouse = 0;
 					log_flag = 1;
 					log_timer = 0;
 					
-					back_straight(-20,-S_SEARCH_ACCEL,-S_SEARCH_SPEED,0);
-					straight(20,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					//back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					
+					slalom_straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,LEFT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					//slalom_straight(SECTION,2.0,1.0,1.0);
+					//slalom_straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+					//slalom_straight(SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
 					MOT_POWER_OFF;
 					log_flag = 0;
 					MOT_POWER_OFF;
@@ -252,7 +253,18 @@ void adjust(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-					SCI_printf("time[msec],sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,1000*V_bat,len_mouse,ang_vel*1000,locate_r,locate_l\n\r");
+					SCI_printf("time[ms],V_bat,V_l*1000,tar_speed*1000,speed*1000,locate*1000,locate*1000\n\r");
+					for(i = 0; i < LOG_CNT; i++){
+						
+						SCI_printf("%d,",i);//time[msec]
+						SCI_printf("%d,",loga[0][i]);
+						SCI_printf("%d,",loga[1][i]);
+						SCI_printf("%d,",loga[2][i]);
+						SCI_printf("%d,",loga[3][i]);
+						SCI_printf("%d,",loga[4][i]);
+						SCI_printf("%d\n\r",loga[5][i]);
+
+					/*SCI_printf("time[msec],sen_r.value,sen_l.value,sen_fr.value,sen_fl.value,speed_r*100,speed_l*100,degree*10,1000*V_bat,len_mouse,ang_vel*1000,locate_r,locate_l\n\r");
 					for(i = 0; i < LOG_CNT; i++){
 						
 						SCI_printf("%d,",i);//time[msec]
@@ -267,9 +279,9 @@ void adjust(void)
 						SCI_printf("%d,",logs[8][i]);
 						SCI_printf("%d,",logs[9][i]);
 						SCI_printf("%d,",logs[10][i]);
-						SCI_printf("%d\n\r",logs[11][i]);		
+						SCI_printf("%d\n\r",logs[11][i]);*/		
 					}
-					wait_ms(500);	
+					wait_ms(500);
 				}				
 				break;
 			//mode0~7以外の場合。何もしない。

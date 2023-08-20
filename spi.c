@@ -40,7 +40,7 @@ void init_spi_gyro(void)
 	MSTP_RSPI1 = 0;
 	SYSTEM.PRCR.WORD = 0xA500;
 	
-	RSPI1.SSLP.BYTE	= 	0x0e;	//SSLB0のみアクティブLOW　残りはアクティブHIGH
+	RSPI1.SSLP.BYTE	= 	0x0e;	//SSLP0のみアクティブLOW　残りはアクティブHIGH　SSLP下位4bitを0000->1110
 	RSPI1.SPPCR.BYTE=	0x00;	//RSPI通常モード　MOSIの出力値は前回転送の最終データ
 	
 	//ビットレート設定
@@ -202,12 +202,12 @@ void write_spdr_gyro(void)
 	SPDRに送信データを書き込む関数
 	今回はwho am I のアドレスにアクセス
 	*****************************************************************************************/
-	if(gyro_write_cnt == 0){
+	///if(gyro_write_cnt == 0){
 		RSPI1.SPDR.LONG = gyro_address;	//アドレス送信 
 		RSPI1.SPCR.BIT.SPTIE = 0;		//RSPI送信割り込み要求の発生を禁止
 		RSPI1.SPCR2.BIT.SPIIE = 1;		//RSPIアイドル割り込み要求の発生を許可
-	}
-	gyro_write_cnt++;
+	//}
+	//gyro_write_cnt++;
 }
 
 void spii_int_gyro(void)
@@ -303,7 +303,7 @@ void init_spi_enc(void)
 	//シーケンス長の設定
 	RSPI0.SPSCR.BYTE = 	0x00;	//シーケンス長1に設定
 	
-	//コマンドレジスタの設定
+	//コマンドレジスタの設定 Datasheet P.1639
 	//シーケンス長の長さ分だけ行う
 	RSPI0.SPCMD0.BIT.CPHA = 	0x01;	//偶数エッジでデータサンプル、奇数エッジでデータ変化
 	RSPI0.SPCMD0.BIT.CPOL = 	0x01;	//アイドル時のRSPCKがHigh

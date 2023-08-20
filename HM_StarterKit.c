@@ -92,7 +92,7 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					search_adachi(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
 					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
@@ -116,7 +116,7 @@ void main(void)
 					BEEP();//ゴールしたことをアピール
 					wait_ms(100);
 					BEEP();//ゴールしたことをアピール
-					search_adachi(0,0);			//スタート地点まで足立法で帰ってくる	
+					search_adachi(0,0,0,0,0,0,0,0);			//スタート地点まで足立法で帰ってくる	
 					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
 					MOT_POWER_OFF;
 					map_write();
@@ -147,7 +147,7 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					slalom_search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					slalom_search_adachi(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
 					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
@@ -171,7 +171,7 @@ void main(void)
 					BEEP();//ゴールしたことをアピール
 					wait_ms(100);
 					BEEP();//ゴールしたことをアピール
-					slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					slalom_search_adachi(0,0,0,0,0,0,0,0);			//スタート地点まで足立法で帰ってくる
 					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
 					MOT_POWER_OFF;
 					map_write();
@@ -203,14 +203,15 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					slalom_search_adachi_2(GOAL_X,GOAL_Y);		//ゴールまで足立法
-					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+					slalom_search_adachi_2(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
+					/*if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
 					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-					straight(18,SEARCH_ACCEL,SEARCH_SPEED,0);
+					straight(18,SEARCH_ACCEL,SE
+					ARCH_SPEED,0);
                 }
                 else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
@@ -219,7 +220,8 @@ void main(void)
                 }
                 else{
                     turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-                    }		                  			//ゴールしたら180度回転する
+                    }*/		                  			
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);     //ゴールしたら180度回転する
 					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
 					map_write();
 					BEEP();
@@ -227,7 +229,7 @@ void main(void)
 					BEEP();//ゴールしたことをアピール
 					wait_ms(100);
 					BEEP();//ゴールしたことをアピール
-					slalom_search_adachi_2(0,0);			//スタート地点まで足立法で帰ってくる
+					slalom_search_adachi_2(0,0,0,0,0,0,0,0);			//スタート地点まで足立法で帰ってくる
 					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
 					MOT_POWER_OFF;
 					map_write();
@@ -300,7 +302,7 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					slalom_search_adachi(GOAL_X,GOAL_Y);		//ゴールまで足立法
+					slalom_search_adachi(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
 					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
@@ -357,23 +359,39 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					slalom_search_adachi_2(GOAL_X,GOAL_Y);		//ゴールまで足立法
-					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+					slalom_search_adachi_2(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
+					/*if(sen_fl.is_wall == true && sen_fr.is_wall == true && sen_l.is_wall == true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED/2,0);
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
-                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+					wait_ms(100);
+					slalom_straight_2(15,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else if(sen_fl.is_wall == true && sen_fr.is_wall == true && sen_r.is_wall == true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(90,TURN_ACCEL,TURN_SPEED,LEFT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
-                }
-                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
-                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
-                }
-                else{
-                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-                    }			                  			//ゴールしたら180度回転する
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED/2,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,LEFT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					wait_ms(100);
+					slalom_straight_2(15,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				    wait_ms(100);
+				    slalom_straight_2(15,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else{
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+				}*/
+					//slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);			                  			
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);			//ゴールしたら180度回転する//ゴールしたら180度回転する
 					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
 					map_write();
 					//BEEP();
@@ -382,6 +400,7 @@ void main(void)
 					wait_ms(100);
 					//BEEP();//ゴールしたことをアピール
 					//all_slalom_search_adachi(0,0);			//スタート地点まで足立法で帰ってくる
+					//depth_first_search(0,0);
 					//turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);	
 					MOT_POWER_OFF;
 					map_write();
@@ -413,23 +432,38 @@ void main(void)
 					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					slalom_search_adachi_t(GOAL_X,GOAL_Y);		//ゴールまで足立法
-					if(sen_r.is_wall == true && sen_l.is_wall == true && sen_fr.is_wall == true && sen_fl.is_wall == true){
+					slalom_search_adachi_t(GOAL_X,GOAL_Y,GOAL_X1,GOAL_Y1,GOAL_X2,GOAL_Y2,GOAL_X3,GOAL_Y3);		//ゴールまで足立法
+					if(sen_fl.is_wall == true && sen_fr.is_wall == true && sen_l.is_wall == true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED/2,0);
                     turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-					straight(21,SEARCH_ACCEL,SEARCH_SPEED,0);
-                    turn(90,TURN_ACCEL,TURN_SPEED,RIGHT);
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else if(sen_fl.is_wall == true && sen_fr.is_wall == true && sen_r.is_wall == true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(90,TURN_ACCEL,TURN_SPEED,LEFT);
                     back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-					straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
-                }
-                else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
-                   turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-                   back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
-				   straight(18,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
-                }
-                else{
-                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-                    }			                  			//ゴールしたら180度回転する
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED/2,0);
+                    turn(90,TURN_ACCEL,TURN_SPEED,LEFT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+					wait_ms(100);
+					slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else if(sen_fr.is_wall == true && sen_fl.is_wall ==true){
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+                    back_straight(-28,-SEARCH_ACCEL,-SEARCH_SPEED,0);
+				    wait_ms(100);
+				    slalom_straight_2(20,SEARCH_ACCEL,SEARCH_SPEED,0);
+				}else{
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
+				}
+								                  			//ゴールしたら180度回転する
 					mypos.dir = (mypos.dir+6) % 4;		//方角を更新
 					map_write();
 					//BEEP();
@@ -469,28 +503,27 @@ void main(void)
 					len_mouse = 0;
                     x_position = y_position = 0;
 
-					straight(20,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-                    slalom(90,SLALOM_ACCEL,SLALOM_SPEED,RIGHT);
+					slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+                    slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+                    slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
+					slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					log_flag = 0;
 					wait_ms(500);
@@ -513,6 +546,9 @@ void main(void)
 					gyro_get_ref();
 					BEEP();
 
+					log_flag = 1;
+					log_timer = 0;
+
 					len_count = 0;
 					
 					len_mouse = 0;
@@ -526,19 +562,19 @@ void main(void)
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-                    orb_follow_sla(RIGHT);
+                    Kanayama_sla(RIGHT);
 					now_dir = east;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					orb_follow_sla(RIGHT);
+					Kanayama_sla(RIGHT);
 					now_dir = south;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-                    orb_follow_sla(RIGHT);
+                    Kanayama_sla(RIGHT);
 					now_dir = west;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
@@ -546,7 +582,7 @@ void main(void)
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					log_flag = 1;
 					log_timer = 0;
-                    orb_follow_sla(RIGHT);
+                    Kanayama_sla(RIGHT);
 					now_dir = north;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					log_flag = 0;
@@ -580,7 +616,7 @@ void main(void)
 					
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
 					
-                    orb_follow_sla(LEFT);
+                    Kanayama_sla(LEFT);
 					now_dir = east;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
 					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
@@ -589,17 +625,17 @@ void main(void)
 					log_timer = 0;
 					now_dir = west;
 					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					orb_follow_sla(LEFT);
+					Kanayama_sla(LEFT);
 					
 					now_dir = south;
-					orb_follow_sla(LEFT);
+					Kanayama_sla(LEFT);
                     
 					now_dir = east;
 					
-					orb_follow_sla(RIGHT);
+					Kanayama_sla(RIGHT);
 					log_flag = 0;
 					now_dir = south;
-                    orb_follow_sla(LEFT);
+                    Kanayama_sla(LEFT);
                     //log_flag = 0;
 					
 					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
@@ -620,35 +656,18 @@ void main(void)
 			
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-                    //BEEP();
+					BEEP();
+					degree = 0;
+					timer = 0;
+					log_timer = 0;
 					gyro_get_ref();
-					//BEEP();
-					len_mouse = 0;
-					x_position = 0;
-					y_position = 0;
-					len_count = 0;
-					
-                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-					now_dir = south;
-					
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					
+					BEEP();
+					mypos.x = mypos.y = 0;			//座標を初期化
+					mypos.dir = north;			//方角を初期化
 					log_flag = 1;
 					log_timer = 0;
-					
-                    orb_follow_sla(LEFT);
-					now_dir = west;
-					orb_follow_sla(LEFT);
-					now_dir = north;
-					orb_follow_sla(LEFT);
-					now_dir = east;
-					orb_follow_sla(LEFT);
-					now_dir = south;
-
-					log_flag = 0;
-					
-					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
+					depth_first_search(GOAL_X,GOAL_Y);
+					turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
 					
 					
 					wait_ms(500);			
@@ -723,55 +742,13 @@ void main(void)
 				//センサーの前に手をかざしてスタート
 				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
 					//BEEP();
-                    //BEEP();
-                    //BEEP();
-					gyro_get_ref();
-					//BEEP();
-					len_mouse = 0;
-					x_position = 0;
-					y_position = 0;
-					len_count = 0;
-					
-                    
-                    turn(180,TURN_ACCEL,TURN_SPEED,RIGHT);
-					now_dir = south;
-					
-					slalom_straight_2(HALF_SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					
-					log_flag = 1;
-					log_timer = 0;
-					
-                    orb_follow_sla(RIGHT);
-					now_dir = east;
-					orb_follow_sla(RIGHT);
-					now_dir = north;
-					orb_follow_sla(RIGHT);
-					now_dir = west;
-					orb_follow_sla(RIGHT);
-					now_dir = south;
-
-					log_flag = 0;
-					
-					//slalom_straight(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-					slalom_straight_2(SECTION,S_SEARCH_ACCEL,S_SEARCH_SPEED,0);
-					wait_ms(500);		
-				}
-				
-				break;
-				
-			case 14:
-				/****************************************
-				*MODE LED STATE				*
-				*					*
-				*	D3	D4	D5	D6	*
-				*	X	O	O	O	*
-				*					*
-				*****************************************/
-			
-				//センサーの前に手をかざしてスタート
-				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
-					//BEEP();
-                    SCI_printf("time[msec],x_e,y_e,theta_e,now_dir,tar_x,tar_y,tar_th,degree*10,tar_ang_vel*1000,tar_speed*1000,x_postion,y_position\n\r");
+                    SCI_printf("time[msec],x_postion,y_position\n\r");
+					for(i = 0; i < LOG_CNT; i++){
+						
+						SCI_printf("%d,",i);//time[msec]
+						SCI_printf("%d,",loga[0][i]);
+						SCI_printf("%d\n\r",loga[1][i]);	
+					/*SCI_printf("time[msec],x_e,y_e,theta_e,now_dir,tar_x,tar_y,tar_th,degree*10,tar_ang_vel*1000,tar_speed*1000,x_postion,y_position\n\r");
 					for(i = 0; i < LOG_CNT; i++){
 						
 						SCI_printf("%d,",i);//time[msec]
@@ -788,7 +765,66 @@ void main(void)
 						SCI_printf("%d,",logs[10][i]);
 						SCI_printf("%d\n\r",logs[11][i]);		
 					}
-					wait_ms(500);		
+					wait_ms(500);*/		
+					}
+					wait_ms(500);	
+				}
+				
+				break;
+				
+			case 14:
+				/****************************************
+				*MODE LED STATE				*
+				*					*
+				*	D3	D4	D5	D6	*
+				*	X	O	O	O	*
+				*					*
+				*****************************************/
+			
+				//センサーの前に手をかざしてスタート
+				if(sen_fr.value + sen_fl.value + sen_r.value + sen_l.value > SEN_DECISION * 4){
+					//BEEP();
+                    gyro_get_ref();
+                    degree = 0;
+					len_mouse = 0;
+					timer = 0;
+					cnt = 0;
+					x_position = 0;
+					y_position = 0;
+					while(1){
+					
+						//gyro
+						SCI_printf("degree*10: %d\n\r",(int)gyro_x);
+						SCI_printf("degree: %d\n\r",(int)degree);			
+						SCI_printf("ang_vel*1000: %d\n\r", (int)(ang_vel*1000) );	
+
+						//acccel
+						SCI_printf("accel_x_new: %d\n\r",(int)(accel_x_new));
+                        SCI_printf("accel_x: %d\n\r",(int)(accel_x*1000));
+
+						//len_mouse
+						//SCI_printf("len_mouse: %d\n\r",(int)(len_mouse));
+					
+                        //x,y position
+						//SCI_printf("x_position: %d\n\r",(long)(x_position));
+						//SCI_printf("y_position: %d\n\r",(long)(y_position));
+						//SCI_printf("timer: %d\n\r", timer);
+						//SCI_printf("cnt: %d\n\r", cnt);
+
+						wait_ms(100);
+						//画面クリアシーケンス
+						SCI_printf("\x1b[2J");				//クリアスクリーン[CLS]
+						SCI_printf("\x1b[0;0H");			//カーソルを0,0に移動
+						
+						//プッシュスイッチ用処理
+						push_switch = IOex_SWITCH();
+			
+						if(SW_C == 1){
+							BEEP();
+							break;	
+						}
+					}
+					wait_ms(500);	
 				}
 				
 				break;

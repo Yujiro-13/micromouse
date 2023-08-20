@@ -130,15 +130,16 @@ void fast_slalom_run(int x, int y)
 	t_direction glob_nextdir;
 	int straight_count=0;
 
-	/*if(x != 0 && y != 0){
-		straight(10,S_SEARCH_ACCEL,S_SEARCH_SPEED,S_SEARCH_SPEED);
-	}*/
+	if(x != 0 && y != 0){
+		straight(10,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+	}
 
 	//現在の向きから、次に行くべき方向へ向く
 	switch(get_nextdir(x,y,MASK_SECOND,&glob_nextdir))	//次に行く方向を戻り値とする関数を呼ぶ
 	{
 		case front:
-			straight_count++;			//前向きだった場合は直線を走る距離を伸ばす
+		    slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+			straight_count = 0;			//前向きだった場合は直線を走る距離を伸ばす
 			break;
 		
 		case right:					//右に向く
@@ -193,19 +194,19 @@ void fast_slalom_run(int x, int y)
 				break;
 			
 			case right:
-				slalom_straight_2(SECTION*straight_count,S_FAST_ACCEL,S_FAST_SPEED,S_FAST_SPEED);
-				slalom(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);				//右に曲がって
+				slalom_straight_2(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+				slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,RIGHT);				//右に曲がって
 				straight_count = 0;			//走る直線の距離をリセット
 				break;
 			
 			case left:
-				slalom_straight_2(SECTION*straight_count,S_FAST_ACCEL,S_FAST_SPEED,S_FAST_SPEED);
-				slalom(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,LEFT);				//左に曲がって
+				slalom_straight_2(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+				slalom_2(90,SLALOM_ACCEL_2,SLALOM_SPEED_2,LEFT);				//左に曲がって
 				straight_count = 0;			//走る直線の距離をリセット
 				break;
 			
 			case rear:
-				slalom_straight_2(SECTION*straight_count,S_FAST_ACCEL,S_FAST_SPEED,S_FAST_SPEED);
+				slalom_straight_2(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
 				turn(180,TURN_ACCEL,TURN_SPEED,LEFT);				//左に曲がって
 				straight_count = 1;			//走る直線の距離をリセット
 				break;
@@ -234,8 +235,8 @@ void fast_slalom_run(int x, int y)
 
 		}
 	}
-	slalom_straight_2(SECTION*straight_count,S_FAST_ACCEL,S_FAST_SPEED,S_FAST_SPEED);
-	slalom_straight_2(HALF_SECTION,S_FAST_ACCEL,S_FAST_SPEED,0.0);
+	slalom_straight_2(SECTION*straight_count,SEARCH_ACCEL,SEARCH_SPEED,SEARCH_SPEED);
+	slalom_straight_2(HALF_SECTION,SEARCH_ACCEL,SEARCH_SPEED,0.0);
 
 }
 

@@ -4,7 +4,10 @@ void preprocess_spi_gyro_2byte(int address);
 int ovre_check(void);
 int gyro_read_check(void);
 int gyro_write_check(void);
-int read_gyro_data(void);
+//float read_gyro_data(void);
+//float read_accel_data(void);
+//float gyro_z(void);
+//float acccel_x(void);
 
 
 //For encoder

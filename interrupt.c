@@ -29,6 +29,7 @@ void int_cmt0(void)
 			if (tar_speed > max_speed)
 			{
 				tar_speed = max_speed; // 目標速度を設定最高速度に設定
+									   // accel = 0;
 			}
 		}
 		else
@@ -36,10 +37,11 @@ void int_cmt0(void)
 			if (tar_speed < max_speed)
 			{
 				tar_speed = max_speed; // 目標速度を設定最高速度に設定
+									   // accel = 0;
 			}
 		}
 	}
-	else if (run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == ORBIT_FOLLOWING_MODE)
+	else if (run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == ORBIT_FOLLOWING_MODE || run_mode == FF_MODE)
 	{
 
 		// 車体中心速度更新
@@ -50,7 +52,6 @@ void int_cmt0(void)
 			tar_speed = max_speed; // 目標速度を設定最高速度に設定
 		}
 
-        
 		// 角加速度更新
 		tar_ang_vel += ang_acc / 1000.0; // 目標角速度を設定加速度で更新
 		tar_degree += (tar_ang_vel * 180.0 / PI) / 1000.0;
@@ -81,7 +82,6 @@ void int_cmt0(void)
 				tar_degree = max_degree;
 			}
 		}
-		
 	}
 	else if (run_mode == NON_CON_MODE)
 	{
@@ -193,53 +193,166 @@ void int_cmt0(void)
 	目標速度の偏差から出力電圧にフィードバック
 
 	*****************************************************************************************/
-	// フィードバック制御
+	// フィードバック制御 制御周期を含めたゲインを使用する
 	V_r = V_l = 0.0;
 	if (run_mode == STRAIGHT_MODE || run_mode == TURN_MODE || run_mode == SLA_MODE || run_mode == BACK_STRAIGHT_MODE || run_mode == ORBIT_FOLLOWING_MODE)
 	{
+		// フィードフォワード制御
+		// 並進方向
+		if (ff_accel > 0.0)
+		{
+			V_r += ff_accel * (0.60);
+			V_l += ff_accel * (0.60);
+		}
+		else
+		{
+			V_r += ff_accel * Ka + speed * Kv;
+			V_l += ff_accel * Ka + speed * Kv;
+		}
+		// 回転方向 とりあえず加速だけ
+		if (cnt < 2)
+		{
+			V_r += ff_ang_acc * (0.011);
+		    V_l -= ff_ang_acc * (0.011);
+		}
+		
+		
+
 		// 直進時のフィードバック制御
 
 		// 左右モータのフィードバック
 		// 速度に対するP制御
+		if (FB_flag == 1)
+		{
+			V_r += 1 * (tar_speed - speed) * SPEED_KP / 1.0; // 15目標値付近で発振
+			V_l += 1 * (tar_speed - speed) * SPEED_KP / 1.0;
+			// 速度に対するI制御
 
-		V_r += 1 * (tar_speed - speed) * SPEED_KP / 1.0; // 15目標値付近で発振
-		V_l += 1 * (tar_speed - speed) * SPEED_KP / 1.0;
-		// 速度に対するI制御
+			V_r += 1 * (I_tar_speed - I_speed) * SPEED_KI / 1.0; //(0.4-0.3)*0.1 -> 0.01
+			V_l += 1 * (I_tar_speed - I_speed) * SPEED_KI / 1.0;
+			// 速度に対するD制御
 
-		V_r += 1 * (I_tar_speed - I_speed) * SPEED_KI / 1.0; //(0.4-0.3)*0.1 -> 0.01
-		V_l += 1 * (I_tar_speed - I_speed) * SPEED_KI / 1.0;
-		// 速度に対するD制御
+			V_r -= 1 * (p_speed - speed) * SPEED_KD / 1.0; //(0.4-0.3)*0.1 -> 0.01
+			V_l -= 1 * (p_speed - speed) * SPEED_KD / 1.0;
 
-		V_r -= 1 * (p_speed - speed) * SPEED_KD / 1.0; //(0.4-0.3)*0.1 -> 0.01
-		V_l -= 1 * (p_speed - speed) * SPEED_KD / 1.0;
-        
-		// 角速度に対するP制御
+			// 角速度に対するP制御
 
-		V_r += 1 * (tar_ang_vel - ang_vel) * (OMEGA_KP / 100.0);
-		V_l -= 1 * (tar_ang_vel - ang_vel) * (OMEGA_KP / 100.0);
-		// 角速度に対するI制御
+			V_r += 1 * (tar_ang_vel - ang_vel) * (OMEGA_KP / 100.0);
+			V_l -= 1 * (tar_ang_vel - ang_vel) * (OMEGA_KP / 100.0);
+			// 角速度に対するI制御
 
-		V_r += 1 * (I_tar_ang_vel - I_ang_vel) * (OMEGA_KI / 100.0); //(0.4-0.3)*0.1 -> 0.01
-		V_l -= 1 * (I_tar_ang_vel - I_ang_vel) * (OMEGA_KI / 100.0);
-		// 角速度に対するD制御
+			V_r += 1 * (I_tar_ang_vel - I_ang_vel) * (OMEGA_KI / 100.0); //(0.4-0.3)*0.1 -> 0.01
+			V_l -= 1 * (I_tar_ang_vel - I_ang_vel) * (OMEGA_KI / 100.0);
+			// 角速度に対するD制御
 
-		V_r += 1 * (p_ang_vel - ang_vel) * (OMEGA_KD / 100.0); //(0.4-0.3)*0.1 -> 0.01
-		V_l -= 1 * (p_ang_vel - ang_vel) * (OMEGA_KD / 100.0);
+			V_r += 1 * (p_ang_vel - ang_vel) * (OMEGA_KD / 100.0); //(0.4-0.3)*0.1 -> 0.01
+			V_l -= 1 * (p_ang_vel - ang_vel) * (OMEGA_KD / 100.0);
 
-		if (run_mode == STRAIGHT_MODE && con_wall.enable == false)
-		{ // IMU制御（両側とも壁が無ければ有効）
+			if (run_mode == STRAIGHT_MODE && con_wall.enable == false)
+			{ // 角度制御（両側とも壁が無ければ有効）
 
-			V_r += 1 * (start_degree - degree) * (DEGREE_KP / 1000);
-			V_l -= 1 * (start_degree - degree) * (DEGREE_KP / 1000);
+				V_r += 1 * (start_degree - degree) * (DEGREE_KP / 1000);
+				V_l -= 1 * (start_degree - degree) * (DEGREE_KP / 1000);
 
-			V_r += 1 * (I_start_degree - I_degree) * (DEGREE_KI / 1000);
-			V_l -= 1 * (I_start_degree - I_degree) * (DEGREE_KI / 1000);
+				V_r += 1 * (I_start_degree - I_degree) * (DEGREE_KI / 1000);
+				V_l -= 1 * (I_start_degree - I_degree) * (DEGREE_KI / 1000);
+			}
 		}
+		FB_flag = 1;
+	}
+	else if (run_mode == FF_MODE)
+	{
+		// T_motor = (MASS * (TIRE_RADIUS / 1000) * accel) / (2 * (1/REDUCTION_RATIO));
+		// T_motor = 0.000015395;
+		// Motor_speed = (60 * speed) / (2 * (1/REDUCTION_RATIO) * PI * (TIRE_RADIUS / 1000));
+		// V_r += (R * (T_motor/Kt)) + Ke * Motor_speed;
+		// V_l += (R * (T_motor/Kt)) + Ke * Motor_speed;
+		// box_A = (R * T_motor / Kt);
+		// box_B = Ke * Motor_speed;
+		/*if (ff_accel > 0.0)
+		{
+			V_r += ff_accel * (0.60);
+			V_l += ff_accel * (0.60);
+		}
+		else
+		{
+			V_r += ff_accel * Ka + speed * Kv;
+			V_l += ff_accel * Ka + speed * Kv;
+		}*/
+		V_r += ff_accel * (0.1836) + speed * (0.4274) + (0.4282);
+		V_l += ff_accel * (0.1836) + speed * (0.4274) + (0.4282);
+
+		/*if (ff_ang_acc > 0.0)
+		{
+			V_r += ff_ang_acc * (0.02);
+			V_l -= ff_ang_acc * (0.02);
+		}
+		else*/
+		//{
+		/*if (TURN_DIR == LEFT)
+		{
+			if (ff_ang_acc > 0)
+			{
+				V_r += ff_ang_acc * (0.020);
+				V_l -= ff_ang_acc * (0.020);
+			}
+			else
+			{
+				V_r += ff_ang_acc * (0.015) + speed * (15.0);
+				V_l -= ff_ang_acc * (0.015) + speed * (15.0);
+			}
+		}
+		else if (TURN_DIR == RIGHT)
+		{
+			if (ff_ang_acc < 0)
+			{
+				V_r += ff_ang_acc * (0.02) + speed * (0.0);
+				V_l -= ff_ang_acc * (0.02) + speed * (0.0);
+			}
+			else
+			{
+				V_r += ff_ang_acc * (0.015) + speed * (20.0);
+				V_l -= ff_ang_acc * (0.015) + speed * (20.0);
+			}
+		}*/
+
+		//}
 	}
 	else if (run_mode == NON_CON_MODE)
 	{
 		// 何もしない
-		nop();
+		// nop();
+
+		if (timer < 1000)
+		{
+			V_l = 0.5;
+			V_r = 0.5;
+		}
+		else if (1000 <= timer && timer < 1200)
+		{
+			V_l = 0.6;
+			V_r = 0.6;
+		}
+		else if (1200 <= timer && timer < 1400)
+		{
+			V_l = 0.7;
+			V_r = 0.7;
+		}
+		else if (1400 <= timer && timer < 1600)
+		{
+			V_l = 0.8;
+			V_r = 0.8;
+		}
+		else if (1600 <= timer && timer < 1800)
+		{
+			V_l = 0.9;
+			V_r = 0.9;
+		}
+		else
+		{
+			V_l = 1.0;
+			V_r = 1.0;
+		}
 	}
 	else
 	{
@@ -260,7 +373,7 @@ void int_cmt0(void)
 		{
 			// モータを正転に設定
 			MOT_CWCCW_R = MOT_R_FORWARD; // 右モータを正転に設定
-			// V_r = V_r;			//電圧は正なのでそのまま
+										 // V_r = V_r;			//電圧は正なのでそのまま
 		}
 		else
 		{
@@ -274,7 +387,7 @@ void int_cmt0(void)
 		{
 			// モータを正転に設定
 			MOT_CWCCW_L = MOT_L_FORWARD; // 左モータを正転に設定
-			// V_l = V_l;			//電圧は正なのでそのまま
+										 // V_l = V_l;			//電圧は正なのでそのまま
 		}
 		else
 		{
@@ -283,6 +396,37 @@ void int_cmt0(void)
 			V_l = -V_l;				  // 電圧を正の値へ反転
 		}
 	}
+
+	/*if (run_mode == NON_CON_MODE)
+	{
+		// 右モータの出力電圧が正の場合
+		if (M_r > 0)
+		{
+			// モータを正転に設定
+			MOT_CWCCW_R = MOT_R_FORWARD; // 右モータを正転に設定
+			// V_r = V_r;			//電圧は正なのでそのまま
+		}
+		else
+		{
+			// 右モータの出力電圧が負の場合
+			MOT_CWCCW_R = MOT_R_BACK; // 右モータを逆回転に設定
+			M_r = -M_r;				  // 電圧を正の値へ反転
+		}
+
+		// 左モータの出力電圧が正の場合
+		if (M_l > 0)
+		{
+			// モータを正転に設定
+			MOT_CWCCW_L = MOT_L_FORWARD; // 左モータを正転に設定
+			// V_l = V_l;			//電圧は正なのでそのまま
+		}
+		else
+		{
+			// 左モータの出力電圧が負の場合
+			MOT_CWCCW_L = MOT_L_BACK; // 左モータを逆回転に設定
+			M_l = -M_l;				  // 電圧を正の値へ反転
+		}
+	}*/
 	/*****************************************************************************************
 	出力電圧の制限
 		モータへの出力電圧の上限を2Vに制限
@@ -312,7 +456,14 @@ void int_cmt0(void)
 	{
 		MOT_OUT_R = (short)(240.0 * Duty_r);
 		MOT_OUT_L = (short)(240.0 * Duty_l);
-	}
+		// MOT_OUT_R = M_r;
+		// MOT_OUT_L = M_l;
+
+	} /*else if (run_mode == NON_CON_MODE)
+	 {
+		 MOT_OUT_R = 40;
+		 MOT_OUT_L = 40;
+	 }*/
 
 	/*****************************************************************************************
 	タイマのカウント
@@ -320,7 +471,6 @@ void int_cmt0(void)
 	*****************************************************************************************/
 	timer++;
 	cnt++;
-
 }
 
 void int_cmt1(void) // センサ読み込み用り込み
@@ -508,7 +658,7 @@ void int_cmt1(void) // センサ読み込み用り込み
 	while (S12AD.ADCSR.BIT.ADST)
 		; // AD変換終了まで待つ
 	V_bat = (2.0 * 3.3 * (float)(S12AD.ADDR9 / 4095.0));
-	if (V_bat < 3.3)
+	if (V_bat < 3.4)
 	{
 
 		// モータ止める
@@ -527,23 +677,41 @@ void int_cmt1(void) // センサ読み込み用り込み
 
 	*****************************************************************************************/
 
+	/*if (log_timer % 40 == 0 && log_flag == 1)     //ここは消しても問題なし
+	{
+		if (log_timer < (LOG_CNT * 40))
+		{
+
+			logs[0][log_timer / 40] = (int)(x_e);
+			logs[1][log_timer / 40] = (int)(y_e);
+			logs[2][log_timer / 40] = (int)(theta_e);
+			logs[3][log_timer / 40] = (int)(now_dir);
+			logs[4][log_timer / 40] = (int)(tar_x);
+			logs[5][log_timer / 40] = (int)(tar_y);
+			logs[6][log_timer / 40] = (int)(tar_th);
+			logs[7][log_timer / 40] = (int)(degree * 10);
+			logs[8][log_timer / 40] = (int)(tar_ang_vel*1000);
+			logs[9][log_timer / 40] = (int)(tar_speed*1000);
+			logs[10][log_timer / 40] = (long)(x_position);
+			logs[11][log_timer / 40] = (long)(y_position);
+		}
+	}
+
+	log_timer++;*/
+	// Get_run_log();
+
 	if (log_timer % 4 == 0 && log_flag == 1)
 	{
 		if (log_timer < (LOG_CNT * 4))
 		{
-
-			logs[0][log_timer / 4] = (int)(x_e);
-			logs[1][log_timer / 4] = (int)(y_e);
-			logs[2][log_timer / 4] = (int)(theta_e);
-			logs[3][log_timer / 4] = (int)(now_dir);
-			logs[4][log_timer / 4] = (int)(tar_x);
-			logs[5][log_timer / 4] = (int)(tar_y);
-			logs[6][log_timer / 4] = (int)(tar_th);
-			logs[7][log_timer / 4] = (int)(degree * 10);
-			logs[8][log_timer / 4] = (int)(tar_ang_vel*1000);
-			logs[9][log_timer / 4] = (int)(tar_speed*1000);
-			logs[10][log_timer / 4] = (long)(x_position);
-			logs[11][log_timer / 4] = (long)(y_position);
+			//loga[0][log_timer / 4] = (long)(V_r * 1000);
+			//loga[1][log_timer / 4] = (long)(V_l * 1000);
+			loga[0][log_timer / 4] = (long)(V_bat * 1000);
+			loga[1][log_timer / 4] = (long)(V_l * 1000);
+			loga[2][log_timer / 4] = (long)(tar_speed * 1000);
+			loga[3][log_timer / 4] = (long)(speed * 1000);
+			loga[4][log_timer / 4] = (long)(locate_l);
+			loga[5][log_timer / 4] = (long)(locate_r);
 		}
 	}
 
@@ -555,6 +723,7 @@ void int_cmt2(void)
 	static unsigned int enc_data_r; // エンコーダの生データ
 	static unsigned int enc_data_l; // エンコーダの生データ
 	static short state;
+	static short state1;
 	/*****************************************************************************************
 	エンコーダ関連
 		値の取得　速度更新　距離積分など
@@ -564,6 +733,15 @@ void int_cmt2(void)
 		RSPI0.SPCMD0.BIT.SSLA = 0x00; // SSL信号アサート設定(SSL0を使う)
 		preprocess_spi_enc(0xFFFF);	  // Read Angle
 		enc_data_r = Get_enc_data();
+
+		// ジャイロセンサの値の更新
+		/*RSPI1.SPCMD0.BIT.SSLA = 0x00; // SSL信号アサート設定(SSL0を使う
+		preprocess_spi_gyro(0xB70000);
+
+		// LowPass Filter
+		gyro_x_new = (float)((short)(read_gyro_data() & 0x0000FFFF));
+		gyro_x = (gyro_x_new - gyro_ref);*/
+
 		state = 1;
 	}
 	else
@@ -634,20 +812,19 @@ void int_cmt2(void)
 
 		// 距離の計算
 		len_mouse += (speed_new_r + speed_new_l) / 2.0;
-		
 
 		if (a < 0)
-		{   
-            if (a > -360)
+		{
+			if (a > -360)
 			{
 				th = -a;
 			}
 			else
 			{
-				th = -(a % 360); 
+				th = -(a % 360);
 			}
-			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] /10000.0);
-			y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)-sin_table[th] /10000.0);
+			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] / 10000.0);
+			y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)-sin_table[th] / 10000.0);
 		}
 		else
 		{
@@ -659,17 +836,15 @@ void int_cmt2(void)
 			{
 				th = (a % 360);
 			}
-			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] /10000.0);
-		    y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)sin_table[th] /10000.0);
+			x_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)cos_table[th] / 10000.0);
+			y_position += ((speed_new_r + speed_new_l) / 2.0) * ((float)sin_table[th] / 10000.0);
 		}
 
-		
-        
 		// 距離の計算其の二
 		sum_len_mouse += (speed_new_r + speed_new_l) / 2.0;
 		// 左右のタイヤの移動距離
-		//r_len_mouse += speed_new_r;
-		//l_len_mouse += speed_new_l;
+		// r_len_mouse += speed_new_r;
+		// l_len_mouse += speed_new_l;
 		// 左右のセンサの値が閾値以下になってからの移動距離
 		/*if (sen_r.value < TH_SEN_R)
 		{
@@ -684,6 +859,12 @@ void int_cmt2(void)
 		before_locate_r = locate_r;
 		before_locate_l = locate_l;
 
+		// 加速度センサの値の更新
+		/*RSPI1.SPCMD0.BIT.SSLA = 0x02; // SSL信号アサート設定(SSL2を使う
+		preprocess_spi_gyro(0xAD0000);
+		accel_x_new = (float)((short)(read_gyro_data() & 0x0000FFFF));
+		accel_x = (16.0 * (accel_x_new) /32767.0);*/
+
 		state = 0;
 	}
 
@@ -691,9 +872,17 @@ void int_cmt2(void)
 	ジャイロ関連(ヨー軸)
 		値の取得　角度の積分　
 	*****************************************************************************************/
-	if (state == 1)
+	if (state == 0)
 	{
+
+		// 加速度センサの値の更新
+		// RSPI1.SPCMD0.BIT.SSLA = 0x02; // SSL信号アサート設定(SSL2を使う
+		preprocess_spi_gyro(0xAD0000);
+
+		accel_x_new = (float)((short)(read_gyro_data() & 0x0000FFFF));
+		accel_x = (16.0 * (accel_x_new) / 32767.0);
 		// ジャイロセンサの値の更新
+		// RSPI1.SPCMD0.BIT.SSLA = 0x00; // SSL信号アサート設定(SSL0を使う
 		preprocess_spi_gyro(0xB70000);
 
 		// LowPass Filter
@@ -727,7 +916,12 @@ void int_cmt2(void)
 			I_degree = -1 * 10000000000;
 		}
 
-		
 		a = (int)degree;
+
+		// state1 = 1;
+
+		//}else{
+
+		// state1 = 0;
 	}
 }

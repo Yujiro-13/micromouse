@@ -243,6 +243,7 @@ void init_maze(void)	//迷路情報の初期化
 		}
 	}
 	
+	//mapの外周にある壁を追加する
 	for(i = 0; i < MAZESIZE_X; i++)
 	{
 		wall[i][0].south = WALL;		//四方の壁を追加する(南)
@@ -281,7 +282,7 @@ void gyro_get_ref(void){
 全ての機能のイニシャライズ
 	
 *****************************************************************************************/
-void init_all(void){
+void init_all(void){    //mainの初めに１度だけ呼ばれる
 	int i;
 	clock_init();
 	io_init();
@@ -310,20 +311,22 @@ void init_all(void){
 	for(i = 0; i < 100*1000*10; i++);
 	*/
 	//Gyro初期設定
-	preprocess_spi_gyro_2byte(0x0681);		//ジャイロリセット
+	preprocess_spi_gyro_2byte(0x0681);		//ジャイロリセット    PWR_MGMT_1(パワーマネジメント)のアドレス 上位バイト06hでアドレス指定。下位バイト81は２進数表記で10000001となりデバイスリセット1000とクロックの選択0001を行っている　Datasheet P.44
 	for(i = 0; i < 100*1000*10; i++);
-	preprocess_spi_gyro_2byte(0x0601);		//Low Power Mode OFF
+	preprocess_spi_gyro_2byte(0x0601);		//Low Power Mode OFF   PWR_MGMT_1(パワーマネジメント)のアドレス 上位バイト06hでアドレス指定。下位バイトはクロックの設定
 	for(i = 0; i < 100*1000*10; i++);
 
 	//ジャイロの設定
-	preprocess_spi_gyro_2byte(0x7F20);		//User Bank2に変更
+	preprocess_spi_gyro_2byte(0x7F20);		//User Bank2に変更    REG_BANK_SELのアドレス  7Fでアドレス指定。下位バイト20は２進数表記で00100000でUser Bank2指定。Datasheet P.60
 	for(i = 0; i < 100*1000*10; i++);
-	preprocess_spi_gyro_2byte(0x0107);		//Range を最大2000dpsへ変更
+	preprocess_spi_gyro_2byte(0x0107);		//Range を最大2000dpsへ変更    GYRO_CONFIG_1のアドレス。Bank2にある。01でアドレス指定。07は２進数表記で00000111の1~2bitでジャイロのレンジを変更。0bitでDLPFを有効化。Datasheet P.64
 	for(i = 0; i < 100*1000*10; i++);
-	preprocess_spi_gyro_2byte(0x7F00);		//User Bank0に変更
+	preprocess_spi_gyro_2byte(0x1407);      //Range を最大16gへ変更    ACCEL_CONFIGのアドレス。
+	for(i = 0; i < 100*1000*10; i++);
+	preprocess_spi_gyro_2byte(0x7F00);		//User Bank0に変更     REG_BANK_SELのアドレス  7Fでアドレス指定。下位バイト00は２進数表記で00000000でUser Bank0指定。Datasheet P.60
 	for(i = 0; i < 100*1000*10; i++);
 
-	preprocess_spi_gyro_2byte(0x0621);		//ジャイロスタート
+	preprocess_spi_gyro_2byte(0x0621);		//ジャイロスタート    PWR_MGMT_1(パワーマネジメント)のアドレス 上位バイト06hでアドレス指定。下位バイト21は２進数表記で00100001となりスリープの解除0010とクロックの選択0001を行っている　Datasheet P.44
 	//変数初期化
 	timer = 0;
 	

@@ -7179,7 +7179,7 @@ struct st_rspi {
 			unsigned char SSL1P:1;
 			unsigned char SSL0P:1;
 		} BIT;
-	} SSLP;
+	} SSLP;  //スレーブセレクト極性レジスタ
 	union {
 		unsigned char BYTE;
 		struct {
