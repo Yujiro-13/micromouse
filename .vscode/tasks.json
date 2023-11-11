@@ -4,16 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build", //ビルドタスク
+            "label": "Build",
             "type": "shell",
             "command": "C:\\Program Files (x86)\\Renesas Electronics\\CS+\\CC\\CubeSuite+.exe",
-            "args": [   //引数指定
-                "/bb",  "DefaultBuild",
-                "${workspaceFolder}\\step7_maze.mtpj",  //プロジェクトファイル().mptjをディレクトリから指定
+            "args": [
+                "/bb",
+                "DefaultBuild",
+                "${workspaceFolder}\\micromouse.mtpj"
             ],
             "group": {
                 "kind": "build",
-                "isDefault":  true
+                "isDefault": true
             }
         },
         {
@@ -21,9 +22,9 @@
             "type": "shell",
             "command": "C:\\Program Files (x86)\\Renesas Electronics\\Programming Tools\\Renesas Flash Programmer V3.09\\RFPV3.Console.exe",
             "args": [
-                "${env:USERPROFILE}\\Documents\\Renesas Flash Programmer\\V3.09\\step7_maze\\step7_maze.rpj",
-               
+                "${env:USERPROFILE}\\Documents\\Renesas Flash Programmer\\V3.09\\micromouse_true\\micromouse_true.rpj"
             ],
-        },
+            "problemMatcher": []
+        }
     ]
 }

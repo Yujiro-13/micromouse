@@ -1,0 +1,55 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  28-Feb-2023 17:54:40
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;HM_StarterKit.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;search.c
+;DataFlash.c
+;fast.c
+;adjust.c
+;odom.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.glb	_x_position
+		.glb	_y_position
+		.glb	_odomery
+		.glb	_cos
+		.glb	_sin
+		.SECTION	P,CODE
+_odomery:
+		.STACK	_odomery=4
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\odom.c",16
+		MOV.L #00000000H, R1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\odom.c",26
+		BSR _cos
+		MOV.L #_x_position, R14
+		MOV.L R1, [R14]
+L11:	; entry.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\odom.c",0
+		MOV.L #00000000H, R1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\odom.c",27
+		BSR _sin
+		MOV.L #_y_position, R14
+		MOV.L R1, [R14]
+		RTS
+		.END

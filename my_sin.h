@@ -5,6 +5,7 @@
 
 
 extern const long long sin_table[];
+extern const long msig[];
 //#define _H_MY_SIN
 
 #endif  //_H_MY_SIN

@@ -1,3 +1,20 @@
 {
-    "files.encoding": "shiftjis"
+    "files.encoding": "shiftjis",
+    "git.postCommitCommand": "push",
+    "files.associations": {
+        "math.h": "c",
+        "interrupt.h": "c",
+        "mathf.h": "c",
+        "my_sin.h": "c",
+        "init.h": "c",
+        "mytypedef.h": "c",
+        "my_cos.h": "c",
+        "iodefine.h": "c",
+        "parameters.h": "c",
+        "glob_var.h": "c",
+        "sci.h": "c",
+        "spi.h": "c",
+        "interface.h": "c"
+    },
+    "idf.portWin": "COM4"
 }

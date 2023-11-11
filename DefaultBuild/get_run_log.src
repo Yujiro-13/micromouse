@@ -1,0 +1,22 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  01-Jun-2023 17:41:13
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;get_run_log.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.END

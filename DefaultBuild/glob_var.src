@@ -1,4 +1,4 @@
-;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  12-Aug-2023 18:36:40
 
 ;*** CPU TYPE ***
 
@@ -6,25 +6,18 @@
 
 ;*** COMMAND PARAMETER ***
 
-;dbsct.c
-;intprg.c
 ;HM_StarterKit.c
-;resetprg.c
-;sbrk.c
-;vecttbl.c
-;sci.c
 ;init.c
 ;spi.c
 ;interrupt.c
 ;glob_var.c
 ;run.c
 ;interface.c
-;misc.c
 ;search.c
 ;DataFlash.c
 ;fast.c
-;i2c.c
 ;adjust.c
+;depth_first_search.c
 ;-isa=rxv1
 ;-fpu
 ;-lang=c99
@@ -42,10 +35,16 @@
 		.glb	_sen_fr
 		.glb	_sen_fl
 		.glb	_con_wall
+		.glb	_con_r_wall
+		.glb	_con_l_wall
 		.glb	_con_fwall
 		.glb	_mypos
 		.glb	_wall
 		.glb	_map
+		.glb	_maze
+		.glb	_stack
+		.glb	_route
+		.glb	_stack_flag
 		.glb	_run_mode
 		.glb	_fast_speed
 		.glb	_tar_ang_vel
@@ -56,7 +55,11 @@
 		.glb	_p_ang_vel
 		.glb	_max_ang_vel
 		.glb	_ang_acc
+		.glb	_ff_ang_acc
 		.glb	_accel
+		.glb	_ff_accel
+		.glb	_ff_decel
+		.glb	_tar_accel
 		.glb	_max_speed
 		.glb	_speed_r
 		.glb	_speed_l
@@ -70,6 +73,13 @@
 		.glb	_end_speed
 		.glb	_V_r
 		.glb	_V_l
+		.glb	_error
+		.glb	_p_error
+		.glb	_I_error
+		.glb	_T_motor
+		.glb	_Motor_speed
+		.glb	_box_A
+		.glb	_box_B
 		.glb	_angle
 		.glb	_locate_l
 		.glb	_locate_r
@@ -77,6 +87,8 @@
 		.glb	_before_locate_l
 		.glb	_diff_pulse_r
 		.glb	_diff_pulse_l
+		.glb	_bef_diff_pulse_r
+		.glb	_bef_diff_pulse_l
 		.glb	_timer
 		.glb	_cnt
 		.glb	_V_bat
@@ -84,9 +96,24 @@
 		.glb	_gyro_x_new
 		.glb	_gyro_ref
 		.glb	_degree
+		.glb	_last_degree
+		.glb	_radian
+		.glb	_accel_x
+		.glb	_accel_x_new
+		.glb	_hit_flag
 		.glb	_len_mouse
 		.glb	_len_target
-		.glb	_log
+		.glb	_len_count
+		.glb	_sum_len_mouse
+		.glb	_sum
+		.glb	_count
+		.glb	_slalom_count
+		.glb	_x_position
+		.glb	_y_position
+		.glb	_last_x_pos
+		.glb	_last_y_pos
+		.glb	_now_dir
+		.glb	_loga
 		.glb	_log_timer
 		.glb	_log_flag
 		.glb	_TURN_DIR
@@ -96,8 +123,30 @@
 		.glb	_I_speed
 		.glb	_I_tar_ang_vel
 		.glb	_I_ang_vel
+		.glb	_I_start_degree
+		.glb	_I_degree
+		.glb	_FB_flag
+		.glb	_x_e
+		.glb	_y_e
+		.glb	_theta_e
+		.glb	_th_e
+		.glb	_tar_x
+		.glb	_tar_y
+		.glb	_tar_th
+		.glb	_tar_d_th
+		.glb	_tar_speed_s
+		.glb	_tar_ang_vel_s
+		.glb	_K_x
+		.glb	_K_y
+		.glb	_K_th
 		.glb	_push_switch
-		.glb	_WAIT_TIME
+		.glb	_a
+		.glb	_th
+		.glb	_M_l
+		.glb	_M_r
+		.glb	_M_sig
+		.glb	_bef_x
+		.glb	_bef_y
 		.SECTION	B,DATA,ALIGN=4
 _sen_r:
 		.blkl	6
@@ -108,11 +157,21 @@ _sen_fr:
 _sen_fl:
 		.blkl	6
 _con_wall:
-		.blkl	14
+		.blkl	16
+_con_r_wall:
+		.blkl	16
+_con_l_wall:
+		.blkl	16
 _con_fwall:
-		.blkl	14
+		.blkl	16
 _mypos:
 		.blkl	2
+_stack:
+		.blkl	325
+_route:
+		.blkl	1444
+_stack_flag:
+		.blkl	1
 _run_mode:
 		.blkl	1
 _fast_speed:
@@ -133,7 +192,15 @@ _max_ang_vel:
 		.blkl	1
 _ang_acc:
 		.blkl	1
+_ff_ang_acc:
+		.blkl	1
 _accel:
+		.blkl	1
+_ff_accel:
+		.blkl	1
+_ff_decel:
+		.blkl	1
+_tar_accel:
 		.blkl	1
 _max_speed:
 		.blkl	1
@@ -161,6 +228,20 @@ _V_r:
 		.blkl	1
 _V_l:
 		.blkl	1
+_error:
+		.blkl	1
+_p_error:
+		.blkl	1
+_I_error:
+		.blkl	1
+_T_motor:
+		.blkl	1
+_Motor_speed:
+		.blkl	1
+_box_A:
+		.blkl	1
+_box_B:
+		.blkl	1
 _angle:
 		.blkl	1
 _locate_l:
@@ -174,6 +255,10 @@ _before_locate_l:
 _diff_pulse_r:
 		.blkl	1
 _diff_pulse_l:
+		.blkl	1
+_bef_diff_pulse_r:
+		.blkl	1
+_bef_diff_pulse_l:
 		.blkl	1
 _timer:
 		.blkl	1
@@ -189,11 +274,41 @@ _gyro_ref:
 		.blkl	1
 _degree:
 		.blkl	1
+_last_degree:
+		.blkl	1
+_radian:
+		.blkl	1
+_accel_x:
+		.blkl	1
+_accel_x_new:
+		.blkl	1
+_hit_flag:
+		.blkl	1
 _len_mouse:
 		.blkl	1
 _len_target:
 		.blkl	1
-_log:
+_len_count:
+		.blkl	1
+_sum_len_mouse:
+		.blkl	1
+_sum:
+		.blkl	1
+_count:
+		.blkl	1
+_slalom_count:
+		.blkl	1
+_x_position:
+		.blkl	1
+_y_position:
+		.blkl	1
+_last_x_pos:
+		.blkl	1
+_last_y_pos:
+		.blkl	1
+_now_dir:
+		.blkl	1
+_loga:
 		.blkl	12000
 _log_timer:
 		.blkl	1
@@ -211,13 +326,59 @@ _I_tar_ang_vel:
 		.blkl	1
 _I_ang_vel:
 		.blkl	1
-_WAIT_TIME:
+_I_start_degree:
+		.blkl	1
+_I_degree:
+		.blkl	1
+_FB_flag:
+		.blkl	1
+_x_e:
+		.blkl	1
+_y_e:
+		.blkl	1
+_theta_e:
+		.blkl	1
+_th_e:
+		.blkl	1
+_tar_x:
+		.blkl	1
+_tar_y:
+		.blkl	1
+_tar_th:
+		.blkl	1
+_tar_d_th:
+		.blkl	1
+_tar_speed_s:
+		.blkl	1
+_tar_ang_vel_s:
+		.blkl	1
+_K_x:
+		.blkl	1
+_K_y:
+		.blkl	1
+_K_th:
+		.blkl	1
+_a:
+		.blkl	2
+_th:
+		.blkl	2
+_M_l:
+		.blkl	1
+_M_r:
+		.blkl	1
+_M_sig:
+		.blkl	1
+_bef_x:
+		.blkl	1
+_bef_y:
 		.blkl	1
 		.SECTION	B_1,DATA
 _wall:
-		.blkb	64
+		.blkb	361
 _map:
-		.blkb	64
+		.blkb	361
+_maze:
+		.blkb	361
 _TURN_DIR:
 		.blkb	1
 _push_switch:

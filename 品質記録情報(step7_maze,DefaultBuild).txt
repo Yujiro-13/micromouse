@@ -1,47 +1,45 @@
 品質記録情報
-2022年10月14日 21:15:17
+2022年12月9日 20:25:10
 
 ------ ビルド開始(step7_maze, DefaultBuild) ------
 C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\lbgrx.exe -isa=rxv1 -fpu -head=runtime,mathf,stdio,stdlib,string,new -output=DefaultBuild\step7_maze.lib -nologo
-Compiling start
-Mathf compiling
-Stdio compiling
-Stdlib compiling
-String compiling
-New compiling
-Runtime compiling
-Linking start
-W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
-W0561200:Backed up file "DefaultBuild\step7_maze.lib" into "DefaultBuild\step7_maze.lbk"
-Renesas Optimizing Linker Completed
 Library Generator Completed
 C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\ccrx.exe dbsct.c intprg.c HM_StarterKit.c resetprg.c sbrk.c vecttbl.c sci.c init.c spi.c interrupt.c glob_var.c run.c interface.c misc.c search.c DataFlash.c fast.c i2c.c adjust.c -isa=rxv1 -fpu -lang=c99 -include=. -output=obj -obj_path=DefaultBuild -asm_path=DefaultBuild -debug -g_line -optimize=0 -nologo
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
 HM_StarterKit.c(91):W0520188:Enumerated type mixed with another type
 HM_StarterKit.c(131):W0520188:Enumerated type mixed with another type
+HM_StarterKit.c(165):W0520175:Subscript out of range
+HM_StarterKit.c(166):W0520175:Subscript out of range
+HM_StarterKit.c(167):W0520175:Subscript out of range
+HM_StarterKit.c(168):W0520175:Subscript out of range
+HM_StarterKit.c(169):W0520175:Subscript out of range
+HM_StarterKit.c(170):W0520175:Subscript out of range
+HM_StarterKit.c(171):W0520175:Subscript out of range
+HM_StarterKit.c(172):W0520175:Subscript out of range
+HM_StarterKit.c(173):W0520175:Subscript out of range
+HM_StarterKit.c(174):W0520175:Subscript out of range
+HM_StarterKit.c(175):W0520175:Subscript out of range
 sci.c(135):W0520550:Variable "ptr" was set but never used
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
 spi.c(138):W0520550:Variable "dummy" was set but never used
 spi.c(172):W0520550:Variable "dummy" was set but never used
 spi.c(378):W0520550:Variable "dummy" was set but never used
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-run.c(27):W0520550:Variable "r_wall_check" was set but never used
-run.c(27):W0520550:Variable "l_wall_check" was set but never used
-run.c(27):W0520177:Variable "hosei_f" was declared but never referenced
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
+run.c(288):W0520550:Variable "local_degree" was set but never used
+search.c(461):W0520140:Too many arguments in function call
+search.c(464):W0520140:Too many arguments in function call
+search.c(469):W0520140:Too many arguments in function call
+search.c(475):W0520140:Too many arguments in function call
+search.c(491):W0520140:Too many arguments in function call
+search.c(494):W0520140:Too many arguments in function call
+search.c(499):W0520140:Too many arguments in function call
+search.c(505):W0520140:Too many arguments in function call
+search.c(521):W0520140:Too many arguments in function call
+search.c(524):W0520140:Too many arguments in function call
+search.c(529):W0520140:Too many arguments in function call
 DataFlash.c(23):W0520550:Variable "isErr" was set but never used
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
-parameters.h(4):W0520014:Extra text after expected end of preprocessing directive
 C:\Program Files (x86)\Renesas Electronics\CS+\CC\CC-RX\V3.04.00\Bin\rlink.exe -subcommand=DefaultBuild\step7_maze.clnk
-W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
-W0561016:The evaluation version of CC-RX V3 is valid for the remaining 8 days. After that, link size limit (128 Kbyte) will be applied. Please consider purchasing the product.
+W0561017:The evaluation period of CC-RX V3 has expired. Please consider purchasing the product.
+W0561017:The evaluation period of CC-RX V3 has expired. Please consider purchasing the product.
 Renesas Optimizing Linker Completed
------- ビルド終了(エラー:0個, 警告:25個)(step7_maze, DefaultBuild) ------
+------ ビルド終了(エラー:0個, 警告:32個)(step7_maze, DefaultBuild) ------
 
 --- CommandFile 1 ---
 DefaultBuild\step7_maze.clnk :
@@ -80,8 +78,8 @@ DefaultBuild\step7_maze.clnk :
 
 
 --- SHA1 hash value of output files ---
-C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\DefaultBuild\step7_maze.abs: c290cafa32f460ed87e4ac2e5338bfb5b1456dc6
-C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\DefaultBuild\step7_maze.mot: 536e8b70ece52516b9574d330eae32687c00ed92
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\DefaultBuild\step7_maze.abs: ab91843575ca924576c0f5a97429567c79bfc6b8
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\DefaultBuild\step7_maze.mot: a006ec1ac4e174ef8b95498ef0c1782ccb4d938b
 
 
 --- システム情報 ---
@@ -109,11 +107,11 @@ C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_softwa
  C:\Program Files (x86)\Renesas Electronics\CS+\CC
 *メモリ使用量
  *プライベート・ワーキング・セット
-  117 MB
+  119 MB
  *GDIオブジェクト数
   1939
  *USERオブジェクト数
-  690
+  689
  *開いているファイル
   0 editors, 0 files, 0 KB
 
@@ -251,7 +249,7 @@ IronPythonコンソール・プラグイン
   DeviceInformation.dll
 
 --- メイン・プロジェクト情報 ---
-C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\step7_maze.mtpj
+C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\step7_maze.mtpj
 マイクロコントローラ情報
  *R5F5631MDxFL
   *ファイル名: バージョン

@@ -1,0 +1,33 @@
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  12-Aug-2023 18:36:40
+
+;*** CPU TYPE ***
+
+;-ISA=RXV1
+
+;*** COMMAND PARAMETER ***
+
+;HM_StarterKit.c
+;init.c
+;spi.c
+;interrupt.c
+;glob_var.c
+;run.c
+;interface.c
+;search.c
+;DataFlash.c
+;fast.c
+;adjust.c
+;depth_first_search.c
+;-isa=rxv1
+;-fpu
+;-lang=c99
+;-include=.
+;-output=obj
+;-obj_path=DefaultBuild
+;-asm_path=DefaultBuild
+;-debug
+;-g_line
+;-optimize=0
+;-nologo
+
+		.END

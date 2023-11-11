@@ -1,4 +1,4 @@
-;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  14-Oct-2022 21:15:12
+;RX Family C/C++ Compiler (V3.04.00 [24 Nov 2021])  12-Aug-2023 18:36:40
 
 ;*** CPU TYPE ***
 
@@ -6,25 +6,18 @@
 
 ;*** COMMAND PARAMETER ***
 
-;dbsct.c
-;intprg.c
 ;HM_StarterKit.c
-;resetprg.c
-;sbrk.c
-;vecttbl.c
-;sci.c
 ;init.c
 ;spi.c
 ;interrupt.c
 ;glob_var.c
 ;run.c
 ;interface.c
-;misc.c
 ;search.c
 ;DataFlash.c
 ;fast.c
-;i2c.c
 ;adjust.c
+;depth_first_search.c
 ;-isa=rxv1
 ;-fpu
 ;-lang=c99
@@ -47,7 +40,6 @@
 		.glb	_gyro_x_new
 		.glb	_gyro_ref
 		.glb	_degree
-		.glb	_WAIT_TIME
 		.glb	_clock_init
 		.glb	_init_cmt
 		.glb	_io_init
@@ -69,186 +61,186 @@
 		.SECTION	P,CODE
 _clock_init:
 		.STACK	_clock_init=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",26
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",25
 		MOV.L #00080020H, R14
 		MOV.W #0A50BH, 03DEH[R14]
 L11:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",28
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",27
 		MOV.L #00080020H, R14
 		MOV.W #0F00H, 08H[R14]
 L12:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",29
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",28
 		MOV.L #00080020H, R1
 		MOV.B #00H, 0AH[R1]
 L13:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",31
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",30
 		MOV.L #00080020H, R14
 		MOV.B #0FH, 86H[R14]
 L14:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",47
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",46
 		MOV.L #00080020H, R14
 		MOV.L #21C21211H, [R14]
 L15:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",52
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",51
 		MOV.L #00080020H, R1
 		MOV.W #0032H, 04H[R1]
 L16:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",53
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",52
 		MOV.L #00080020H, R1
 		MOV.B #01H, 10H[R1]
 L17:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",55
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",54
 		MOV.L #00080020H, R14
 		MOV.W #0400H, 06H[R14]
 		RTS
 _init_cmt:
 		.STACK	_init_cmt=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",65
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",64
 		MOV.L #00080010H, R14
 		MOV.W #0A502H, 03EEH[R14]
 L19:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",66
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",65
 		MOV.L #00080010H, R14
 		MOV.L [R14], R15
 		BCLR #0FH, R15
 		MOV.L R15, [R14]
 L20:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",67
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",66
 		MOV.L #00080010H, R14
 		MOV.L [R14], R15
 		BCLR #0FH, R15
 		MOV.L R15, [R14]
 L21:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",68
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",67
 		MOV.L #00080010H, R14
 		MOV.L [R14], R15
 		BCLR #0EH, R15
 		MOV.L R15, [R14]
 L22:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",69
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",68
 		MOV.L #00080010H, R14
 		MOV.W #0A500H, 03EEH[R14]
 L23:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",72
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",71
 		MOV.L #00088002H, R14
 		MOV.W [R14], R15
 		BSET #00H, R15
 		AND #0FFFDH, R15
 		MOV.W R15, [R14]
 L24:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",73
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",72
 		MOV.L #00088002H, R14
 		MOV.W [R14], R15
 		BSET #06H, R15
 		MOV.W R15, [R14]
 L25:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",74
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",73
 		MOV.L #00088002H, R1
 		MOV.W #0000H, 02H[R1]
 L26:	; entry.split7
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",75
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",74
 		MOV.L #00088002H, R14
 		MOV.W #05DBH, 04H[R14]
 L27:	; entry.split8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",77
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",76
 		MOV.L #0008701CH, R14
 		BSET #04H, 01E7H[R14].B
 L28:	; entry.split9
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",78
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",77
 		MOV.L #0008701CH, R14
 		MOVU.B 02E8H[R14], R15
 		OR #0FH, R15
 		MOV.B R15, 02E8H[R14]
 L29:	; entry.split10
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",79
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",78
 		MOV.L #0008701CH, R14
 		BCLR #00H, [R14].B
 L30:	; entry.split11
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",82
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",81
 		MOV.L #00088008H, R14
 		MOV.W [R14], R15
 		BSET #00H, R15
 		AND #0FFFDH, R15
 		MOV.W R15, [R14]
 L31:	; entry.split12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",83
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",82
 		MOV.L #00088008H, R14
 		MOV.W [R14], R15
 		BSET #06H, R15
 		MOV.W R15, [R14]
 L32:	; entry.split13
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",84
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",83
 		MOV.L #00088008H, R1
 		MOV.W #0000H, 02H[R1]
 L33:	; entry.split14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",85
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",84
 		MOV.L #00088008H, R14
 		MOV.W #0176H, 04H[R14]
 L34:	; entry.split15
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",87
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",86
 		MOV.L #0008701CH, R14
 		BSET #05H, 01E7H[R14].B
 L35:	; entry.split16
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",88
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",87
 		MOV.L #0008701CH, R14
 		MOVU.B 02E9H[R14], R15
 		OR #0EH, R15
 		AND #0FEH, R15
 		MOV.B R15, 02E9H[R14]
 L36:	; entry.split17
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",89
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",88
 		MOV.L #0008701CH, R14
 		BCLR #00H, 01H[R14].B
 L37:	; entry.split18
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",92
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",91
 		MOV.L #00088012H, R14
 		MOV.W [R14], R15
 		BSET #00H, R15
 		AND #0FFFDH, R15
 		MOV.W R15, [R14]
 L38:	; entry.split19
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",93
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",92
 		MOV.L #00088012H, R14
 		MOV.W [R14], R15
 		BSET #06H, R15
 		MOV.W R15, [R14]
 L39:	; entry.split20
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",94
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",93
 		MOV.L #00088012H, R1
 		MOV.W #0000H, 02H[R1]
 L40:	; entry.split21
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",95
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",94
 		MOV.L #00088012H, R14
 		MOV.W #02EDH, 04H[R14]
 L41:	; entry.split22
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",97
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",96
 		MOV.L #0008701CH, R14
 		BSET #06H, 01E7H[R14].B
 L42:	; entry.split23
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",98
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",97
 		MOV.L #0008701CH, R14
 		MOVU.B 02EAH[R14], R15
 		OR #0DH, R15
 		AND #0FDH, R15
 		MOV.B R15, 02EAH[R14]
 L43:	; entry.split24
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",99
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",98
 		MOV.L #0008701CH, R14
 		BCLR #00H, 02H[R14].B
 L44:	; entry.split25
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",101
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",100
 		MOV.L #00088000H, R14
 		MOV.W [R14], R15
 		BSET #00H, R15
 		MOV.W R15, [R14]
 L45:	; entry.split26
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",102
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",101
 		MOV.L #00088000H, R14
 		MOV.W [R14], R15
 		BSET #01H, R15
 		MOV.W R15, [R14]
 L46:	; entry.split27
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",103
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",102
 		MOV.L #00088000H, R1
 		MOV.W 10H[R1], R2
 		BSET #00H, R2
@@ -256,324 +248,320 @@ L46:	; entry.split27
 		RTS
 _io_init:
 		.STACK	_io_init=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",111
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",110
 		MOV.L #0008C00BH, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",114
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",113
 		BSET #05H, [R14].B
 L48:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C00AH, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",118
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",117
 		BSET #03H, [R14].B
 L49:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C001H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",119
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",118
 		BSET #05H, [R14].B
 L50:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C001H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",120
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",119
 		BSET #04H, [R14].B
 L51:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C003H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",121
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",120
 		BSET #01H, [R14].B
 		RTS
 _sensor_init:
 		.STACK	_sensor_init=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",132
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",131
 		MOV.L #00080010H, R14
 		MOV.W #0A502H, 03EEH[R14]
 L53:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",133
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",132
 		MOV.L #00080010H, R14
 		MOV.L [R14], R15
 		BCLR #11H, R15
 		MOV.L R15, [R14]
 L54:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",134
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",133
 		MOV.L #00080010H, R14
 		MOV.W #0A500H, 03EEH[R14]
 L55:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C064H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",137
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",136
 		BSET #06H, [R14].B
 L56:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C064H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",138
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",137
 		BSET #02H, [R14].B
 L57:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C064H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",139
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",138
 		BSET #01H, [R14].B
 L58:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C064H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",140
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",139
 		BSET #00H, [R14].B
 L59:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C06EH, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",141
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",140
 		BSET #07H, [R14].B
 L60:	; entry.split7
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",143
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",142
 		MOV.L #0008C11FH, R14
 		MOV.B #00H, [R14]
 L61:	; entry.split8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",144
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",143
 		MOV.L #0008C11FH, R14
 		MOV.B #40H, [R14]
 L62:	; entry.split9
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",145
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",144
 		MOV.L #0008C11FH, R14
 		BSET #07H, 47H[R14].B
 L63:	; entry.split10
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",146
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",145
 		MOV.L #0008C11FH, R14
 		BSET #07H, 43H[R14].B
 L64:	; entry.split11
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",147
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",146
 		MOV.L #0008C11FH, R14
 		BSET #07H, 42H[R14].B
 L65:	; entry.split12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",148
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",147
 		MOV.L #0008C11FH, R14
 		BSET #07H, 41H[R14].B
 L66:	; entry.split13
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",149
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",148
 		MOV.L #0008C11FH, R14
 		MOV.B #80H, [R14]
 L67:	; entry.split14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",153
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",152
 		MOV.L #00089000H, R14
 		MOVU.B [R14], R15
 		OR #0CH, R15
 		MOV.B R15, [R14]
 L68:	; entry.split15
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",154
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",153
 		MOV.L #00089000H, R1
 		MOV.W #0047H, 04H[R1]
 L69:	; entry.split16
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",155
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",154
 		MOV.L #00089000H, R14
 		BCLR #06H, [R14].B
 		RTS
 _motor_init:
 		.STACK	_motor_init=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",166
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",165
 		MOV.L #0008C00CH, R14
 		BSET #06H, [R14].B
 L71:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",168
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",167
 		MOV.L #0008C00CH, R14
 		BSET #05H, [R14].B
 L72:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",169
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",168
 		MOV.L #0008C00BH, R14
 		BSET #03H, [R14].B
 L73:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",170
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",169
 		MOV.L #0008C00CH, R14
 		BSET #04H, [R14].B
 L74:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",171
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",170
 		MOV.L #0008C00BH, R14
 		BSET #01H, [R14].B
 L75:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",174
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",173
 		MOV.L #0008C11FH, R14
 		BCLR #07H, [R14].B
 L76:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",175
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",174
 		MOV.L #0008C11FH, R14
 		BSET #06H, [R14].B
 L77:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",176
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",175
 		MOV.L #0008C11FH, R14
 		MOVU.B 7AH[R14], R15
 		BSET #00H, R15
 		AND #0E1H, R15
 		MOV.B R15, 7AH[R14]
 L78:	; entry.split7
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",177
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",176
 		MOV.L #0008C11FH, R14
 		MOVU.B 7CH[R14], R15
 		BSET #00H, R15
 		AND #0E1H, R15
 		MOV.B R15, 7CH[R14]
 L79:	; entry.split8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",178
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",177
 		MOV.L #0008C11FH, R14
 		MOV.B #80H, [R14]
 L80:	; entry.split9
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",181
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",180
 		MOV.L #00080010H, R14
 		MOV.W #0A502H, 03EEH[R14]
 L81:	; entry.split10
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",182
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",181
 		MOV.L #00080010H, R14
 		MOV.L [R14], R15
 		BCLR #09H, R15
 		MOV.L R15, [R14]
 L82:	; entry.split11
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",183
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",182
 		MOV.L #00080010H, R14
 		MOV.W #0A500H, 03EEH[R14]
 L83:	; entry.split12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00088680H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",186
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",185
 		MOV.B #00H, [R14]
 L84:	; entry.split13
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",189
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",188
 		MOV.L #00088700H, R14
 		MOV.L #000000F8H, R15
 		AND [R14].UB, R15
 		MOV.B R15, [R14]
 L85:	; entry.split14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",190
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",189
 		MOV.L #00088700H, R14
 		MOV.L #000000C0H, R15
 		OR [R14].UB, R15
 		AND #0DFH, R15
 		MOV.B R15, [R14]
 L86:	; entry.split15
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",191
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",190
 		MOV.L #00088700H, R1
 		MOVU.B 02H[R1], R2
 		OR #05H, R2
 		AND #0F5H, R2
 		MOV.B R2, 02H[R1]
 L87:	; entry.split16
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",192
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",191
 		MOV.L #00088700H, R1
 		MOVU.B 03H[R1], R2
 		OR #05H, R2
 		AND #0F5H, R2
 		MOV.B R2, 03H[R1]
 L88:	; entry.split17
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",193
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",192
 		MOV.L #00088700H, R1
 		MOVU.B 03H[R1], R2
 		BSET #05H, R2
 		AND #2FH, R2
 		MOV.B R2, 03H[R1]
 L89:	; entry.split18
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",194
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",193
 		MOV.L #00088700H, R1
 		MOV.W #0000H, 08H[R1]
 L90:	; entry.split19
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",195
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",194
 		MOV.L #00088700H, R1
 		MOV.W #0000H, 0CH[R1]
 L91:	; entry.split20
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",196
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",195
 		MOV.L #00088700H, R1
 		MOV.W #00F0H, 0EH[R1]
 L92:	; entry.split21
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",197
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",196
 		MOV.L #00088700H, R1
 		MOVU.B 01H[R1], R2
 		OR #03H, R2
 		AND #0F3H, R2
 		MOV.B R2, 01H[R1]
 L93:	; entry.split22
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",199
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",198
 		MOV.L #0008C00BH, R14
 		BSET #03H, 60H[R14].B
 L94:	; entry.split23
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",200
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",199
 		MOV.L #0008C00BH, R14
 		BSET #01H, 60H[R14].B
 L95:	; entry.split24
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",201
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",200
 		MOV.L #00088700H, R1
 		MOV.W #0000H, 08H[R1]
 L96:	; entry.split25
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",202
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",201
 		MOV.L #00088700H, R1
 		MOV.W #0000H, 0CH[R1]
 L97:	; entry.split26
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00088680H, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",203
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",202
 		BSET #00H, [R14].B
 L98:	; entry.split27
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",205
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",204
 		MOV.L #0008C00CH, R14
 		BCLR #06H, 20H[R14].B
 L99:	; entry.split28
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",206
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",205
 		MOV.L #0008C00CH, R14
 		BSET #05H, 20H[R14].B
 L100:	; entry.split29
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",207
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",206
 		MOV.L #0008C00CH, R14
 		BSET #04H, 20H[R14].B
 		RTS
 _init_parameters:
 		.STACK	_init_parameters=4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",217
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",216
 		MOV.L #_sen_r, R14
-		MOV.W #0474H, 0AH[R14]
+		MOV.W #04E2H, 0AH[R14]
 L102:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",218
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",217
 		MOV.L #_sen_l, R14
-		MOV.W #0498H, 0AH[R14]
+		MOV.W #058CH, 0AH[R14]
 L103:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",220
-		MOV.L #_sen_r, R14
-		MOV.W #0112H, 0CH[R14]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",219
+		MOV.L #_sen_r, R1
+		MOV.W #0098H, 0CH[R1]
 L104:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",221
-		MOV.L #_sen_l, R14
-		MOV.W #010BH, 0CH[R14]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",220
+		MOV.L #_sen_l, R1
+		MOV.W #00ACH, 0CH[R1]
 L105:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",223
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",222
 		MOV.L #_sen_fr, R1
-		MOV.W #0058H, 0CH[R1]
+		MOV.W #0053H, 0CH[R1]
 L106:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",224
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",223
 		MOV.L #_sen_fl, R1
-		MOV.W #0043H, 0CH[R1]
+		MOV.W #0035H, 0CH[R1]
 L107:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",226
-		MOV.L #_sen_r, R14
-		MOV.W #0112H, 0EH[R14]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",225
+		MOV.L #_sen_r, R1
+		MOV.W #0098H, 0EH[R1]
 L108:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",227
-		MOV.L #_sen_l, R14
-		MOV.W #010BH, 0EH[R14]
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",226
+		MOV.L #_sen_l, R1
+		MOV.W #00ACH, 0EH[R1]
 L109:	; entry.split7
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",229
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",228
 		MOV.L #_con_wall, R14
 		MOV.L #3A83126FH, 28H[R14]
-L110:	; entry.split8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",231
-		MOV.L #_WAIT_TIME, R14
-		MOV.L #000001F4H, [R14]
 		RTS
 _init_maze:
 		.STACK	_init_maze=12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",238
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",234
 		SUB #08H, R0
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",242
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",238
 		MOV.L #00000000H, 04H[R0]
-		BRA L116
-L112:	; bb
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",244
+		BRA L115
+L111:	; bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",240
 		MOV.L #00000000H, [R0]
-		BRA L114
-L113:	; bb3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",246
+		BRA L113
+L112:	; bb3
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",242
 		MOV.L 04H[R0], R2
-		SHLL #03H, R2
+		MUL #13H, R2
 		MOV.L #_wall, R14
 		ADD R14, R2
 		MOV.L [R0], R3
@@ -589,7 +577,7 @@ L113:	; bb3
 		OR #0FFFFFFA8H, R15
 		AND #0FFFFFFABH, R15
 		MOV.B R15, [R2,R3]
-		SHLL #03H, R1
+		MUL #13H, R1
 		ADD R1, R14
 		MOVU.B [R14,R3], R15
 		BSET #01H, R15
@@ -598,87 +586,87 @@ L113:	; bb3
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L114:	; bb59
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",244
+L113:	; bb59
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",240
 		MOV.L [R0], R1
-		CMP #08H, R1
+		CMP #13H, R1
 		MOV.L 04H[R0], R1
-		BLT L113
-L115:	; bb63
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BLT L112
+L114:	; bb63
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		ADD #01H, R1
 		MOV.L R1, 04H[R0]
-L116:	; bb66
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",242
+L115:	; bb66
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",238
 		MOV.L 04H[R0], R1
-		CMP #08H, R1
-		BLT L112
-L117:	; bb71
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",250
+		CMP #13H, R1
+		BLT L111
+L116:	; bb71
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",247
 		MOV.L #00000000H, 04H[R0]
-		BRA L120
-L118:	; bb72
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",252
+		BRA L119
+L117:	; bb72
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",249
 		MOV.L 04H[R0], R1
-		SHLL #03H, R1
+		MUL #13H, R1
 		MOV.L #_wall, R14
 		MOVU.B [R14,R1], R15
 		BSET #04H, R15
 		AND #0DFH, R15
 		MOV.B R15, [R14,R1]
-L119:	; bb72.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",253
+L118:	; bb72.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",250
 		MOV.L 04H[R0], R1
-		SHLL #03H, R1
+		MUL #13H, R1
 		MOV.L #_wall, R2
 		ADD R1, R2
-		MOVU.B 07H[R2], R1
+		MOVU.B 12H[R2], R1
 		BSET #00H, R1
 		AND #0FDH, R1
-		MOV.B R1, 07H[R2]
+		MOV.B R1, 12H[R2]
 		MOV.L 04H[R0], R1
 		ADD #01H, R1
 		MOV.L R1, 04H[R0]
-L120:	; bb94
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",250
+L119:	; bb94
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",247
 		MOV.L 04H[R0], R1
-		CMP #08H, R1
-		BLT L118
-L121:	; bb99
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",256
+		CMP #13H, R1
+		BLT L117
+L120:	; bb99
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",253
 		MOV.L #00000000H, [R0]
-		BRA L124
-L122:	; bb100
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",258
+		BRA L123
+L121:	; bb100
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",255
 		MOV.L [R0], R1
 		MOV.L #_wall, R14
 		MOVU.B [R14,R1], R15
 		BSET #06H, R15
 		AND #7FH, R15
 		MOV.B R15, [R14,R1]
-L123:	; bb100.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",259
+L122:	; bb100.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",256
 		MOV.L #_wall, R14
 		ADD [R0].L, R14
-		MOVU.B 38H[R14], R15
+		MOVU.B 0156H[R14], R15
 		BSET #02H, R15
 		AND #0F7H, R15
-		MOV.B R15, 38H[R14]
+		MOV.B R15, 0156H[R14]
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L124:	; bb117
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",256
+L123:	; bb117
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",253
 		MOV.L [R0], R1
-		CMP #08H, R1
-		BLT L122
-L125:	; bb122
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",262
+		CMP #13H, R1
+		BLT L121
+L124:	; bb122
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",259
 		MOV.L #_wall, R1
-		MOVU.B 08H[R1], R2
+		MOVU.B 13H[R1], R2
 		BSET #06H, R2
 		AND #7FH, R2
-		MOV.B R2, 08H[R1]
+		MOV.B R2, 13H[R1]
 		MOVU.B [R1], R14
 		BSET #02H, R14
 		AND #0F7H, R14
@@ -686,201 +674,218 @@ L125:	; bb122
 		RTSD #08H
 _gyro_get_ref:
 		.STACK	_gyro_get_ref=12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",271
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",267
 		SUB #08H, R0
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",272
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",268
 		MOV.L #00000000H, 04H[R0]
-L127:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",273
+L126:	; entry.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",269
 		MOV.L #00000000H, [R0]
-L128:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",274
+L127:	; entry.split1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",270
 		MOV.L #_gyro_ref, R14
 		MOV.L #00000000H, [R14]
-L129:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",276
+L128:	; entry.split2
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",272
 		MOV.L #00000000H, 04H[R0]
-		BRA L132
-L130:	; bb
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",277
+		BRA L131
+L129:	; bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",273
 		MOV.L #_gyro_x_new, R14
 		MOV.L [R14], R1
 		FADD [R0].L, R1
 		MOV.L R1, [R0]
-L131:	; bb.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+L130:	; bb.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00000001H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",278
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",274
 		BSR _wait_ms
 		MOV.L 04H[R0], R1
 		ADD #01H, R1
 		MOV.L R1, 04H[R0]
-L132:	; bb8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",276
+L131:	; bb8
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",272
 		MOV.L 04H[R0], R1
-		CMP #09C4H, R1
-		BLT L130
-L133:	; bb12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",280
+		CMP #1388H, R1
+		BLT L129
+L132:	; bb12
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",276
 		MOV.L [R0], R1
-		FDIV #451C4000H, R1
+		FDIV #459C4000H, R1
 		MOV.L #_gyro_ref, R14
 		MOV.L R1, [R14]
-L134:	; bb12.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",281
+L133:	; bb12.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",277
 		MOV.L #_degree, R14
 		MOV.L #00000000H, [R14]
-L135:	; bb12.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+L134:	; bb12.split3
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00000064H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",282
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",278
 		BSR _wait_ms
 		RTSD #08H
 _init_all:
 		.STACK	_init_all=8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",289
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",285
 		SUB #04H, R0
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",291
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",287
 		BSR _clock_init
-L137:	; entry.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",292
+L136:	; entry.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",288
 		BSR _io_init
-L138:	; entry.split1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",293
+L137:	; entry.split1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",289
 		BSR _sensor_init
-L139:	; entry.split2
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",294
+L138:	; entry.split2
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",290
 		BSR _motor_init
-L140:	; entry.split3
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",295
+L139:	; entry.split3
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",291
 		BSR _init_sci
-L141:	; entry.split4
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",296
+L140:	; entry.split4
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",292
 		BSR _init_spi_gyro
-L142:	; entry.split5
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",297
+L141:	; entry.split5
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",293
 		BSR _init_spi_enc
-L143:	; entry.split6
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",298
+L142:	; entry.split6
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",294
 		BSR _init_I2C
-L144:	; entry.split7
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",299
+L143:	; entry.split7
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",295
 		BSR _IOex_SETTING
-L145:	; entry.split8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+L144:	; entry.split8
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00000000H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",301
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",297
 		BSR _LED
-L146:	; entry.split9
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+L145:	; entry.split9
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #0008C02CH, R14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",302
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",298
 		BCLR #06H, [R14].B
-L147:	; entry.split10
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",303
+L146:	; entry.split10
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",299
 		BSR _init_parameters
-L148:	; entry.split11
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",304
+L147:	; entry.split11
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",300
 		BSR _init_maze
-L149:	; entry.split12
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+L148:	; entry.split12
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L #00000681H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",318
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",314
 		BSR _preprocess_spi_gyro_2byte
-L150:	; entry.split13
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",319
+L149:	; entry.split13
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",315
 		MOV.L #00000000H, [R0]
-		BRA L152
-L151:	; bb
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BRA L151
+L150:	; bb
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L152:	; bb3
+L151:	; bb3
 		MOV.L [R0], R1
 		CMP #000F4240H, R1
-		BLT L151
-L153:	; bb7
+		BLT L150
+L152:	; bb7
 		MOV.L #00000601H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",320
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",316
 		BSR _preprocess_spi_gyro_2byte
-L154:	; bb7.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",321
+L153:	; bb7.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",317
 		MOV.L #00000000H, [R0]
-		BRA L156
-L155:	; bb8
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BRA L155
+L154:	; bb8
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L156:	; bb11
+L155:	; bb11
 		MOV.L [R0], R1
 		CMP #000F4240H, R1
-		BLT L155
-L157:	; bb16
+		BLT L154
+L156:	; bb16
 		MOV.L #00007F20H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",324
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",320
 		BSR _preprocess_spi_gyro_2byte
-L158:	; bb16.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",325
+L157:	; bb16.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",321
 		MOV.L #00000000H, [R0]
-		BRA L160
-L159:	; bb17
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BRA L159
+L158:	; bb17
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L160:	; bb20
+L159:	; bb20
 		MOV.L [R0], R1
 		CMP #000F4240H, R1
-		BLT L159
-L161:	; bb25
+		BLT L158
+L160:	; bb25
 		MOV.L #00000107H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",326
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",322
 		BSR _preprocess_spi_gyro_2byte
-L162:	; bb25.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",327
+L161:	; bb25.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",323
 		MOV.L #00000000H, [R0]
-		BRA L164
-L163:	; bb26
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BRA L163
+L162:	; bb26
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L164:	; bb29
+L163:	; bb29
 		MOV.L [R0], R1
 		CMP #000F4240H, R1
-		BLT L163
-L165:	; bb34
+		BLT L162
+L164:	; bb34
+		MOV.L #00001407H, R1
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",324
+		BSR _preprocess_spi_gyro_2byte
+L165:	; bb34.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",325
+		MOV.L #00000000H, [R0]
+		BRA L167
+L166:	; bb35
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
+		MOV.L [R0], R1
+		ADD #01H, R1
+		MOV.L R1, [R0]
+L167:	; bb38
+		MOV.L [R0], R1
+		CMP #000F4240H, R1
+		BLT L166
+L168:	; bb43
 		MOV.L #00007F00H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",328
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",326
 		BSR _preprocess_spi_gyro_2byte
-L166:	; bb34.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",329
+L169:	; bb43.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",327
 		MOV.L #00000000H, [R0]
-		BRA L168
-L167:	; bb35
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",0
+		BRA L171
+L170:	; bb44
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",0
 		MOV.L [R0], R1
 		ADD #01H, R1
 		MOV.L R1, [R0]
-L168:	; bb38
+L171:	; bb47
 		MOV.L [R0], R1
 		CMP #000F4240H, R1
-		BLT L167
-L169:	; bb43
+		BLT L170
+L172:	; bb52
 		MOV.L #00000621H, R1
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",331
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",329
 		BSR _preprocess_spi_gyro_2byte
-L170:	; bb43.split
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",333
+L173:	; bb52.split
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",331
 		MOV.L #_timer, R14
 		MOV.L #00000000H, [R14]
-L171:	; bb43.split14
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",336
+L174:	; bb52.split14
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",334
 		BSR _init_cmt
-L172:	; bb43.split15
-		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\init.c",339
+L175:	; bb52.split15
+		.LINE  "C:\Users\81807\Downloads\HM-StarterKit-master\HM-StarterKit-master\Sample_software\step7_maze\micromouse\init.c",337
 		BSR _hw_dflash_init
 		RTSD #04H
 		.END
